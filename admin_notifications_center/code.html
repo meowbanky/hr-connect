@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Notifications Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5245e8",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#131221", // Matching the snippets provided
+                        "surface-dark": "#282546",
+                        "text-secondary": "#9894c7",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131221; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #282546; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5245e8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden antialiased">
+<div class="relative flex min-h-screen flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-surface-dark bg-background-dark/95 backdrop-blur-sm px-10 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white cursor-pointer">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg">
+<span class="material-symbols-outlined text-white text-[24px]">hr_resting</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">HR Admin Portal</h2>
+</div>
+<!-- Global Search -->
+<label class="flex flex-col min-w-40 !h-10 max-w-64 hidden lg:flex">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full transition-colors group focus-within:ring-1 focus-within:ring-primary">
+<div class="text-text-secondary flex border-none bg-surface-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-surface-dark focus:border-none h-full placeholder:text-text-secondary px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal" placeholder="Search portal..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9 hidden md:flex">
+<a class="text-text-secondary hover:text-white transition-colors text-sm font-medium leading-normal" href="#">Dashboard</a>
+<a class="text-text-secondary hover:text-white transition-colors text-sm font-medium leading-normal" href="#">Recruitment</a>
+<a class="text-text-secondary hover:text-white transition-colors text-sm font-medium leading-normal" href="#">Onboarding</a>
+<a class="text-white text-sm font-medium leading-normal relative" href="#">
+                    Notifications
+                    <span class="absolute -top-1 -right-2 size-2 bg-red-500 rounded-full"></span>
+</a>
+</div>
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-surface-dark hover:bg-surface-dark/80 text-white transition-all">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-surface-dark cursor-pointer" data-alt="User profile avatar showing a professional woman smiling" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAuOnrWl6h10IxHMj1QYI5LhxrSTsTGMmnOzMY3b5AYbtI-H0q9LdvLUkDeneQml6WPovk-Vfj7qf1GlEcIY45XitDeus7EYsUDrCLdKji3sUa3u260yhdEY7yzb1i4SWkG_cUXdsTNXRNllKh_hVmopYMHMn6tPQ3dKrN-fODW6RdB8Fs06VL0SFAbzM6655EAl46Qwo-n_JndcHtIAn4Sjpt7RE7pdjzvFBl5bH95D7BN0SwUljCVbAmCQuFh5h6oirxgHDrF1nk");'></div>
+</div>
+</header>
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-6 md:px-20 lg:px-40 flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col max-w-[1024px] flex-1">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 px-4 pb-2">
+<a class="text-text-secondary hover:text-primary transition-colors text-sm font-medium leading-normal flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">dashboard</span>
+                        Dashboard
+                    </a>
+<span class="text-text-secondary text-sm font-medium leading-normal">/</span>
+<span class="text-white text-sm font-medium leading-normal">Notifications Center</span>
+</div>
+<!-- PageHeading -->
+<div class="flex flex-wrap items-end justify-between gap-4 p-4 mb-2">
+<div class="flex min-w-72 flex-col gap-2">
+<h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Notifications</h1>
+<p class="text-text-secondary text-base font-normal leading-normal">Manage your alerts, application updates, and system messages.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-surface-dark hover:bg-surface-dark/80 text-white text-sm font-bold transition-all border border-transparent hover:border-primary/50">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+<span class="whitespace-nowrap">Mark all as read</span>
+</button>
+</div>
+</div>
+<!-- Filter & Search Bar Area -->
+<div class="flex flex-col lg:flex-row gap-4 px-4 mb-6">
+<!-- SearchBar Component reused -->
+<label class="flex flex-col h-12 w-full lg:w-1/3">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full group focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+<div class="text-text-secondary flex border-none bg-surface-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-surface-dark focus:border-none h-full placeholder:text-text-secondary px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search notifications..." value=""/>
+</div>
+</label>
+<!-- Chips Component reused as filters -->
+<div class="flex flex-1 gap-2 overflow-x-auto pb-2 lg:pb-0 items-center no-scrollbar mask-linear-fade">
+<button class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary pl-3 pr-4 transition-all hover:brightness-110 cursor-pointer border border-primary">
+<span class="material-symbols-outlined text-white text-[18px]">view_list</span>
+<p class="text-white text-sm font-medium leading-normal">All</p>
+</button>
+<button class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark hover:bg-surface-dark/80 pl-3 pr-4 transition-all cursor-pointer border border-transparent hover:border-text-secondary/30">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white text-[18px] transition-colors">mark_email_unread</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal transition-colors">Unread</p>
+<span class="bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+</button>
+<button class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark hover:bg-surface-dark/80 pl-3 pr-4 transition-all cursor-pointer border border-transparent hover:border-red-500/30">
+<span class="material-symbols-outlined text-red-400 group-hover:text-red-300 text-[18px] transition-colors">error</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal transition-colors">Urgent</p>
+</button>
+<button class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark hover:bg-surface-dark/80 pl-3 pr-4 transition-all cursor-pointer border border-transparent hover:border-text-secondary/30">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white text-[18px] transition-colors">group_add</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal transition-colors">Applications</p>
+</button>
+<button class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark hover:bg-surface-dark/80 pl-3 pr-4 transition-all cursor-pointer border border-transparent hover:border-text-secondary/30">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white text-[18px] transition-colors">dns</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium leading-normal transition-colors">System</p>
+</button>
+</div>
+</div>
+<!-- Notifications List Container -->
+<div class="px-4 flex flex-col gap-6">
+<!-- Section: Today -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between pb-2 border-b border-surface-dark/50">
+<h3 class="text-text-secondary text-xs font-bold uppercase tracking-wider">Today</h3>
+<span class="text-text-secondary text-xs">3 Unread</span>
+</div>
+<!-- Notification Card 1: Urgent -->
+<div class="group relative flex flex-col md:flex-row gap-4 p-5 rounded-xl bg-surface-dark border-l-4 border-l-red-500 hover:bg-[#2f2b52] transition-all cursor-pointer shadow-sm">
+<div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+<button class="text-text-secondary hover:text-white p-1 rounded hover:bg-white/10" title="Mark as read">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</button>
+<button class="text-text-secondary hover:text-red-400 p-1 rounded hover:bg-red-500/10" title="Delete">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
+<span class="material-symbols-outlined">event_busy</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 gap-1 pr-12">
+<div class="flex items-center gap-2">
+<h4 class="text-white font-semibold text-base">Interview Canceled: Senior Developer</h4>
+<span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide border border-red-500/20">Urgent</span>
+<div class="size-2 rounded-full bg-primary ml-auto md:ml-2 animate-pulse"></div>
+</div>
+<p class="text-text-secondary text-sm leading-relaxed">Candidate <span class="text-white font-medium">John Doe</span> has canceled the technical interview scheduled for today at 2:00 PM. Please reschedule or update the status.</p>
+<span class="text-text-secondary/60 text-xs mt-1 font-medium">10 minutes ago</span>
+</div>
+</div>
+<!-- Notification Card 2: Application (Unread) -->
+<div class="group relative flex flex-col md:flex-row gap-4 p-5 rounded-xl bg-surface-dark border-l-4 border-l-primary hover:bg-[#2f2b52] transition-all cursor-pointer shadow-sm">
+<div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+<button class="text-text-secondary hover:text-white p-1 rounded hover:bg-white/10" title="Mark as read">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</button>
+<button class="text-text-secondary hover:text-red-400 p-1 rounded hover:bg-red-500/10" title="Delete">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 gap-1 pr-12">
+<div class="flex items-center gap-2">
+<h4 class="text-white font-semibold text-base">New Application Received</h4>
+<div class="size-2 rounded-full bg-primary ml-auto md:ml-2"></div>
+</div>
+<p class="text-text-secondary text-sm leading-relaxed"><span class="text-white font-medium">Sarah Smith</span> applied for the <span class="text-white font-medium">HR Manager</span> position. Application includes resume and cover letter.</p>
+<span class="text-text-secondary/60 text-xs mt-1 font-medium">45 minutes ago</span>
+</div>
+</div>
+<!-- Notification Card 3: Onboarding Task (Unread) -->
+<div class="group relative flex flex-col md:flex-row gap-4 p-5 rounded-xl bg-surface-dark border-l-4 border-l-indigo-400 hover:bg-[#2f2b52] transition-all cursor-pointer shadow-sm">
+<div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+<button class="text-text-secondary hover:text-white p-1 rounded hover:bg-white/10" title="Mark as read">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</button>
+<button class="text-text-secondary hover:text-red-400 p-1 rounded hover:bg-red-500/10" title="Delete">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-indigo-400/10 flex items-center justify-center text-indigo-400">
+<span class="material-symbols-outlined">assignment_late</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 gap-1 pr-12">
+<div class="flex items-center gap-2">
+<h4 class="text-white font-semibold text-base">Onboarding Task Pending</h4>
+<div class="size-2 rounded-full bg-primary ml-auto md:ml-2"></div>
+</div>
+<p class="text-text-secondary text-sm leading-relaxed">Document review required for <span class="text-white font-medium">Mike Ross</span>. Contract signature is pending your approval.</p>
+<span class="text-text-secondary/60 text-xs mt-1 font-medium">2 hours ago</span>
+</div>
+</div>
+</div>
+<!-- Section: Yesterday -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between pb-2 border-b border-surface-dark/50 pt-4">
+<h3 class="text-text-secondary text-xs font-bold uppercase tracking-wider">Yesterday</h3>
+</div>
+<!-- Notification Card 4: System (Read) -->
+<div class="group relative flex flex-col md:flex-row gap-4 p-5 rounded-xl bg-surface-dark/50 border border-surface-dark hover:bg-surface-dark transition-all cursor-pointer shadow-sm opacity-80 hover:opacity-100">
+<div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+<button class="text-text-secondary hover:text-red-400 p-1 rounded hover:bg-red-500/10" title="Delete">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-gray-700/30 flex items-center justify-center text-gray-400">
+<span class="material-symbols-outlined">build</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 gap-1">
+<div class="flex items-center gap-2">
+<h4 class="text-white/80 font-medium text-base">Scheduled Maintenance Completed</h4>
+</div>
+<p class="text-text-secondary text-sm leading-relaxed">System maintenance was successfully completed on Sunday at 4:00 AM. All services are operational.</p>
+<span class="text-text-secondary/60 text-xs mt-1 font-medium">Yesterday at 9:00 AM</span>
+</div>
+</div>
+<!-- Notification Card 5: Recruitment (Read) -->
+<div class="group relative flex flex-col md:flex-row gap-4 p-5 rounded-xl bg-surface-dark/50 border border-surface-dark hover:bg-surface-dark transition-all cursor-pointer shadow-sm opacity-80 hover:opacity-100">
+<div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+<button class="text-text-secondary hover:text-red-400 p-1 rounded hover:bg-red-500/10" title="Delete">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex-shrink-0">
+<div class="size-12 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+</div>
+<div class="flex flex-col flex-1 gap-1">
+<div class="flex items-center gap-2">
+<h4 class="text-white/80 font-medium text-base">Job Post Approved</h4>
+</div>
+<p class="text-text-secondary text-sm leading-relaxed">The <span class="text-white font-medium">UX Designer</span> job post has been approved and is now live on the career portal.</p>
+<span class="text-text-secondary/60 text-xs mt-1 font-medium">Yesterday at 2:30 PM</span>
+</div>
+</div>
+</div>
+<!-- Pagination / Load More -->
+<div class="flex justify-center py-6">
+<button class="text-text-secondary hover:text-white text-sm font-medium transition-colors flex items-center gap-1">
+                            Load older notifications
+                            <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Detailed Staff Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5245e8",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121121",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1a192e",
+                        "text-main": "#0f0e1b",
+                        "text-secondary": "#554f96",
+                        "border-light": "#e9e8f3",
+                        "border-dark": "#2a2845",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for timeline */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 15px;
+            width: 2px;
+            background-color: #e9e8f3;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col overflow-x-hidden text-text-main dark:text-white">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light dark:border-border-dark bg-white dark:bg-card-dark px-10 py-3 shadow-sm">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-text-main dark:text-white">
+<div class="size-8 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[32px]">dataset</span>
+</div>
+<h2 class="text-text-main dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">HR Admin</h2>
+</div>
+<div class="hidden lg:flex items-center gap-9">
+<a class="text-text-main dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-text-main dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Recruitment</a>
+<a class="text-primary text-sm font-bold leading-normal" href="#">Staff</a>
+<a class="text-text-main dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Payroll</a>
+<a class="text-text-main dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Reports</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark overflow-hidden">
+<div class="text-text-secondary flex border-none items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 focus:ring-0 border-none bg-transparent focus:border-none h-full placeholder:text-text-secondary px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal" placeholder="Search staff..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark hover:bg-border-light dark:hover:bg-border-dark transition-colors text-text-main dark:text-white">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark hover:bg-border-light dark:hover:bg-border-dark transition-colors text-text-main dark:text-white">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-border-light" data-alt="User avatar for admin" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDVYR_Z0lO9AUi-A1ty9YlXq2D6ZqCy4tqRVzVsxLrfGfBQ2S4taVzzc2nfp_yy22TkYc956KpX3yg3D5ogMlE2TLaG_koVZHdpTBVTieZWJcmgGhNv36uGxTJ8fyeYlhY4-o5RJKVwdXigAeRVt0w3xUZmAYfJYilKwaFiP2Az1cxxcAcjyz1Z_MI0_3Qwr-AuKQWCnEn5JCpS6IJf_FDL08QYg9SJuKk4p89zTg_DAvmihz7YNLuCC6w2qo3wyEmtHbe63AGKI-8");'></div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center py-6 px-4 md:px-8 lg:px-16 xl:px-40 w-full">
+<div class="w-full max-w-[1024px] flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 items-center px-4">
+<a class="text-text-secondary hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Dashboard</a>
+<span class="text-text-secondary text-sm font-medium leading-normal">/</span>
+<a class="text-text-secondary hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Staff Directory</a>
+<span class="text-text-secondary text-sm font-medium leading-normal">/</span>
+<span class="text-text-main dark:text-white text-sm font-bold leading-normal">Sarah Jenkins</span>
+</div>
+<!-- Profile Header -->
+<div class="flex flex-col bg-white dark:bg-card-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden">
+<!-- Cover Banner (Decorative) -->
+<div class="h-32 bg-gradient-to-r from-indigo-500 to-purple-600 w-full" data-alt="Abstract gradient banner"></div>
+<div class="flex flex-col md:flex-row p-6 gap-6 -mt-12 items-start relative">
+<!-- Avatar -->
+<div class="relative">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-32 border-4 border-white dark:border-card-dark shadow-md" data-alt="Profile picture of Sarah Jenkins" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCKcwjUMLRCJxEdOllVmOqkJK4qPz3gHvjU9vAt-OIHTsXAPXHU0FNzNdiaAxMonV1KEPMwZCBKQ_TMDX3xR8OWAFjcdRwpenEjaCu9kOC81jZDIBixBa7SvrtczTIX_qkH-FTl4ZgQYU-hgTfoLHtIq8h7XCDVOUgkrhvK77L1JvWVJ-KvR_OBy20Y8WDGuDZ9aFaWOTkyG4rabz4n_Xgin8Fh6UA8H7amXlixxm9yUw9j8LTBWjiofjmn3c7zQG8e8oVmANwJ_ag");'></div>
+<div class="absolute bottom-2 right-2 bg-green-500 size-4 rounded-full border-2 border-white dark:border-card-dark" title="Active"></div>
+</div>
+<!-- Info -->
+<div class="flex flex-col flex-1 pt-12 md:pt-14 gap-1">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h1 class="text-text-main dark:text-white text-2xl font-bold leading-tight tracking-[-0.015em]">Sarah Jenkins</h1>
+<p class="text-text-secondary dark:text-gray-400 text-base font-normal">Senior UX Designer • Product Design Dept</p>
+</div>
+<!-- Actions -->
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 rounded-lg h-9 px-4 bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark hover:bg-border-light dark:hover:bg-border-dark transition-colors text-text-main dark:text-white text-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+<span>Edit</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-lg h-9 px-4 bg-primary hover:bg-indigo-700 transition-colors text-white text-sm font-bold shadow-md shadow-indigo-200 dark:shadow-none">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Export</span>
+</button>
+<button class="flex items-center justify-center size-9 rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark text-text-secondary hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<div class="mt-2 flex flex-wrap gap-x-6 gap-y-2 text-sm text-text-secondary dark:text-gray-400">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">badge</span> ID: #UX-2023-45</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">location_on</span> San Francisco, CA</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">schedule</span> Full-Time</span>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="px-6 mt-2">
+<div class="flex border-b border-border-light dark:border-border-dark gap-8 overflow-x-auto no-scrollbar">
+<a class="flex items-center gap-2 border-b-[3px] border-primary text-primary pb-3 pt-2 whitespace-nowrap" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-bold">Overview</span>
+</a>
+<a class="flex items-center gap-2 border-b-[3px] border-transparent text-text-secondary hover:text-text-main dark:text-gray-400 dark:hover:text-white transition-colors pb-3 pt-2 whitespace-nowrap" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-sm font-medium">Personal Info</span>
+</a>
+<a class="flex items-center gap-2 border-b-[3px] border-transparent text-text-secondary hover:text-text-main dark:text-gray-400 dark:hover:text-white transition-colors pb-3 pt-2 whitespace-nowrap" href="#">
+<span class="material-symbols-outlined text-[20px]">work_history</span>
+<span class="text-sm font-medium">Employment</span>
+</a>
+<a class="flex items-center gap-2 border-b-[3px] border-transparent text-text-secondary hover:text-text-main dark:text-gray-400 dark:hover:text-white transition-colors pb-3 pt-2 whitespace-nowrap" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+<span class="text-sm font-medium">Compensation</span>
+</a>
+<a class="flex items-center gap-2 border-b-[3px] border-transparent text-text-secondary hover:text-text-main dark:text-gray-400 dark:hover:text-white transition-colors pb-3 pt-2 whitespace-nowrap" href="#">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="text-sm font-medium">Documents</span>
+</a>
+<a class="flex items-center gap-2 border-b-[3px] border-transparent text-text-secondary hover:text-text-main dark:text-gray-400 dark:hover:text-white transition-colors pb-3 pt-2 whitespace-nowrap" href="#">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="text-sm font-medium">Performance</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center gap-2 text-text-secondary dark:text-gray-400">
+<span class="material-symbols-outlined text-[20px]">hourglass_top</span>
+<p class="text-sm font-medium">Tenure</p>
+</div>
+<p class="text-text-main dark:text-white text-2xl font-bold leading-tight">3 Years</p>
+<p class="text-xs text-green-600 font-medium">+1 yr since last review</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center gap-2 text-text-secondary dark:text-gray-400">
+<span class="material-symbols-outlined text-[20px]">beach_access</span>
+<p class="text-sm font-medium">Leave Balance</p>
+</div>
+<p class="text-text-main dark:text-white text-2xl font-bold leading-tight">12 Days</p>
+<p class="text-xs text-text-secondary dark:text-gray-500">Accrues 1.5/mo</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center gap-2 text-text-secondary dark:text-gray-400">
+<span class="material-symbols-outlined text-[20px]">sick</span>
+<p class="text-sm font-medium">Sick Days Used</p>
+</div>
+<p class="text-text-main dark:text-white text-2xl font-bold leading-tight">2 Days</p>
+<p class="text-xs text-text-secondary dark:text-gray-500">Allowed: 10 Days</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex items-center gap-2 text-text-secondary dark:text-gray-400">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+<p class="text-sm font-medium">Next Review</p>
+</div>
+<p class="text-text-main dark:text-white text-2xl font-bold leading-tight">Oct 15</p>
+<p class="text-xs text-primary font-medium">In 3 Months</p>
+</div>
+</div>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column: Personal & Professional Info -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Personal Info Card -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-center px-6 py-4 border-b border-border-light dark:border-border-dark">
+<h3 class="text-text-main dark:text-white font-bold text-base">Contact Information</h3>
+<button class="text-primary hover:bg-primary/10 rounded p-1 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_square</span>
+</button>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
+<div class="flex flex-col gap-1">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Email Address</span>
+<div class="flex items-center gap-2 text-text-main dark:text-white font-medium">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">mail</span>
+                                    sarah.jenkins@company.com
+                                </div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Phone Number</span>
+<div class="flex items-center gap-2 text-text-main dark:text-white font-medium">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">call</span>
+                                    +1 (555) 123-4567
+                                </div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Office Location</span>
+<div class="flex items-center gap-2 text-text-main dark:text-white font-medium">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">apartment</span>
+                                    HQ - San Francisco, Floor 4
+                                </div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Emergency Contact</span>
+<div class="flex items-center gap-2 text-text-main dark:text-white font-medium">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">contact_emergency</span>
+                                    John Jenkins (Spouse)
+                                </div>
+</div>
+</div>
+</div>
+<!-- Current Position Card -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-center px-6 py-4 border-b border-border-light dark:border-border-dark">
+<h3 class="text-text-main dark:text-white font-bold text-base">Position Details</h3>
+<button class="text-primary hover:bg-primary/10 rounded p-1 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_square</span>
+</button>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
+<div class="flex flex-col gap-1">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Department</span>
+<span class="text-text-main dark:text-white font-medium text-lg">Product Design</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Direct Manager</span>
+<div class="flex items-center gap-3 mt-1">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Manager Avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC2nGtpHoSjDqzbGf6K4UEPdriX8dgkNvv4Z_-QBo2ZAJmaUr4CjUCez9kRfehqk7wCelc-4wBvrtdDx3KHUYk2-lrR46Bkwx8NyiEP8KGORW7IG7cKfgrlqRoWBi_mbofpy_foepSPaVfwkGLBgMTov_RpldmUTzrkRTFu4oE67hQmMcj_bs3jBJDX6KVJk8Ul8dnQAfFY-ahMToyWTs3FHDXeN8TdZX6FMtHJ7e2YPSRuuyYzvIguj2pt3f3eWosgf-8YkQu2er8");'></div>
+<div class="flex flex-col">
+<span class="text-text-main dark:text-white font-medium text-sm">Michael Scott</span>
+<span class="text-text-secondary text-xs">Head of Product</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Employment Status</span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
+                                        Active Full-Time
+                                    </span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs font-semibold text-text-secondary uppercase tracking-wider">Date Joined</span>
+<span class="text-text-main dark:text-white font-medium">September 12, 2020</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-border-light dark:border-border-dark">
+<h4 class="text-sm font-semibold text-text-main dark:text-white mb-4">Current Projects</h4>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-background-light dark:bg-background-dark rounded-full text-sm font-medium text-text-secondary border border-border-light dark:border-border-dark">Mobile App Redesign</span>
+<span class="px-3 py-1 bg-background-light dark:bg-background-dark rounded-full text-sm font-medium text-text-secondary border border-border-light dark:border-border-dark">Design System 2.0</span>
+<span class="px-3 py-1 bg-background-light dark:bg-background-dark rounded-full text-sm font-medium text-text-secondary border border-border-light dark:border-border-dark">Q4 User Research</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Salary & History -->
+<div class="flex flex-col gap-6">
+<!-- Compensation Widget -->
+<div class="bg-gradient-to-br from-[#5245e8] to-[#6b5ff5] rounded-xl border border-primary shadow-md overflow-hidden text-white relative group">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[100px]">payments</span>
+</div>
+<div class="p-6 relative z-10">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-bold text-base opacity-90">Annual Compensation</h3>
+<span class="material-symbols-outlined text-[20px] opacity-70">lock</span>
+</div>
+<div class="mb-6">
+<p class="text-xs font-medium opacity-70 uppercase tracking-wider mb-1">Base Salary</p>
+<div class="flex items-center gap-3">
+<span class="text-3xl font-bold tracking-tight filter blur-sm select-none group-hover:blur-0 transition-all duration-300 cursor-pointer">$125,000</span>
+<button class="opacity-70 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 border-t border-white/20 pt-4">
+<div>
+<p class="text-xs font-medium opacity-70">Bonus Plan</p>
+<p class="font-semibold text-lg">15%</p>
+</div>
+<div>
+<p class="text-xs font-medium opacity-70">Stock Options</p>
+<p class="font-semibold text-lg">2,500</p>
+</div>
+</div>
+</div>
+<div class="bg-black/10 px-6 py-3 text-xs font-medium flex items-center justify-between">
+<span>Last updated: Jan 2024</span>
+<a class="hover:underline" href="#">View History</a>
+</div>
+</div>
+<!-- Timeline Widget -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark shadow-sm flex-1">
+<div class="flex justify-between items-center px-6 py-4 border-b border-border-light dark:border-border-dark">
+<h3 class="text-text-main dark:text-white font-bold text-base">Activity Timeline</h3>
+</div>
+<div class="p-6 relative timeline-line">
+<!-- Timeline Item 1 -->
+<div class="relative pl-8 pb-8">
+<div class="absolute left-0 top-1 size-8 bg-white dark:bg-card-dark flex items-center justify-center z-10">
+<div class="size-3 rounded-full bg-primary ring-4 ring-white dark:ring-card-dark"></div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-text-secondary font-medium">Oct 15, 2023</span>
+<p class="text-sm font-bold text-text-main dark:text-white">Promotion to Senior UX Designer</p>
+<p class="text-sm text-text-secondary">Promoted by Michael Scott.</p>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative pl-8 pb-8">
+<div class="absolute left-0 top-1 size-8 bg-white dark:bg-card-dark flex items-center justify-center z-10">
+<div class="size-3 rounded-full bg-border-light dark:bg-border-dark ring-4 ring-white dark:ring-card-dark"></div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-text-secondary font-medium">Aug 2, 2023</span>
+<p class="text-sm font-bold text-text-main dark:text-white">Performance Review Completed</p>
+<p class="text-sm text-text-secondary">Rating: Exceeds Expectations (4.8/5)</p>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative pl-8 pb-8">
+<div class="absolute left-0 top-1 size-8 bg-white dark:bg-card-dark flex items-center justify-center z-10">
+<div class="size-3 rounded-full bg-border-light dark:bg-border-dark ring-4 ring-white dark:ring-card-dark"></div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-text-secondary font-medium">Jan 12, 2023</span>
+<p class="text-sm font-bold text-text-main dark:text-white">Leave Request Approved</p>
+<p class="text-sm text-text-secondary">Approved for 5 days vacation in Feb.</p>
+</div>
+</div>
+<!-- Timeline Item 4 -->
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 size-8 bg-white dark:bg-card-dark flex items-center justify-center z-10">
+<div class="size-3 rounded-full bg-border-light dark:bg-border-dark ring-4 ring-white dark:ring-card-dark"></div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-text-secondary font-medium">Sep 12, 2020</span>
+<p class="text-sm font-bold text-text-main dark:text-white">Joined Company</p>
+<p class="text-sm text-text-secondary">Onboarded as UX Designer.</p>
+</div>
+</div>
+</div>
+<div class="px-6 pb-6 pt-2">
+<button class="w-full py-2 text-sm text-primary font-medium hover:bg-background-light dark:hover:bg-background-dark rounded transition-colors">View Full History</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

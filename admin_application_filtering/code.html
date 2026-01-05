@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Application Filtering</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5749e9",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121121",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-64 hidden lg:flex flex-col border-r border-[#e9e8f3] dark:border-slate-800 bg-background-light dark:bg-background-dark flex-shrink-0">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- User Profile -->
+<div class="flex gap-3 items-center px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-slate-700 shadow-sm" data-alt="Admin user profile picture with a professional headshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDcnZzPIj64zwKmKb3cKdMNVFMZEXdQAv7tjq_yn4blZWIDjTdysWaHWOjKkIHarGpfHrGDQIrLTJjiO0AQH1s1DcziJVI2xnD-MOGlEOqnkZ_dkqjfsJC1K4fq3pibBz_oLzEKURDUCgrk-qlaaHFZnkImk4y5GUSVYOpfQVjNIqFxuxyNaZZEp8nRHFNtZdMuOwe8-zX5fPB6YFtEJsFN6_2bLBk-X--HgRdDbMJqFJkoAQoJaM7hAy4h5iGgnGwgcRItYdU0KsI");'></div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-sm font-bold leading-normal">Alicia Sterling</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium leading-normal">Super Admin</p>
+</div>
+</div>
+<!-- Nav Items -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</div>
+<!-- Active Item -->
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-white dark:bg-primary/20 cursor-pointer">
+<span class="material-symbols-outlined text-[20px] fill-current">group</span>
+<p class="text-sm font-bold leading-normal">Recruitment</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">badge</span>
+<p class="text-sm font-medium leading-normal">Employees</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">bar_chart</span>
+<p class="text-sm font-medium leading-normal">Performance</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</div>
+</div>
+</div>
+<!-- Bottom Action -->
+<div class="px-3 py-2">
+<button class="flex items-center gap-3 text-slate-500 hover:text-red-500 transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                        Log Out
+                    </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full relative overflow-y-auto scroll-smooth">
+<!-- Top Header -->
+<header class="sticky top-0 z-20 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e9e8f3] dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-3">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3 text-slate-900 dark:text-white">
+<div class="size-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">work</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">HR Manager</h2>
+</div>
+<!-- Search Bar -->
+<div class="hidden md:flex ml-6 h-10 w-64 items-center rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all shadow-sm">
+<span class="material-symbols-outlined text-slate-400">search</span>
+<input class="w-full bg-transparent border-none text-sm px-2 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-0" placeholder="Search candidates..."/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-slate-900"></span>
+</button>
+<button class="p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 transition-colors">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 p-6 lg:p-10 max-w-7xl mx-auto w-full flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<nav class="flex items-center text-sm font-medium text-slate-500 dark:text-slate-400">
+<a class="hover:text-primary transition-colors" href="#">Dashboard</a>
+<span class="mx-2 text-slate-300 dark:text-slate-600">/</span>
+<a class="hover:text-primary transition-colors" href="#">Recruitment</a>
+<span class="mx-2 text-slate-300 dark:text-slate-600">/</span>
+<span class="text-slate-900 dark:text-white font-semibold">Applications</span>
+</nav>
+<!-- Page Header & Main Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">Candidate Application Manager</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">Filter, review, and manage incoming applications efficiently.</p>
+</div>
+<div class="flex gap-3">
+<button class="h-10 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Export
+                        </button>
+<button class="h-10 px-4 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                            Add Candidate
+                        </button>
+</div>
+</div>
+<!-- Filters & Controls Section -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-5">
+<!-- Top Row Filters -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+<!-- Job Title Filter -->
+<div class="md:col-span-4 flex flex-col gap-1.5">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Job Role</label>
+<div class="relative">
+<select class="w-full h-11 pl-3 pr-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-background-light dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none cursor-pointer">
+<option value="all">All Roles</option>
+<option selected="" value="frontend">Senior Frontend Engineer</option>
+<option value="product">Product Designer</option>
+<option value="marketing">Marketing Manager</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">expand_more</span>
+</div>
+</div>
+<!-- Date Filter -->
+<div class="md:col-span-3 flex flex-col gap-1.5">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Date Range</label>
+<div class="relative">
+<select class="w-full h-11 pl-3 pr-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-background-light dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none cursor-pointer">
+<option>Last 7 Days</option>
+<option selected="">Last 30 Days</option>
+<option>Last 3 Months</option>
+<option>Custom Range</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">calendar_month</span>
+</div>
+</div>
+<!-- Min Requirements Toggle -->
+<div class="md:col-span-5 flex items-center justify-end md:justify-end pb-1">
+<label class="flex items-center gap-3 cursor-pointer group p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+<div class="flex flex-col items-end text-right mr-1">
+<span class="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Minimum Requirements</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Show only qualified candidates</span>
+</div>
+<div class="relative inline-flex items-center">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 dark:peer-focus:ring-primary/80 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+</div>
+</div>
+<div class="h-px bg-slate-100 dark:bg-slate-800 w-full"></div>
+<!-- Filter Tags / Status -->
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm">All Applications <span class="ml-1 opacity-70">24</span></button>
+<button class="px-3 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary transition-colors">Pending Review <span class="ml-1 opacity-70">12</span></button>
+<button class="px-3 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary transition-colors">Shortlisted <span class="ml-1 opacity-70">8</span></button>
+<button class="px-3 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary transition-colors">Rejected <span class="ml-1 opacity-70">4</span></button>
+</div>
+</div>
+<!-- Table Section -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col flex-1">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-12">
+<input class="rounded border-slate-300 text-primary focus:ring-primary bg-white dark:bg-slate-800 cursor-pointer" type="checkbox"/>
+</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Candidate</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Applied Role</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Date Applied</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-center">Min. Reqs</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Status</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="p-4 align-middle">
+<input class="rounded border-slate-300 text-primary focus:ring-primary bg-white dark:bg-slate-800 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile photo of Sarah Jenkins" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6i-BftmL0ShaL9QarOZIwGl6uukx9Pahx7vQQM6lOvDlJkmuc36EYAKMgRwnZrOjtdrigi1ndcBlzZW5kf4mRLIVgfrm674chYXg_opWaznop-seFKnwRmoE1JagciX5uD3al9TZfE-gxQNygygrukpdXZCnz9Q5OpGtFYEm9viXP6EiOyGGPCIehbNXxTqEKyb9k9oe25YexwNUC-Jn3aDiSFg7O78mQOun9W1-2GCBwMwaYxNpoyAUP0XBMvACLKRfCzYrLwe4");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Sarah Jenkins</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">sarah.j@gmail.com</span>
+</div>
+</div>
+</td>
+<td class="p-4 align-middle text-sm text-slate-700 dark:text-slate-300 font-medium">Sr. Frontend Engineer</td>
+<td class="p-4 align-middle text-sm text-slate-500 dark:text-slate-400">Oct 24, 2023</td>
+<td class="p-4 align-middle text-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                            Met
+                                        </span>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300">
+                                            New
+                                        </span>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 rounded text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="View Profile">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-1.5 rounded text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors" title="Shortlist">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</button>
+<button class="p-1.5 rounded text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Reject">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors bg-primary/5 dark:bg-primary/10">
+<td class="p-4 align-middle">
+<input checked="" class="rounded border-slate-300 text-primary focus:ring-primary bg-white dark:bg-slate-800 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile photo of Michael Chen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPY3LmnO5ePbJRNna-G-PjjrW0XfKXmUEhDexUa9m57OojiPiaDSZdieQL5dSArCJL5Ykf2cGGzDKbWw47uyFTmVcgXGOXB3wwaYd6pX6jtm6cJ4PAhweTcZQ2bdd1FGEzoMF7KRB88ZuEsv5f4T7X_Lmo15PpoQJNX9CBOqCKLqvpxIUniny93Cuu0E2jcP2TArr8LMnyUHHKMW0FwSeNsFfnNv9JTOvIQNNdbKARe1hPm6y7imXLWP5yu9_Q2Sp6kDzRAGm6XQI");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Michael Chen</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">m.chen@design.io</span>
+</div>
+</div>
+</td>
+<td class="p-4 align-middle text-sm text-slate-700 dark:text-slate-300 font-medium">Product Designer</td>
+<td class="p-4 align-middle text-sm text-slate-500 dark:text-slate-400">Oct 22, 2023</td>
+<td class="p-4 align-middle text-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                            Met
+                                        </span>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300">
+                                            Shortlisted
+                                        </span>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 rounded text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="View Profile">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-1.5 rounded text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors" title="Shortlist">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</button>
+<button class="p-1.5 rounded text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Reject">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="p-4 align-middle">
+<input class="rounded border-slate-300 text-primary focus:ring-primary bg-white dark:bg-slate-800 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 text-xs font-bold border border-slate-200 dark:border-slate-700">DK</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">David Kim</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">david.k99@yahoo.com</span>
+</div>
+</div>
+</td>
+<td class="p-4 align-middle text-sm text-slate-700 dark:text-slate-300 font-medium">Sr. Frontend Engineer</td>
+<td class="p-4 align-middle text-sm text-slate-500 dark:text-slate-400">Oct 21, 2023</td>
+<td class="p-4 align-middle text-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800" title="Missing Years of Experience">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                                            Missing
+                                        </span>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                                            Reviewing
+                                        </span>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 rounded text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="View Profile">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-1.5 rounded text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors" title="Shortlist">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</button>
+<button class="p-1.5 rounded text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Reject">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="p-4 align-middle">
+<input class="rounded border-slate-300 text-primary focus:ring-primary bg-white dark:bg-slate-800 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile photo of Emily Watson" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLyPpglz3uVaFwC8blr3PXqWpooJFLIU-wKdJ0jPtmwiyISYMyED1NA190Q_VSQjsNVjZa6BOd9fliFLkDSnsOjcfj82c2uIN0DYwNCWAdiJrfuefPf2OeU5h-4H0Bc4UpgXldfpXbR6vg9GmrWJG3yK2-HwQNtCzoESSpGJVTCssP7m3-3zjyAFYrZ0YQlhcgNlzDIcgMJmGl3rEwLXuTt5wofy_o6p9sXLPTBOU5qXnduIme7o4vH9pOU5nHG1rBmPeYg4mpPas");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Emily Watson</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">em.watson@mail.com</span>
+</div>
+</div>
+</td>
+<td class="p-4 align-middle text-sm text-slate-700 dark:text-slate-300 font-medium">Marketing Manager</td>
+<td class="p-4 align-middle text-sm text-slate-500 dark:text-slate-400">Oct 20, 2023</td>
+<td class="p-4 align-middle text-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                            Met
+                                        </span>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-300">
+                                            Rejected
+                                        </span>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-1.5 rounded text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="View Profile">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-1.5 rounded text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors" title="Reconsider">
+<span class="material-symbols-outlined text-[20px]">undo</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
+<span class="text-sm text-slate-500 dark:text-slate-400">Showing <span class="font-bold text-slate-900 dark:text-white">1-4</span> of <span class="font-bold text-slate-900 dark:text-white">24</span> applications</span>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition-colors" disabled="">Previous</button>
+<button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

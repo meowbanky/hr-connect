@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manage Job Postings - Acme HR</title>
+<!-- Google Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1919e6",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111121",
+                        "slate-850": "#1e293b", // Custom darker slate for UI cards
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for better look in tables/lists */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 transition-colors duration-200">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- SIDEBAR -->
+<aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-colors duration-200 hidden md:flex">
+<div class="p-6 flex flex-col gap-8 h-full">
+<!-- User Profile / Brand -->
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shadow-sm border border-slate-100 dark:border-slate-700" data-alt="Company logo with abstract blue gradient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCDZLX2ethT0rEI_-SbJd1OUdRrzy_wSBEQQs_UzLm2R-qqQdkMY2kO4MV-4WFKrVTcl0VbSbjR2N4YfcnP-5-JxqaFjH2iw6Zbb-IS_8rE_cQknGRy0ReqL8z5-k8yr3FN4G-Nj1f_usY7ewyOSlNnqe9AX3us9e5gzWgIDsXkiYCnp8irHPQKK9z63vb9IQnp8DOxKoDFQh6ChzI8n0gePP3I3XnvzX32lDxpJFTtAAZ3gRCW01PAlZcS_AE372vJWqRRpeV5ZCY");'>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Acme HR</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium">Admin Portal</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:text-primary transition-colors">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-blue-400" href="#">
+<span class="material-symbols-outlined text-[24px] font-variation-settings-fill">work</span>
+<p class="text-sm font-bold">Job Postings</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:text-primary transition-colors">group</span>
+<p class="text-sm font-medium">Candidates</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:text-primary transition-colors">calendar_month</span>
+<p class="text-sm font-medium">Interviews</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:text-primary transition-colors">settings</span>
+<p class="text-sm font-medium">Settings</p>
+</a>
+</nav>
+</div>
+<!-- Bottom Actions -->
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<button class="flex w-full items-center justify-center gap-2 rounded-lg py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                    Log Out
+                 </button>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Header Sticky -->
+<header class="bg-background-light dark:bg-background-dark/95 backdrop-blur-sm z-10 p-6 sm:p-8 pb-0 flex flex-col gap-6">
+<!-- Breadcrumb/Context (Optional, kept minimal) -->
+<!-- Page Heading Component -->
+<div class="flex flex-wrap justify-between items-end gap-4">
+<div class="flex min-w-72 flex-col gap-2">
+<h1 class="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">Manage Job Postings</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal">Manage your recruitment pipeline and existing job listings.</p>
+</div>
+<button class="flex items-center justify-center gap-2 rounded-lg h-12 px-6 bg-primary hover:bg-blue-700 text-white text-sm font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="truncate">Create New Job Posting</span>
+</button>
+</div>
+<!-- Stats Component -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Active Jobs</p>
+<span class="material-symbols-outlined text-slate-400 text-[20px]">work</span>
+</div>
+<div class="flex items-end gap-3">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-none">24</p>
+<span class="text-emerald-600 dark:text-emerald-400 text-xs font-bold bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">+12%</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Candidates</p>
+<span class="material-symbols-outlined text-slate-400 text-[20px]">groups</span>
+</div>
+<div class="flex items-end gap-3">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-none">1,284</p>
+<span class="text-emerald-600 dark:text-emerald-400 text-xs font-bold bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">+5%</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Closing This Week</p>
+<span class="material-symbols-outlined text-slate-400 text-[20px]">timelapse</span>
+</div>
+<div class="flex items-end gap-3">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-none">5</p>
+<span class="text-slate-400 text-xs font-medium">No change</span>
+</div>
+</div>
+</div>
+<!-- Filters & Search Toolbar -->
+<div class="flex flex-col sm:flex-row gap-4 py-4 border-b border-slate-200 dark:border-slate-800">
+<!-- Search Bar -->
+<div class="flex-1">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border-none rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:text-sm" placeholder="Search by job title, ID, or department..." type="text"/>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex gap-3">
+<div class="relative min-w-[160px]">
+<select class="appearance-none block w-full pl-3 pr-10 py-2.5 border-none rounded-lg bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:text-sm cursor-pointer">
+<option>All Statuses</option>
+<option>Open</option>
+<option>Closed</option>
+<option>Draft</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+<span class="material-symbols-outlined text-[20px]">expand_more</span>
+</div>
+</div>
+<div class="relative min-w-[160px] hidden sm:block">
+<select class="appearance-none block w-full pl-3 pr-10 py-2.5 border-none rounded-lg bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm ring-1 ring-slate-200 dark:ring-slate-800 sm:text-sm cursor-pointer">
+<option>All Departments</option>
+<option>Engineering</option>
+<option>Design</option>
+<option>Marketing</option>
+<option>HR</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+<span class="material-symbols-outlined text-[20px]">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto px-6 sm:px-8 pb-8">
+<!-- Data Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden mt-4">
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+<thead class="bg-slate-50 dark:bg-slate-800/50">
+<tr>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Job Title / ID</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Department</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Status</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">Candidates</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell" scope="col">Posted Date</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell" scope="col">Close Date</th>
+<th class="relative px-6 py-4" scope="col"><span class="sr-only">Actions</span></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Senior Product Designer</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: J-10234</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="text-sm text-slate-700 dark:text-slate-300">Product &amp; Design</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                            Open
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex -space-x-2 overflow-hidden items-center">
+<img alt="" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900" data-alt="Candidate Avatar 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCMc5R3coczaHl2r2HUfloGaDuTNc92Fm0Ru1gxyl6fVk6FrrcaxtBsbrBPDo5erd8D45zxp98HM7qa38DksbFxSfoYCGP8vNOuHpAIm2TIZiE9OmZn4PghT100bLqkN3VqIJw18Fw6ikrDx-sowdrRtg9Uw86HWDSn9gisPr7yee6PF-x3wM4h0VBPfJ_ywkAIALD9fC2EtS2I7umWczfaA6_kxGPlBaGoW_QqUpAzT495-qLFeWpqjbztO9l1g-REyMQK9pTfk8"/>
+<img alt="" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900" data-alt="Candidate Avatar 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDgzkzbf9KJjxioT9gqzsr78QPgjKfGvu8LW4YZD9cuYEwVApJZUTSQUa9MbomKrIU6tR-N8YsXL0o9N4HvW0eQ0UjUDifHrDb26T-YGQ1tHheuHFRnVYWNYOYomrqJ0FxwilbaJZbFwmw8lpBA3M8TfrZ-AYflamhmhInOLwpSeR3XwJ_hIN3NDLDw0cgYEf8CmZot3c1X2njlfzNPH-rqANebQrUgzKUA8mNkLTmAsLTaTpubzI6ISa5uT9tvfF259KF5UPKJkU"/>
+<img alt="" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900" data-alt="Candidate Avatar 3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK3Y712rjsLT-IMdZ22xCP_D-n4Pq8YLQC4YcUaziz-M-3HRQCKlkK4U-DyggI-iOKvsJLUxnyS2nSH3sBybygQDpXu5jpqDKnlYqhy7eQFGtI25efPrzTsIv2tEdizo7FOuVgkZeFroSRRnpWIn4fvjuEXGgK2B5XvEd3m-Ryh0rnRc3H3tC5CzYZz4zBrqyEbTOlkiF9NjZR4HnzRd8IyMRILf09OhI3qyhiUyu1jvD-P-IMt9E3PJzsYXOzTyViwBaM-ek5yTs"/>
+<div class="h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-medium text-slate-500">+42</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">Oct 12, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">Nov 12, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors" title="Edit Job">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-600 transition-colors" title="Close Job">
+<span class="material-symbols-outlined text-[20px]">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Frontend Engineer</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: J-10235</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="text-sm text-slate-700 dark:text-slate-300">Engineering</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                            Open
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex -space-x-2 overflow-hidden items-center">
+<img alt="" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900" data-alt="Candidate Avatar 4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3OELFc2-B-mEfyxkPwUHp1XtC4OY5ICBYBHxgNkOo6Zis3CJ_Dez2NhQ9tOqoAKH_F4YZZ9_Evydg7QGu44JegNCMczkoGh-NSvKFi9BSEZVDPlpxbiurcjKH5MdTsyjHo_lxnx-n-cCUJThQ88TZ1o-oNWYCQSrywPp6WffeKvgrQ7hIfMOr6JJg10jjywHcGYTUXI72-C-zh8FT9i6u8LwS7t8BxOOGJ8kuAINJ9XALW04s5M6baBBhRmhNgPvNhBSGJ3cwEgY"/>
+<img alt="" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900" data-alt="Candidate Avatar 5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCu5jaC9EoXC5RtMVs9PgU68AkY5Ocxq4R3zC_AdJGU0CL0Ppi1rZw9nBUv27DoZ4yW-xSH5_6wykaszAMKCN-TslUwFi-vyl8HYH0FmsryAywLxwE9rcymzO3q_lFxP_9y2jj2iaTJoQEP4OBtQakKNJO_n4sZ6munbSpKkLzih4JnVLJih18-WnXzvTz5-CphkmAT-zCMojJgo-jdcDzlhTFUbUPOK95E1qHQ_9JU4F7vjF08xPyA2m_emrfBuRR1jiG1cMqnJ-Q"/>
+<div class="h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-medium text-slate-500">+12</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">Oct 14, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">Nov 14, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors" title="Edit Job">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-600 transition-colors" title="Close Job">
+<span class="material-symbols-outlined text-[20px]">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Marketing Manager</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: J-10199</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="text-sm text-slate-700 dark:text-slate-300">Marketing</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300">
+                                            Closed
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-500 dark:text-slate-400">89 Applicants</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">Sep 01, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">Oct 01, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors" title="Edit Job">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-600 transition-colors" title="Reopen Job">
+<span class="material-symbols-outlined text-[20px]">replay</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">HR Coordinator</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: J-10250</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="text-sm text-slate-700 dark:text-slate-300">Human Resources</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                                            Draft
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="text-sm text-slate-400 italic">Not published</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">-</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">-</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors" title="Preview">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors" title="Edit Job">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-600 transition-colors" title="Delete Draft">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">DevOps Engineer</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: J-10238</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center">
+<span class="text-sm text-slate-700 dark:text-slate-300">Engineering</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                            Open
+                                        </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex -space-x-2 overflow-hidden items-center">
+<img alt="" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900" data-alt="Candidate Avatar 6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAh0m2qt2TxKuyoIaw0ouMG7d0ssZ2shOwSeiodOUQbD5t2HeXov584g_hueCoTX0w_YmFUGxgFurtvBCidA3DwfWnX0fxEEt514YTd0jszMqbq18GIkb2pkF5BlDbQHTjf_464egR-mU67BE8h1d99upHt0OvxcIv5Juw0rD2B-8hdty4277xyphUk6LSNkzSFQkL5EqBNA2Uh7EiLK6kKGDlncm1d-_YZ2vQ0Sr0TNZXqEkicdaBoizHYSbjfbHD6B0xZba9Zwo"/>
+<div class="h-6 w-6 rounded-full ring-2 ring-white dark:ring-slate-900 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-medium text-slate-500">+8</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">Oct 18, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">Nov 18, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-slate-400 hover:text-primary transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors" title="Edit Job">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-600 transition-colors" title="Close Job">
+<span class="material-symbols-outlined text-[20px]">block</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="bg-white dark:bg-slate-900 px-4 py-3 flex items-center justify-between border-t border-slate-200 dark:border-slate-800 sm:px-6">
+<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-slate-700 dark:text-slate-400">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">24</span> results
+                                </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+<a class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</a>
+<a aria-current="page" class="z-10 bg-primary/10 border-primary text-primary relative inline-flex items-center px-4 py-2 border text-sm font-medium" href="#">1</a>
+<a class="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium" href="#">2</a>
+<a class="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium" href="#">3</a>
+<a class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

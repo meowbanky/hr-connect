@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HR Connect - Job Board</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1919e6",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111121",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for modern feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0e0e1b] dark:text-gray-100 flex flex-col min-h-screen overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<nav class="sticky top-0 z-50 w-full border-b border-[#e7e7f3] dark:border-gray-800 bg-white dark:bg-[#1a1a2e]/90 backdrop-blur-md">
+<div class="px-6 lg:px-12 flex items-center justify-between h-16 max-w-[1440px] mx-auto">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#0e0e1b] dark:text-white text-xl font-bold tracking-tight">HR Connect</h2>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#0e0e1b] dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="#">Jobs</a>
+<a class="text-[#0e0e1b] dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="#">Companies</a>
+<a class="text-[#0e0e1b] dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="#">Salaries</a>
+<a class="text-[#0e0e1b] dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="#">Advice</a>
+</div>
+<div class="flex gap-3">
+<button class="hidden sm:flex h-9 items-center justify-center rounded-lg px-4 border border-[#e7e7f3] dark:border-gray-700 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-[#0e0e1b] dark:text-white text-sm font-bold transition-colors">
+                    Log In
+                </button>
+<button class="flex h-9 items-center justify-center rounded-lg px-4 bg-primary hover:bg-blue-700 text-white text-sm font-bold shadow-lg shadow-blue-500/20 transition-all">
+                    Sign Up
+                </button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<div class="relative w-full bg-cover bg-center bg-no-repeat py-20 lg:py-24" data-alt="Abstract blue geometric pattern background representing connection" style='background-image: linear-gradient(rgba(17, 17, 33, 0.7), rgba(17, 17, 33, 0.8)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAHzmm_c7cW2etOwufnOXmWV65qnCwhJPIGs9yoe4mgEGaybrLZnRNO0ocGVbNczeTod0wnfKvn4OKTfIyxj_cTH6ml3Bufq9oSj-PXHG7t6Jr__jyCIZH_bgC0pw93oqCvsl0JfIy63FmE6Tuac71xIBpxEStZaJSScrU91fQXAAM2xa7_KCBiOGWW1UQWyib4W4vj5wyuZ1UPfkbfvNbVjacrxADYC5QVDsRptQHlkk5sdjtiB5Ijjg3OJbuwS6Kuz5vX5q8-7kc");'>
+<div class="max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col items-center text-center">
+<h1 class="text-white text-4xl lg:text-6xl font-black leading-tight tracking-tight mb-4 max-w-4xl">
+                Find your next career move
+            </h1>
+<p class="text-gray-200 text-lg font-normal mb-8 max-w-2xl">
+                Search thousands of remote and flexible jobs from top companies around the world.
+            </p>
+<div class="w-full max-w-3xl bg-white dark:bg-[#1a1a2e] p-2 rounded-xl shadow-2xl flex flex-col sm:flex-row gap-2">
+<div class="flex-1 flex items-center h-12 sm:h-14 px-4 border-b sm:border-b-0 sm:border-r border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined text-gray-400 mr-3">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-[#0e0e1b] dark:text-white placeholder:text-gray-400 text-base" placeholder="Job title, keywords, or company"/>
+</div>
+<div class="flex-1 flex items-center h-12 sm:h-14 px-4">
+<span class="material-symbols-outlined text-gray-400 mr-3">location_on</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-[#0e0e1b] dark:text-white placeholder:text-gray-400 text-base" placeholder="City, state, or remote"/>
+</div>
+<button class="h-12 sm:h-14 px-8 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold transition-colors w-full sm:w-auto">
+                    Search
+                </button>
+</div>
+</div>
+</div>
+<!-- Main Content Layout -->
+<div class="flex-1 max-w-[1440px] mx-auto w-full px-6 lg:px-12 py-12 flex flex-col lg:flex-row gap-8">
+<!-- Sidebar Filters -->
+<aside class="w-full lg:w-72 flex-shrink-0 space-y-8">
+<div class="flex items-center justify-between pb-4 border-b border-[#e7e7f3] dark:border-gray-800">
+<h3 class="text-[#0e0e1b] dark:text-white text-lg font-bold">Filters</h3>
+<button class="text-sm text-primary font-medium hover:underline">Clear all</button>
+</div>
+<!-- Job Type Filter -->
+<div class="space-y-4">
+<h4 class="text-[#0e0e1b] dark:text-white font-semibold">Job Type</h4>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors" type="checkbox"/>
+<span class="text-gray-600 dark:text-gray-300 group-hover:text-primary transition-colors">Full-time</span>
+<span class="ml-auto text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">124</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors" type="checkbox"/>
+<span class="text-gray-600 dark:text-gray-300 group-hover:text-primary transition-colors">Contract</span>
+<span class="ml-auto text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">42</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors" type="checkbox"/>
+<span class="text-gray-600 dark:text-gray-300 group-hover:text-primary transition-colors">Part-time</span>
+<span class="ml-auto text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">18</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors" type="checkbox"/>
+<span class="text-gray-600 dark:text-gray-300 group-hover:text-primary transition-colors">Freelance</span>
+<span class="ml-auto text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">9</span>
+</label>
+</div>
+</div>
+<!-- Experience Level -->
+<div class="space-y-4 pt-6 border-t border-[#e7e7f3] dark:border-gray-800">
+<h4 class="text-[#0e0e1b] dark:text-white font-semibold">Experience Level</h4>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors" type="checkbox"/>
+<span class="text-gray-600 dark:text-gray-300 group-hover:text-primary transition-colors">Entry Level</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors" type="checkbox"/>
+<span class="text-gray-600 dark:text-gray-300 group-hover:text-primary transition-colors">Mid Level</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors" type="checkbox"/>
+<span class="text-gray-600 dark:text-gray-300 group-hover:text-primary transition-colors">Senior Level</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors" type="checkbox"/>
+<span class="text-gray-600 dark:text-gray-300 group-hover:text-primary transition-colors">Director</span>
+</label>
+</div>
+</div>
+<!-- Salary Range -->
+<div class="space-y-4 pt-6 border-t border-[#e7e7f3] dark:border-gray-800">
+<h4 class="text-[#0e0e1b] dark:text-white font-semibold">Salary Range</h4>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer" name="salary" type="radio"/>
+<span class="text-gray-600 dark:text-gray-300">$40k - $80k</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer" name="salary" type="radio"/>
+<span class="text-gray-600 dark:text-gray-300">$80k - $120k</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer" name="salary" type="radio"/>
+<span class="text-gray-600 dark:text-gray-300">$120k - $160k</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer" name="salary" type="radio"/>
+<span class="text-gray-600 dark:text-gray-300">$160k +</span>
+</label>
+</div>
+</div>
+<!-- Date Posted -->
+<div class="space-y-4 pt-6 border-t border-[#e7e7f3] dark:border-gray-800">
+<h4 class="text-[#0e0e1b] dark:text-white font-semibold">Date Posted</h4>
+<select class="w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a2e] text-gray-700 dark:text-gray-300 focus:border-primary focus:ring-primary/25">
+<option>Any time</option>
+<option>Past 24 hours</option>
+<option>Past week</option>
+<option>Past month</option>
+</select>
+</div>
+</aside>
+<!-- Job Feed -->
+<main class="flex-1">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-[#0e0e1b] dark:text-white font-bold text-xl"><span class="text-primary">124</span> Jobs Found</h3>
+<div class="flex items-center gap-2">
+<span class="text-gray-500 text-sm hidden sm:inline">Sort by:</span>
+<select class="rounded-lg border-none bg-transparent py-0 pl-2 pr-8 text-sm font-semibold text-[#0e0e1b] dark:text-white focus:ring-0 cursor-pointer">
+<option>Most Relevant</option>
+<option>Newest</option>
+<option>Highest Salary</option>
+</select>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Job Card 1 -->
+<div class="group relative flex flex-col sm:flex-row gap-6 bg-white dark:bg-[#1a1a2e] p-6 rounded-xl border border-[#e7e7f3] dark:border-gray-800 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-primary/5 transition-all">
+<div class="shrink-0">
+<div class="h-16 w-16 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center p-3 border border-gray-100 dark:border-gray-700">
+<!-- Placeholder Company Logo -->
+<img class="w-full h-full object-contain" data-alt="Spotify Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTRhM2I4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTMgMjF2LThhMiAyIDAgMCAxIDItMmgyLjVhMiAyIDAgMCAxIDIgMnY4Ii8+PHBhdGggZD0iTTEzIDIxVjlhMiAyIDAgMCAxIDItMmgyLjVhMiAyIDAgMCAxIDIgMnYxMiIvPjxwYXRoIGQ9Ik0xMyA2aDVhMiAyIDAgMCAxIDIgMnYxIi8+PC9zdmc+'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2ZXA7XEpyCEBiXBblkRxz2x_FZAYuH9K-A9mZ5bZUsT09OelD8OcXUCTsrBIMjTO2FQD9TqzJQLluSdNrlTdWhS_QYFs1RMTzZNaQXrUiJKGZI210a4PuCVO0J7nnSEUQFB5-LSYRrLTSSkP7AGI6lvZHdq22-32V144ebi7PmgLalqLr30LtEb6eWLF9SROL116_dEA9YXI_bKvBx_EWEiq_Sl9HldiyxZ9RZbng5qE2KCsauiY_Mdv7hY0M9vMbF5My0NA1JD4"/>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-lg font-bold text-[#0e0e1b] dark:text-white group-hover:text-primary transition-colors cursor-pointer">Senior Product Designer</h3>
+<p class="text-sm text-gray-500 font-medium">Spotify • <span class="text-gray-400 font-normal">Posted 2 days ago</span></p>
+</div>
+<button class="text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-y-2 gap-x-4 mb-4 text-sm text-gray-600 dark:text-gray-300">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">location_on</span>
+                                New York, NY (Remote)
+                            </div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">payments</span>
+                                $140k - $180k
+                            </div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">schedule</span>
+                                Full-time
+                            </div>
+</div>
+<p class="text-sm text-gray-500 line-clamp-2 mb-4">
+                            We are looking for a Senior Product Designer to join our core experience team. You will be responsible for leading design initiatives across our mobile and desktop applications, working closely with engineering and product management to deliver world-class user experiences.
+                        </p>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-blue-50 dark:bg-primary/10 text-primary text-xs font-semibold rounded-full">Design System</span>
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">Figma</span>
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">Mobile</span>
+</div>
+<button class="w-full sm:w-auto h-9 px-5 bg-primary hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-all shadow-md hover:shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-200">
+                                Apply Now
+                            </button>
+</div>
+</div>
+</div>
+<!-- Job Card 2 -->
+<div class="group relative flex flex-col sm:flex-row gap-6 bg-white dark:bg-[#1a1a2e] p-6 rounded-xl border border-[#e7e7f3] dark:border-gray-800 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-primary/5 transition-all">
+<div class="shrink-0">
+<div class="h-16 w-16 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center p-3 border border-gray-100 dark:border-gray-700">
+<img class="w-full h-full object-contain" data-alt="Stripe Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTRhM2I4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTMgMjF2LThhMiAyIDAgMCAxIDItMmgyLjVhMiAyIDAgMCAxIDIgMnY4Ii8+PHBhdGggZD0iTTEzIDIxVjlhMiAyIDAgMCAxIDItMmgyLjVhMiAyIDAgMCAxIDIgMnYxMiIvPjxwYXRoIGQ9Ik0xMyA2aDVhMiAyIDAgMCAxIDIgMnYxIi8+PC9zdmc+'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7_XMtFJomSmbLmLHqibgOxSjcVeqd8IizyMB6bMZi63xyKjojQQwMj_qshgL0n40rsEGJUhebmtlXXktgo9uABcY7ibobeaXwcrrKi69d7DhBhgranxPWjAu58EE5ZdXze-ZdxKoDMT6vqiZl5Suai3LH0Kut9lZb2c0cjdUJI4gozVmzUOJw0uHbLb3q2g19sFHRVRUJGJ8mdahLv-3MtwQ2kY3bui1C7MWd254ObWhiFh4byhKm8PWzivGneWsZE8c-TwLpiJw"/>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-lg font-bold text-[#0e0e1b] dark:text-white group-hover:text-primary transition-colors cursor-pointer">Backend Engineer</h3>
+<p class="text-sm text-gray-500 font-medium">Stripe • <span class="text-gray-400 font-normal">Posted 5 hours ago</span></p>
+</div>
+<button class="text-primary hover:text-blue-700 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-y-2 gap-x-4 mb-4 text-sm text-gray-600 dark:text-gray-300">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">location_on</span>
+                                San Francisco, CA
+                            </div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">payments</span>
+                                $160k - $220k
+                            </div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">schedule</span>
+                                Full-time
+                            </div>
+</div>
+<p class="text-sm text-gray-500 line-clamp-2 mb-4">
+                            Help us build the economic infrastructure for the internet. You will be working on high-scale distributed systems, payment processing engines, and developer-facing APIs.
+                        </p>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-blue-50 dark:bg-primary/10 text-primary text-xs font-semibold rounded-full">Go</span>
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">Distributed Systems</span>
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">API</span>
+</div>
+<button class="w-full sm:w-auto h-9 px-5 bg-primary hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-all shadow-md hover:shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-200">
+                                Apply Now
+                            </button>
+</div>
+</div>
+</div>
+<!-- Job Card 3 -->
+<div class="group relative flex flex-col sm:flex-row gap-6 bg-white dark:bg-[#1a1a2e] p-6 rounded-xl border border-[#e7e7f3] dark:border-gray-800 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-primary/5 transition-all">
+<div class="shrink-0">
+<div class="h-16 w-16 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center p-3 border border-gray-100 dark:border-gray-700">
+<img class="w-full h-full object-contain" data-alt="Airbnb Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTRhM2I4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTMgMjF2LThhMiAyIDAgMCAxIDItMmgyLjVhMiAyIDAgMCAxIDIgMnY4Ii8+PHBhdGggZD0iTTEzIDIxVjlhMiAyIDAgMCAxIDItMmgyLjVhMiAyIDAgMCAxIDIgMnYxMiIvPjxwYXRoIGQ9Ik0xMyA2aDVhMiAyIDAgMCAxIDIgMnYxIi8+PC9zdmc+'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSvFAwWOxpVXjWrGJKQJaVWCaH_ocSI5Vc_yBeEJ5I4sDyn1MWvVeOEEIh17DbQZcpWoF5I4BIJFHsZq2_pG_B-l22Bdxu2H7ZRcG0FTHLas891viLQwiV2TH1KjDqKAhwVGwc8t8eztVkYO23rLVi_2AQCb4tpu7hdsaGWh5O7sG_xRCAA93A9rYHenL5_a0cJAtGNP_y5ZiB859s-RaQDvsadFqXl1ZR1yXy8PNsEzZh6ywd6Rq_-mwjox6IKoYyWTUok0vMSGQ"/>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-lg font-bold text-[#0e0e1b] dark:text-white group-hover:text-primary transition-colors cursor-pointer">HR Manager</h3>
+<p class="text-sm text-gray-500 font-medium">Airbnb • <span class="text-gray-400 font-normal">Posted 1 week ago</span></p>
+</div>
+<button class="text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-y-2 gap-x-4 mb-4 text-sm text-gray-600 dark:text-gray-300">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">location_on</span>
+                                London, UK
+                            </div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">payments</span>
+                                £60k - £80k
+                            </div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">schedule</span>
+                                Contract
+                            </div>
+</div>
+<p class="text-sm text-gray-500 line-clamp-2 mb-4">
+                            Join our People team to help support our growing European presence. You will manage employee relations, benefits administration, and talent acquisition strategies for the region.
+                        </p>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-blue-50 dark:bg-primary/10 text-primary text-xs font-semibold rounded-full">People Ops</span>
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">Recruiting</span>
+</div>
+<button class="w-full sm:w-auto h-9 px-5 bg-primary hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-all shadow-md hover:shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-200">
+                                Apply Now
+                            </button>
+</div>
+</div>
+</div>
+<!-- Job Card 4 -->
+<div class="group relative flex flex-col sm:flex-row gap-6 bg-white dark:bg-[#1a1a2e] p-6 rounded-xl border border-[#e7e7f3] dark:border-gray-800 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-primary/5 transition-all">
+<div class="shrink-0">
+<div class="h-16 w-16 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center p-3 border border-gray-100 dark:border-gray-700">
+<img class="w-full h-full object-contain" data-alt="Linear Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTRhM2I4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTMgMjF2LThhMiAyIDAgMCAxIDItMmgyLjVhMiAyIDAgMCAxIDIgMnY4Ii8+PHBhdGggZD0iTTEzIDIxVjlhMiAyIDAgMCAxIDItMmgyLjVhMiAyIDAgMCAxIDIgMnYxMiIvPjxwYXRoIGQ9Ik0xMyA2aDVhMiAyIDAgMCAxIDIgMnYxIi8+PC9zdmc+'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJNO76jrp0IyYBNrmF9KAnugP4zSGAhLxHCcutjvtNoGl5f-hFArOl7GkWjXNrxDZFpMiycy8a7C-BePTFNqXhY75_WHR6W-hBZ6fKQmiY0sPv3zwcBuY4NZx4nbGJ6MEf-LWI5blVDbWP2kDqzLdQyg6iCF-4vR2sTtNVKkCeENtHVogx4GTyCg70avZv3IlIwzejEh5vck60oR5ST5TXQb0U97v9FFbrtVbxNNI__32Q4V5tK9Zyxu4cR0dSe-MoI_We6JyW6Po"/>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-lg font-bold text-[#0e0e1b] dark:text-white group-hover:text-primary transition-colors cursor-pointer">Frontend Engineer</h3>
+<p class="text-sm text-gray-500 font-medium">Linear • <span class="text-gray-400 font-normal">Posted 3 days ago</span></p>
+</div>
+<button class="text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-y-2 gap-x-4 mb-4 text-sm text-gray-600 dark:text-gray-300">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">location_on</span>
+                                Remote
+                            </div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">payments</span>
+                                $130k - $170k
+                            </div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-gray-400">schedule</span>
+                                Full-time
+                            </div>
+</div>
+<p class="text-sm text-gray-500 line-clamp-2 mb-4">
+                            Crafting the standard for modern software development tools. We're looking for an engineer with a deep passion for performance, interactions, and attention to detail.
+                        </p>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-blue-50 dark:bg-primary/10 text-primary text-xs font-semibold rounded-full">React</span>
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">TypeScript</span>
+<span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">WebGL</span>
+</div>
+<button class="w-full sm:w-auto h-9 px-5 bg-primary hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-all shadow-md hover:shadow-lg opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-200">
+                                Apply Now
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-12">
+<button class="flex items-center gap-2 px-6 py-3 bg-white dark:bg-[#1a1a2e] border border-[#e7e7f3] dark:border-gray-700 rounded-full font-bold text-primary hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors shadow-sm">
+                    Show more jobs
+                    <span class="material-symbols-outlined text-sm">arrow_downward</span>
+</button>
+</div>
+</main>
+</div>
+<!-- Simple Footer -->
+<footer class="bg-white dark:bg-[#1a1a2e] border-t border-[#e7e7f3] dark:border-gray-800 py-12">
+<div class="max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-6 text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<span class="text-[#0e0e1b] dark:text-white font-bold text-lg">HR Connect</span>
+</div>
+<div class="flex gap-8 text-sm text-gray-500 font-medium">
+<a class="hover:text-primary" href="#">About</a>
+<a class="hover:text-primary" href="#">Privacy</a>
+<a class="hover:text-primary" href="#">Terms</a>
+<a class="hover:text-primary" href="#">Contact</a>
+</div>
+<div class="text-sm text-gray-400">
+                © 2023 HR Connect Inc.
+            </div>
+</div>
+</footer>
+</body></html>

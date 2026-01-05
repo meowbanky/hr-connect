@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Candidate My Applications</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1313ec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="hidden md:flex w-72 flex-col justify-between border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#15152a] p-6">
+<div class="flex flex-col gap-8">
+<!-- User Profile Summary -->
+<div class="flex items-center gap-3">
+<div class="relative h-12 w-12 overflow-hidden rounded-full bg-slate-200" data-alt="Profile picture of Alex">
+<img alt="Profile picture of Alex" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8XHD0Yr94B38frDEtzKzLkGtmc5YWR0VeBFb8OnsDGPGs-48B7ZP2pn6DlObffpYXnI5g-UfbRuR_DLJakFeDXPMNFogPXAiuZK-VqMjjPwbjmMHKS6krGUmJ2EEy_xo4S1iwX9DrhEqyuM5101_hse8470hiubbagK-PiZDP8qz9HbOUGWBOBYghtlnG4mrO5zb2un7Tj2f8sQIuCBgOe4YO0dghy_89jqXTr0wJiH9c4qKAIiyyNsx7iE78-3F1fJjKkAcHNrU"/>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-semibold text-slate-900 dark:text-white">Alex Morgan</h1>
+<p class="text-sm text-slate-500 dark:text-slate-400">Candidate</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-sm font-medium">Profile</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">work</span>
+<span class="text-sm font-medium">Find Jobs</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 rounded-lg bg-primary/10 px-3 py-2 text-primary dark:bg-primary/20 dark:text-indigo-300 transition-colors" href="#">
+<span class="material-symbols-outlined filled">description</span>
+<span class="text-sm font-medium">My Applications</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Action -->
+<div class="flex flex-col gap-4">
+<div class="rounded-xl bg-slate-50 dark:bg-slate-800 p-4">
+<p class="mb-2 text-sm font-medium text-slate-900 dark:text-white">Profile 80% Complete</p>
+<div class="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+<div class="h-full w-[80%] bg-primary"></div>
+</div>
+<button class="mt-3 text-xs font-medium text-primary hover:text-indigo-700 dark:text-indigo-400">Complete Profile</button>
+</div>
+<button class="flex items-center gap-2 rounded-lg px-3 py-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+<div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-6 md:p-10">
+<!-- Page Heading -->
+<header class="flex flex-col gap-2">
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">My Applications</h1>
+<p class="text-base text-slate-500 dark:text-slate-400">Track and manage your current and past job applications.</p>
+</header>
+<!-- Toolbar (Search & Filters) -->
+<div class="flex flex-col gap-4">
+<!-- Search Bar -->
+<div class="relative w-full md:max-w-md">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+<span class="material-symbols-outlined text-slate-400">search</span>
+</div>
+<input class="block w-full rounded-lg border-0 bg-white py-3 pl-10 pr-4 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-slate-800 dark:ring-slate-700 dark:text-white sm:text-sm sm:leading-6" placeholder="Search by job title or company..." type="text"/>
+</div>
+<!-- Filter Chips -->
+<div class="flex flex-wrap gap-2">
+<button class="group flex items-center gap-2 rounded-full border border-primary bg-primary px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                            All
+                        </button>
+<button class="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+                            Under Review
+                        </button>
+<button class="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">event</span>
+                            Interview
+                        </button>
+<button class="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">star</span>
+                            Offer
+                        </button>
+<button class="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+                            Rejected
+                        </button>
+</div>
+</div>
+<!-- Applications Table -->
+<div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-[#15152a] overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800/50">
+<tr>
+<th class="px-6 py-4 font-semibold text-slate-900 dark:text-white" scope="col">Job Title</th>
+<th class="hidden px-6 py-4 font-semibold text-slate-900 dark:text-white sm:table-cell" scope="col">Company</th>
+<th class="hidden px-6 py-4 font-semibold text-slate-900 dark:text-white md:table-cell" scope="col">Date Applied</th>
+<th class="px-6 py-4 font-semibold text-slate-900 dark:text-white" scope="col">Status</th>
+<th class="px-6 py-4 text-right font-semibold text-slate-900 dark:text-white" scope="col">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer">Senior UX Designer</span>
+<span class="sm:hidden text-xs text-slate-500 mt-1">Acme Corp</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-slate-600 dark:text-slate-300 sm:table-cell">Acme Corp</td>
+<td class="hidden px-6 py-4 text-slate-500 dark:text-slate-400 md:table-cell">Oct 24, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
+<span class="h-1.5 w-1.5 rounded-full bg-purple-600 dark:bg-purple-400"></span>
+                                            Interview
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                            View Details
+                                        </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer">Product Manager</span>
+<span class="sm:hidden text-xs text-slate-500 mt-1">Globex Inc</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-slate-600 dark:text-slate-300 sm:table-cell">Globex Inc</td>
+<td class="hidden px-6 py-4 text-slate-500 dark:text-slate-400 md:table-cell">Oct 12, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+<span class="h-1.5 w-1.5 rounded-full bg-amber-600 dark:bg-amber-400"></span>
+                                            Under Review
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                            View Details
+                                        </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer">Frontend Developer</span>
+<span class="sm:hidden text-xs text-slate-500 mt-1">Soylent Corp</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-slate-600 dark:text-slate-300 sm:table-cell">Soylent Corp</td>
+<td class="hidden px-6 py-4 text-slate-500 dark:text-slate-400 md:table-cell">Sept 01, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900/30 dark:text-red-300">
+<span class="h-1.5 w-1.5 rounded-full bg-red-600 dark:bg-red-400"></span>
+                                            Rejected
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                            View Details
+                                        </button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer">Marketing Specialist</span>
+<span class="sm:hidden text-xs text-slate-500 mt-1">Umbrella Corp</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-slate-600 dark:text-slate-300 sm:table-cell">Umbrella Corp</td>
+<td class="hidden px-6 py-4 text-slate-500 dark:text-slate-400 md:table-cell">Aug 15, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-300">
+<span class="h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400"></span>
+                                            Offer Extended
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                            View Details
+                                        </button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer">Data Analyst</span>
+<span class="sm:hidden text-xs text-slate-500 mt-1">Initech</span>
+</div>
+</td>
+<td class="hidden px-6 py-4 text-slate-600 dark:text-slate-300 sm:table-cell">Initech</td>
+<td class="hidden px-6 py-4 text-slate-500 dark:text-slate-400 md:table-cell">July 20, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+<span class="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></span>
+                                            Submitted
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                            View Details
+                                        </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-[#15152a] sm:px-6">
+<div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-slate-700 dark:text-slate-400">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">12</span> results
+                                </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-sm">
+<a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20 focus:outline-offset-0 dark:ring-slate-700 dark:hover:bg-slate-800" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</a>
+<a aria-current="page" class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" href="#">1</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20 focus:outline-offset-0 dark:text-white dark:ring-slate-700 dark:hover:bg-slate-800" href="#">2</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20 focus:outline-offset-0 dark:text-white dark:ring-slate-700 dark:hover:bg-slate-800" href="#">3</a>
+<a class="relative inline-flex items-center rounded-r-md px-2 py-2 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20 focus:outline-offset-0 dark:ring-slate-700 dark:hover:bg-slate-800" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State (Hidden, for completeness in design system logic) -->
+<!-- 
+                <div class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center dark:border-slate-700 dark:bg-slate-800/30">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                        <span class="material-symbols-outlined text-slate-400">folder_open</span>
+                    </div>
+                    <h3 class="mt-2 text-sm font-semibold text-slate-900 dark:text-white">No applications found</h3>
+                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Get started by searching for a new job.</p>
+                    <div class="mt-6">
+                        <button type="button" class="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            <span class="material-symbols-outlined mr-1.5 text-sm">add</span>
+                            Browse Jobs
+                        </button>
+                    </div>
+                </div> 
+                -->
+</div>
+</main>
+</div>
+</body></html>

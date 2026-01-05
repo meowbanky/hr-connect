@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create New Job Posting</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5149e9",
+                        "primary-dark": "#3f37c9",
+                        "background-light": "#f1f5f9", /* Slate-100 */
+                        "background-dark": "#0f172a", /* Slate-900 */
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b", /* Slate-800 */
+                        "text-main": "#0f172a",
+                        "text-secondary": "#64748b", /* Slate-500 */
+                        "border-light": "#e2e8f0", /* Slate-200 */
+                        "border-dark": "#334155", /* Slate-700 */
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for sidebar if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-slate-100 antialiased transition-colors duration-200">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Side Navigation -->
+<aside class="hidden lg:flex flex-col w-72 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark h-full shrink-0 z-20 transition-colors duration-200">
+<div class="flex flex-col h-full p-6 justify-between">
+<div class="flex flex-col gap-8">
+<!-- User Profile Snippet -->
+<div class="flex items-center gap-4 p-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 shadow-sm ring-2 ring-primary/20" data-alt="Profile picture of HR Manager" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBwFAY6QSWZ85z0ijDfvIpvwYrFoZX7lZdZqLrSRDOl5OXHkfRqrCaeK3zvJ1KcZGVOMw9FiSq2V_v5PsYKaYyRKURw9ilixbSoyFfaf8wW9fKH_Nd0y5XSp4_YRGxxaPphlHIMn0I9QFEEAl-4psQQx3EUKwTUAM8JhVjOtSkixoO3c6LeB7Hzron-OrkyU7Ro9B2PrOdPsGIz-CM3lfZ9OQ0WsqN1kQJv_dFjhDakDd5rmHJdS1W1m6kvU2N_6RTumD2lF1-4yok");'>
+</div>
+<div class="flex flex-col">
+<h1 class="text-text-main dark:text-white text-sm font-bold leading-tight">Sarah Jenkins</h1>
+<p class="text-primary text-xs font-medium">HR Manager</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light" href="#">
+<span class="material-symbols-outlined fill-current">work</span>
+<span class="text-sm font-bold">Recruitment</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Employees</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">trending_up</span>
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Performance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Action -->
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary dark:text-slate-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 cursor-pointer transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto relative scroll-smooth bg-background-light dark:bg-background-dark">
+<div class="w-full max-w-[1200px] mx-auto p-6 md:p-10 flex flex-col gap-8">
+<!-- Breadcrumbs & Header -->
+<div class="flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 text-sm">
+<a class="text-text-secondary dark:text-slate-400 hover:text-primary transition-colors" href="#">Home</a>
+<span class="text-text-secondary dark:text-slate-500">/</span>
+<a class="text-text-secondary dark:text-slate-400 hover:text-primary transition-colors" href="#">Recruitment</a>
+<span class="text-text-secondary dark:text-slate-500">/</span>
+<span class="text-primary font-medium">Create New Job</span>
+</div>
+<!-- Page Header with Actions -->
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+<div class="flex flex-col gap-2 max-w-2xl">
+<h1 class="text-3xl md:text-4xl font-black tracking-tight text-text-main dark:text-white">Create New Job Posting</h1>
+<p class="text-text-secondary dark:text-slate-400 text-base">Fill in the details below to post a new vacancy to the career portal.</p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<button class="flex items-center justify-center h-10 px-4 rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark text-text-main dark:text-white text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
+                                Save as Draft
+                            </button>
+<button class="flex items-center justify-center h-10 px-6 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-bold shadow-md shadow-primary/20 transition-all hover:translate-y-[-1px]">
+                                Publish Job
+                            </button>
+</div>
+</div>
+</div>
+<!-- Form Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column: Main Info (Span 2) -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Card: Basic Details -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-6 flex flex-col gap-6">
+<h2 class="text-lg font-bold text-text-main dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">description</span>
+                                Job Details
+                            </h2>
+<!-- Job Title -->
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-text-main dark:text-slate-200">Job Title <span class="text-red-500">*</span></span>
+<input class="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 dark:placeholder-slate-600 h-12 px-4 transition-all" placeholder="e.g. Senior Product Designer" type="text"/>
+</label>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Department Select -->
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-text-main dark:text-slate-200">Department</span>
+<div class="relative">
+<select class="form-select w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all">
+<option disabled="" selected="" value="">Select Department</option>
+<option value="engineering">Engineering</option>
+<option value="design">Product Design</option>
+<option value="marketing">Marketing</option>
+<option value="hr">Human Resources</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-text-secondary">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</label>
+<!-- Employment Type -->
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-text-main dark:text-slate-200">Employment Type</span>
+<div class="relative">
+<select class="form-select w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all">
+<option value="full-time">Full-time</option>
+<option value="part-time">Part-time</option>
+<option value="contract">Contract</option>
+<option value="internship">Internship</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-text-secondary">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Location -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+<label class="flex flex-col gap-2 md:col-span-2">
+<span class="text-sm font-semibold text-text-main dark:text-slate-200">Office Location</span>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary material-symbols-outlined text-[20px]">location_on</span>
+<input class="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 dark:placeholder-slate-600 h-12 pl-11 pr-4 transition-all" placeholder="e.g. San Francisco, CA" type="text"/>
+</div>
+</label>
+<div class="flex items-center h-12 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-border-light dark:border-border-dark px-4">
+<label class="inline-flex items-center cursor-pointer w-full">
+<input class="form-checkbox rounded text-primary border-slate-300 focus:ring-primary focus:ring-offset-0 h-5 w-5" type="checkbox"/>
+<span class="ml-3 text-sm font-medium text-text-main dark:text-slate-200 select-none">Remote Position</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Card: Rich Text Description -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-6 flex flex-col gap-4 flex-1">
+<h2 class="text-lg font-bold text-text-main dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">article</span>
+                                Description &amp; Requirements
+                            </h2>
+<div class="flex flex-col border border-border-light dark:border-border-dark rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+<!-- Toolbar -->
+<div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-800 p-2 border-b border-border-light dark:border-border-dark">
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-text-secondary dark:text-slate-400" title="Bold">
+<span class="material-symbols-outlined text-[20px]">format_bold</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-text-secondary dark:text-slate-400" title="Italic">
+<span class="material-symbols-outlined text-[20px]">format_italic</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-text-secondary dark:text-slate-400" title="Underline">
+<span class="material-symbols-outlined text-[20px]">format_underlined</span>
+</button>
+<div class="w-px h-5 bg-border-light dark:bg-border-dark mx-1"></div>
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-text-secondary dark:text-slate-400" title="Bullet List">
+<span class="material-symbols-outlined text-[20px]">format_list_bulleted</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-text-secondary dark:text-slate-400" title="Numbered List">
+<span class="material-symbols-outlined text-[20px]">format_list_numbered</span>
+</button>
+<div class="w-px h-5 bg-border-light dark:bg-border-dark mx-1"></div>
+<button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-text-secondary dark:text-slate-400" title="Link">
+<span class="material-symbols-outlined text-[20px]">link</span>
+</button>
+</div>
+<!-- Textarea -->
+<textarea class="w-full bg-surface-light dark:bg-surface-dark border-none p-4 min-h-[300px] text-text-main dark:text-slate-200 focus:ring-0 placeholder-slate-400 dark:placeholder-slate-600 resize-none" placeholder="Enter job description, responsibilities, and requirements here..."></textarea>
+</div>
+</div>
+</div>
+<!-- Right Column: Meta Data (Span 1) -->
+<div class="lg:col-span-1 flex flex-col gap-6">
+<!-- Card: Schedule -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-6 flex flex-col gap-6">
+<h2 class="text-lg font-bold text-text-main dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+                                Schedule
+                            </h2>
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-text-main dark:text-slate-200">Open Date</span>
+<input class="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-4 transition-all" type="date"/>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-text-main dark:text-slate-200">Close Date</span>
+<input class="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-4 transition-all" type="date"/>
+</label>
+</div>
+<!-- Card: Compensation -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-6 flex flex-col gap-6">
+<h2 class="text-lg font-bold text-text-main dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">payments</span>
+                                Compensation
+                            </h2>
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-text-main dark:text-slate-200">Currency</span>
+<div class="relative">
+<select class="form-select w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all">
+<option value="USD">USD ($)</option>
+<option value="EUR">EUR (€)</option>
+<option value="GBP">GBP (£)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-text-secondary">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="flex flex-col gap-2">
+<span class="text-xs font-semibold uppercase text-text-secondary tracking-wide">Min</span>
+<input class="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-4 transition-all" placeholder="0" type="number"/>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-xs font-semibold uppercase text-text-secondary tracking-wide">Max</span>
+<input class="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-4 transition-all" placeholder="0" type="number"/>
+</label>
+</div>
+</div>
+<!-- Card: Skills Tags -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-6 flex flex-col gap-4">
+<h2 class="text-lg font-bold text-text-main dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">label</span>
+                                Skills &amp; Tags
+                            </h2>
+<div class="flex flex-wrap gap-2">
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-medium text-text-main dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                                    Design System
+                                    <button class="hover:text-red-500"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</span>
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-medium text-text-main dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                                    Figma
+                                    <button class="hover:text-red-500"><span class="material-symbols-outlined text-[16px]">close</span></button>
+</span>
+</div>
+<input class="form-input w-full rounded-lg border-border-light dark:border-border-dark bg-slate-50 dark:bg-slate-900/50 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 dark:placeholder-slate-600 h-10 px-4 text-sm transition-all" placeholder="Type and press Enter to add..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Footer Action Bar (Mobile only usually, but good for long forms) -->
+<div class="flex md:hidden justify-end gap-3 pt-4 border-t border-border-light dark:border-border-dark">
+<button class="flex items-center justify-center h-12 px-4 rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark text-text-main dark:text-white font-bold">
+                        Save Draft
+                    </button>
+<button class="flex items-center justify-center h-12 px-6 rounded-lg bg-primary text-white font-bold flex-1">
+                        Publish
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>
