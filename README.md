@@ -106,7 +106,7 @@ I specialize in:
 
 **Let's build something amazing together.**
 
-[📧 Email Me](mailto:bankole.adesoji@gmail.com) • [🔗 LinkedIn](https://linkedin.com/in/yourprofile)
+[📧 Email Me](mailto:bankole.adesoji@gmail.com) • [🔗 LinkedIn](www.linkedin.com/in/abiodun-bankole-dev)
 
 ---
 
