@@ -109,3 +109,29 @@ HR Connect is built as a multi-portal ecosystem, ensuring every stakeholder has 
    ```bash
    php -S localhost:8000
    ```
+
+   ---
+
+## 🗺 Roadmap
+
+- [ ] **AI Resume Parser:** Automatic extraction of candidate skills using NLP.
+- [ ] **Interview Scheduler:** Integrated calendar for seamless HR-Candidate syncing.
+- [ ] **Mobile App (React Native):** A dedicated native experience for job seekers on the go.
+- [ ] **Advanced Reporting:** Exportable PDF/Excel reports for executive hiring reviews.
+
+---
+
+## 👨‍💻 Developed By
+
+**Abiodun Bankole**  
+*Full-Stack Engineer & SaaS Architect*
+
+I build tools that make work... work better. If you’re looking for a custom HR solution, technical consultation, or just want to talk about clean code, let’s connect.
+
+[📧 Get in Touch](mailto:bankole.adesoji@gmail.com) • [🔗 LinkedIn](https://www.linkedin.com/in/abiodun-bankole-dev)
+
+---
+
+<p align="center">
+  Released under the MIT License. Built with ☕ and architectural precision.
+</p>
