@@ -1,0 +1,30 @@
+RewriteEngine On
+RewriteBase /
+
+# Redirect Trailing Slashes If Not A Folder
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# 1. Root -> Job Board
+RewriteRule ^$ job_board_&_candidate_portal/index.php [L]
+
+# 2. Auth Routes
+RewriteRule ^login$ candidate_registration/login.php [L]
+RewriteRule ^register$ candidate_registration/register.php [L]
+RewriteRule ^logout$ candidate_registration/logout.php [L]
+
+# 3. Application Routes
+RewriteRule ^dashboard$ candidate_application_myapplication/index.php [L]
+RewriteRule ^profile$ candidate_application_form/index.php [L]
+RewriteRule ^bookmarks$ candidate_application_bookmarks/index.php [L]
+
+# 4. Job Board Routes
+RewriteRule ^jobs$ job_board_&_candidate_portal/index.php [L]
+RewriteRule ^view-job$ job_board_&_candidate_portal/view_job.php [L]
+RewriteRule ^job-details$ candidate_application_view_details/index.php [L]
+
+# 5. Admin Routes (Optional, can keep as is or map basic ones)
+RewriteRule ^admin$ admin/login.php [L]
+
+# Prevent directory listing
+Options -Indexes

@@ -19,7 +19,7 @@ $userName = $_SESSION['user_name'] ?? '';
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <link href="../assets/css/style.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -242,7 +242,7 @@ $userName = $_SESSION['user_name'] ?? '';
                     ${label}
                 </div>`;
             } else {
-                 applyActionHtml = `<a href="../job_board_&_candidate_portal/view_job.php?id=${job.id}" class="flex-1 md:flex-none h-10 px-5 rounded-lg bg-primary hover:bg-blue-700 text-white text-sm font-semibold transition-colors shadow-sm shadow-primary/20 whitespace-nowrap flex items-center justify-center">
+                 applyActionHtml = `<a href="/view-job?id=${job.id}" class="flex-1 md:flex-none h-10 px-5 rounded-lg bg-primary hover:bg-blue-700 text-white text-sm font-semibold transition-colors shadow-sm shadow-primary/20 whitespace-nowrap flex items-center justify-center">
                                 Apply Now
                             </a>`;
             }
@@ -255,7 +255,7 @@ $userName = $_SESSION['user_name'] ?? '';
                         </div>
                         <div class="flex flex-col gap-1.5 w-full">
                             <div class="flex items-start justify-between w-full">
-                                <a href="../job_board_&_candidate_portal/view_job.php?id=${job.id}">
+                                <a href="/view-job?id=${job.id}">
                                     <h3 class="text-lg font-bold text-text-main dark:text-white group-hover:text-primary transition-colors cursor-pointer">${job.title}</h3>
                                 </a>
                                 <button onclick="removeBookmark(${job.id})" class="text-primary hover:text-red-500 transition-colors p-1" title="Remove Bookmark">

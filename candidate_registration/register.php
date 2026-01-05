@@ -6,7 +6,7 @@
     <title>Candidate Portal - Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-    <link href="../../assets/css/style.css" rel="stylesheet"/>
+    <link href="/assets/css/style.css?v=<?php echo time(); ?>" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-200">
@@ -71,7 +71,7 @@
                 <!-- Tabs -->
                 <div class="mb-8">
                     <div class="flex border-b border-slate-200 dark:border-slate-700">
-                        <a href="login.php" class="flex-1 pb-3 pt-2 text-center border-b-2 border-transparent text-text-secondary dark:text-slate-400 hover:text-primary transition-colors font-bold text-sm">
+                        <a href="/login" class="flex-1 pb-3 pt-2 text-center border-b-2 border-transparent text-text-secondary dark:text-slate-400 hover:text-primary transition-colors font-bold text-sm">
                             Log In
                         </a>
                         <div class="flex-1 pb-3 pt-2 text-center border-b-2 border-primary text-primary dark:text-blue-400 font-bold text-sm relative">

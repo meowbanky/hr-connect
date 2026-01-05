@@ -223,7 +223,7 @@ function getStatusBadge($status) {
                         <tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50 item-row" data-status="<?php echo htmlspecialchars($app['status']); ?>">
                             <td class="px-6 py-4">
                                 <div class="flex flex-col">
-                                    <a href="../candidate_application_view_details/index.php?id=<?php echo $app['id']; ?>" class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer text-base"><?php echo htmlspecialchars($app['job_title']); ?></a>
+                                    <a href="/job-details?id=<?php echo $app['id']; ?>" class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer text-base"><?php echo htmlspecialchars($app['job_title']); ?></a>
                                     <span class="sm:hidden text-xs text-slate-500 mt-1"><?php echo htmlspecialchars($app['department_name'] ?? 'General'); ?></span>
                                 </div>
                             </td>
@@ -233,7 +233,7 @@ function getStatusBadge($status) {
                                 <?php echo getStatusBadge($app['status']); ?>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a href="../candidate_application_view_details/index.php?id=<?php echo $app['id']; ?>" class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                <a href="/job-details?id=<?php echo $app['id']; ?>" class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
                                     View Details
                                 </a>
                             </td>

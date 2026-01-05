@@ -6,7 +6,7 @@
     <title>Candidate Portal - Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-    <link href="../../assets/css/style.css" rel="stylesheet"/>
+    <link href="https://hr.prismtechnologies.com.ng/assets/css/style.css?v=<?php echo time(); ?>" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-200">
@@ -32,15 +32,26 @@
                 <img alt="Background office image" class="w-full h-full object-cover opacity-60 mix-blend-overlay" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwnjwgYgERrmIaw0nIRR214wmdkcha0xdaQkkoSVhJbZxjzlKCtMEeetu2v68NalUPLs9Z3v-nIBffqpv--nWEhgho-HG_ofkLmc7YxY_zlvq8pvlx3avAy_MwvM2EzYAgnO0S0TNZqvEwbz04_WAVo-J5WwA5uOsli-VpZEz8QCxVKiAel0PNXCMdpW-Sc6C9bbzW9Si_LJ7VcRKd3uJ-RYcCa47HCk6p793z1u5Q4flUFXmhkhJ09d4cIKgjFFbrpkQMibLIlKA"/>
                 <div class="absolute inset-0 bg-gradient-to-br from-primary/90 to-purple-900/90 mix-blend-multiply"></div>
             </div>
-             <!-- Content -->
-             <div class="relative z-10 h-full flex flex-col justify-between">
+            <!-- Content -->
+            <div class="relative z-10 h-full flex flex-col justify-between">
                 <div>
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/10 text-xs font-medium text-white mb-6">
                         <span class="material-symbols-outlined text-[14px]">stars</span>
                         Top Employer 2024
                     </div>
-                    <h2 class="text-3xl font-bold leading-tight mb-4">Welcome Back!</h2>
-                    <p class="text-blue-100 text-lg leading-relaxed">Continue your journey to finding the perfect job. Track pending applications and update your profile.</p>
+                    <h2 class="text-3xl font-bold leading-tight mb-4">Welcome Back.</h2>
+                    <p class="text-blue-100 text-lg leading-relaxed">Access your dashboard, track application status, and find your next opportunity.</p>
+                </div>
+                <!-- Avatars -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <div class="flex -space-x-3">
+                            <img alt="User 1" class="w-10 h-10 rounded-full border-2 border-slate-900 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqa25mOqMvOtzfAwUHcm3cdZdu1hpenwUoLX4c1d6K9BVHvB2JLlEYv5kFS_U1ph9flyA6mpNDvqs0q05PNVU8pZnZAIPKnFVfOD1f3u4dUSCpaZth39s8FTazMZgLBy0sUDFQ91VyWq4-D2XKGbuATiW-rCGdHFgT5qsf0GbhiOwRhH2tZy5qGqsINzpC_IZnivFuq25sZLV1HEfp1HGwLp3d2QjtgPRkKGlivPV8i4od9DESUlvCYUydcQUN1A-6fmRbwS3wCy0"/>
+                            <img alt="User 2" class="w-10 h-10 rounded-full border-2 border-slate-900 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbJvPGZp1iOchmMlzDvPWz9yVBSQN2pQgf9J29ZAr9re-g-NIGHJbYWOiPLV5S9sJxiDtjCZGNxkwyoQ7SfFz-rPvxj6yMCzz77XzaOWeg4n3A8TWnkW7iHC-smmKMOEW48UUOpB19aYoU7Fh85qTSj5UyxifNBvXJ1MdS30q8fVek38ZQwBzFzc42hdr2fgjh3J6jNeYiOQx3DOBk3hBGzh5EtoVeRsbvi8DOtP5iFspgu9hymehzsXwNVnohBuWw4vxlV5N1Wfo"/>
+                            <img alt="User 3" class="w-10 h-10 rounded-full border-2 border-slate-900 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH2hoSE-Lod2oE7Vunj8r-GauRbl8_L08RsCHYXnWxFnf1d_33sD9jHjIQtqm51k5vcjR5jlHeRuVH4r76Ae0QWXCrbtIoN_bPEWsKAiCsFdjukaTS865lAdisRuNW1s63iU-yaOraxIgSb7qgoS-DlCIgTMfN9VVCQmdMlWSMZW1Fjduriz6JPySgN4suwxgiB0acq1_D_bbJngkX8ii69FPw2kg_pOSb2P8LL26-eGQdYhIRbQI_7HTOVKwXkm-q4np5m0XWqKjc"/>
+                        </div>
+                        <p class="text-sm font-medium text-white">Join 10,000+ candidates hired this month.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -63,7 +74,7 @@
                         <div class="flex-1 pb-3 pt-2 text-center border-b-2 border-primary text-primary dark:text-blue-400 font-bold text-sm relative">
                             Log In
                         </div>
-                        <a href="register.php" class="flex-1 pb-3 pt-2 text-center border-b-2 border-transparent text-text-secondary dark:text-slate-400 hover:text-primary transition-colors font-bold text-sm">
+                        <a href="/register" class="flex-1 pb-3 pt-2 text-center border-b-2 border-transparent text-text-secondary dark:text-slate-400 hover:text-primary transition-colors font-bold text-sm">
                             Register
                         </a>
                     </div>
@@ -80,7 +91,10 @@
                     </div>
                     <!-- Password Field -->
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-text-main dark:text-gray-200 text-sm font-medium leading-normal" for="password">Password</label>
+                         <div class="flex justify-between items-center">
+                            <label class="text-text-main dark:text-gray-200 text-sm font-medium leading-normal" for="password">Password</label>
+                            <a href="#" class="text-xs text-primary font-medium hover:underline">Forgot password?</a>
+                        </div>
                         <div class="relative">
                             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">lock</span>
                             <input class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-background-light dark:bg-slate-800 text-text-main dark:text-white h-12 pl-11 pr-12 focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder:text-slate-400 dark:placeholder:text-slate-500 text-sm font-normal transition-all" id="password" name="password" placeholder="Enter your password" required="" type="password"/>
@@ -88,11 +102,8 @@
                                 <span class="material-symbols-outlined text-[20px]">visibility</span>
                             </button>
                         </div>
-                        <div class="flex justify-end mt-1">
-                             <a href="#" class="text-xs text-primary hover:underline">Forgot Password?</a>
-                        </div>
                     </div>
-                    
+              
                     <!-- Submit Button -->
                     <button id="submitBtn" class="w-full h-12 bg-primary hover:bg-blue-700 text-white rounded-lg font-bold text-sm tracking-wide transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2" type="submit">
                         Log In
@@ -109,8 +120,8 @@
                     <span class="flex-shrink-0 mx-4 text-xs font-medium text-slate-400 uppercase tracking-widest">Or continue with</span>
                     <div class="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
                 </div>
-                 <!-- Social Login -->
-                 <div class="grid grid-cols-2 gap-4">
+                <!-- Social Login -->
+                <div class="grid grid-cols-2 gap-4">
                     <button class="flex items-center justify-center gap-2 h-11 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-text-main dark:text-white text-sm font-medium transition-colors">
                         <svg class="w-5 h-5" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21.8055 10.0415H21V10H12V14H17.6515C16.827 16.3285 14.6115 18 12 18C8.6865 18 6 15.3135 6 12C6 8.6865 8.6865 6 12 6C13.5295 6 14.921 6.577 15.9805 7.5195L18.809 4.691C17.023 3.0265 14.634 2 12 2C6.4775 2 2 6.4775 2 12C2 17.5225 6.4775 22 12 22C17.5225 22 22 17.5225 22 12C22 11.3295 21.931 10.675 21.8055 10.0415Z" fill="#FFC107"></path><path d="M3.15302 7.3455L6.43852 9.755C7.32752 7.554 9.48052 6 12.0005 6C13.5295 6 14.921 6.577 15.9805 7.5195L18.809 4.691C17.023 3.0265 14.634 2 12.0005 2C8.15902 2 4.82802 4.1685 3.15302 7.3455Z" fill="#FF3D00"></path><path d="M12.0005 22C14.6605 22 17.0715 20.9455 18.8655 19.2435L15.6115 16.711C14.5805 17.545 13.3345 18 12.0005 18C9.35652 18 7.11452 16.29 6.29152 13.918L3.06452 16.417C4.72152 19.689 8.08152 22 12.0005 22Z" fill="#4CAF50"></path><path d="M21.8055 10.0415H21V10H12V14H17.6515C17.257 15.108 16.546 16.0755 15.6115 16.711L18.8655 19.2435C20.726 17.5255 21.8685 15.019 21.9845 12.222C21.995 11.9675 22.0005 11.7115 22.0005 11.4545C22.0005 10.975 21.935 10.5025 21.8055 10.0415Z" fill="#1976D2"></path></svg>
                         Google
@@ -120,18 +131,17 @@
                         LinkedIn
                     </button>
                 </div>
-                <!-- ... mobile footer link ... -->
                 <div class="mt-8 text-center lg:hidden">
                     <p class="text-sm text-text-secondary dark:text-slate-400">
                         Don't have an account? 
-                        <a class="text-primary font-bold hover:underline" href="register.php">Register</a>
+                        <a class="text-primary font-bold hover:underline" href="/register">Register</a>
                     </p>
                 </div>
             </div>
         </div>
     </div>
     <!-- Footer / Copyright -->
-     <div class="w-full max-w-[1100px] mt-8 flex flex-col md:flex-row justify-between items-center text-xs text-text-secondary dark:text-slate-500">
+    <div class="w-full max-w-[1100px] mt-8 flex flex-col md:flex-row justify-between items-center text-xs text-text-secondary dark:text-slate-500">
         <p>© 2024 HR Management Systems Inc. All rights reserved.</p>
         <div class="flex gap-4 mt-2 md:mt-0">
             <a class="hover:text-primary transition-colors" href="#">Privacy</a>
@@ -164,7 +174,7 @@
             alert.addClass('hidden').removeClass('bg-red-100 border-red-400 text-red-700 bg-green-100 border-green-400 text-green-700');
 
             $.ajax({
-                url: '../api/auth_login.php',
+                url: '/api/auth_login.php',
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
@@ -172,13 +182,14 @@
                         alert.addClass('bg-green-100 border-green-400 text-green-700').removeClass('hidden');
                         alert.find('span').text('Success! Redirecting...');
                         setTimeout(function() {
-                            window.location.href = response.redirect;
+                            // Ensure clean redirect
+                            window.location.href = response.redirect || '/dashboard';
                         }, 1000);
                     } else {
                         btn.removeClass('hidden');
                         loader.addClass('hidden');
                         alert.addClass('bg-red-100 border-red-400 text-red-700').removeClass('hidden');
-                        alert.find('span').text(response.message);
+                        alert.find('span').text(response.message || 'Invalid credentials');
                     }
                 },
                 error: function() {

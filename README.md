@@ -102,7 +102,7 @@ I specialize in:
 
 - **Web Application Development** (PHP, Laravel, Node.js)
 - **SaaS Product Design** (UI/UX, System Architecture)
-- **Database Optimization & API Integration**
+- **Database Optimization & API Integration.**
 
 **Let's build something amazing together.**
 
