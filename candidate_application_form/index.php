@@ -38,6 +38,30 @@ $paymentEnabled = is_payment_enabled();
         },
     }
 </script>
+<?php
+// Fetch Profile Data for Pre-fill
+$user_id = $_SESSION['user_id'] ?? 0;
+// Fetch existing profile data
+$stmt = $pdo->prepare("
+    SELECT c.*, u.first_name, u.last_name, u.email, u.phone_number 
+    FROM candidates c 
+    RIGHT JOIN users u ON u.id = c.user_id 
+    WHERE u.id = ?
+");
+$stmt->execute([$user_id]);
+$profile = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Fetch Education
+$stmtEdu = $pdo->prepare("SELECT * FROM candidate_education WHERE candidate_id = ? ORDER BY start_date DESC");
+$stmtEdu->execute([$profile['id'] ?? 0]);
+$education = $stmtEdu->fetchAll(PDO::FETCH_ASSOC);
+
+// Prepare JSON for JS
+$eduJson = json_encode($education);
+$hasResume = !empty($profile['resume_path']);
+$resumePath = $profile['resume_path'] ?? '';
+$resumeName = basename($resumePath);
+?>
 <style>
     body { font-family: 'Inter', sans-serif; }
     /* Custom scrollbar for cleaner look */
@@ -148,23 +172,23 @@ $paymentEnabled = is_payment_enabled();
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <label class="flex flex-col flex-1">
                                 <p class="text-text-main dark:text-gray-300 text-sm font-semibold pb-2">First Name <span class="text-red-500">*</span></p>
-                                <input name="first_name" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="Enter your first name" required>
+                                <input name="first_name" value="<?php echo htmlspecialchars($profile['first_name'] ?? ''); ?>" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="Enter your first name" required>
                             </label>
                             <label class="flex flex-col flex-1">
                                 <p class="text-text-main dark:text-gray-300 text-sm font-semibold pb-2">Last Name <span class="text-red-500">*</span></p>
-                                <input name="last_name" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="Enter your last name" required>
+                                <input name="last_name" value="<?php echo htmlspecialchars($profile['last_name'] ?? ''); ?>" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="Enter your last name" required>
                             </label>
                             <label class="flex flex-col flex-1">
                                 <p class="text-text-main dark:text-gray-300 text-sm font-semibold pb-2">Date of Birth</p>
-                                <input name="dob" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" type="date">
+                                <input name="dob" value="<?php echo htmlspecialchars($profile['date_of_birth'] ?? ''); ?>" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" type="date">
                             </label>
                             <label class="flex flex-col flex-1">
                                 <p class="text-text-main dark:text-gray-300 text-sm font-semibold pb-2">Gender</p>
                                 <select name="gender" class="form-select w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
-                                    <option value="" disabled selected>Select gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Prefer not to say</option>
+                                    <option value="" disabled <?php echo empty($profile['gender']) ? 'selected' : ''; ?>>Select gender</option>
+                                    <option value="male" <?php echo (strtolower($profile['gender'] ?? '') == 'male') ? 'selected' : ''; ?>>Male</option>
+                                    <option value="female" <?php echo (strtolower($profile['gender'] ?? '') == 'female') ? 'selected' : ''; ?>>Female</option>
+                                    <option value="other" <?php echo (strtolower($profile['gender'] ?? '') == 'other') ? 'selected' : ''; ?>>Prefer not to say</option>
                                 </select>
                             </label>
                         </div>
@@ -181,11 +205,11 @@ $paymentEnabled = is_payment_enabled();
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <label class="flex flex-col flex-1">
                                 <p class="text-text-main dark:text-gray-300 text-sm font-semibold pb-2">Email Address <span class="text-red-500">*</span></p>
-                                <input name="email" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="name@example.com" required type="email">
+                                <input name="email" value="<?php echo htmlspecialchars($profile['email'] ?? ''); ?>" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="name@example.com" required type="email">
                             </label>
                             <label class="flex flex-col flex-1">
                                 <p class="text-text-main dark:text-gray-300 text-sm font-semibold pb-2">Phone Number <span class="text-red-500">*</span></p>
-                                <input name="phone" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="+234 ..." required type="tel">
+                                <input name="phone" value="<?php echo htmlspecialchars($profile['phone_number'] ?? ''); ?>" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-12 px-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="+234 ..." required type="tel">
                             </label>
                             <label class="flex flex-col flex-1 md:col-span-2">
                                 <p class="text-text-main dark:text-gray-300 text-sm font-semibold pb-2">LinkedIn Profile / Portfolio URL</p>
@@ -193,7 +217,7 @@ $paymentEnabled = is_payment_enabled();
                                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="material-symbols-outlined text-gray-400 text-[20px]">link</span>
                                     </span>
-                                    <input name="linkedin" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-12 pl-10 pr-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="https://linkedin.com/in/..." type="url">
+                                    <input name="linkedin" value="<?php echo htmlspecialchars($profile['linkedin_profile'] ?? ''); ?>" class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-12 pl-10 pr-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 transition-all" placeholder="https://linkedin.com/in/..." type="url">
                                 </div>
                             </label>
                         </div>
@@ -209,7 +233,7 @@ $paymentEnabled = is_payment_enabled();
                         </div>
                         <label class="flex flex-col flex-1 mb-6">
                             <p class="text-text-main dark:text-gray-300 text-sm font-semibold pb-2">Professional Bio</p>
-                            <textarea name="bio" class="form-textarea w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark min-h-[120px] p-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 resize-y transition-all" placeholder="Tell us briefly about your experience..."></textarea>
+                            <textarea name="bio" class="form-textarea w-full rounded-lg border border-border-light dark:border-border-dark bg-[#f8f8fc] dark:bg-background-dark min-h-[120px] p-4 text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-text-secondary/60 resize-y transition-all" placeholder="Tell us briefly about your experience..."><?php echo htmlspecialchars($profile['address'] ?? ''); ?></textarea>
                         </label>
 
                         <!-- Dynamic Education Section -->
@@ -249,8 +273,21 @@ $paymentEnabled = is_payment_enabled();
                                         <button type="button" class="mt-2 text-xs text-red-500 hover:text-red-700 underline z-30 relative" onclick="clearFile('resumeInput', 'resumePreview', 'resumePlaceholder'); event.stopPropagation();">Remove file</button>
                                     </div>
                                     
-                                    <input id="resumeInput" name="resume" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" type="file" required accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <input id="resumeInput" name="resume" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" type="file" <?php echo $hasResume ? '' : 'required'; ?> accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <input type="hidden" name="use_profile_resume" id="useProfileResume" value="<?php echo $hasResume ? '1' : '0'; ?>">
                                 </div>
+                                <?php if($hasResume): ?>
+                                    <div class="mt-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-green-600">check_circle</span>
+                                            <div>
+                                                <p class="text-xs font-semibold text-green-700 dark:text-green-400">Profile Resume Attached</p>
+                                                <p class="text-xs text-green-600 dark:text-green-500 truncate max-w-[150px]"><?php echo htmlspecialchars($resumeName); ?></p>
+                                            </div>
+                                        </div>
+                                        <button type="button" onclick="document.getElementById('resumeInput').click()" class="text-xs text-primary hover:underline">Change</button>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                             
                             <!-- Cover Letter Upload -->
@@ -473,8 +510,16 @@ $paymentEnabled = is_payment_enabled();
 
     // Initial Load
     updateUI();
-    // Add one initial row for Education
-    addEducationRow();
+    
+    // Populate Education
+    const existingEdu = <?php echo $eduJson; ?>;
+    if(existingEdu && existingEdu.length > 0) {
+        existingEdu.forEach(edu => {
+            addEducationRow(edu);
+        });
+    } else {
+        addEducationRow();
+    }
 
     /* --- File Upload & Drag-n-Drop Logic --- */
 
@@ -578,9 +623,15 @@ $paymentEnabled = is_payment_enabled();
 
     /* --- Dynamic Fields Logic --- */
     
-    function addEducationRow() {
+    function addEducationRow(data = null) {
         const container = document.getElementById('educationContainer');
-        const rowId = 'edu_' + Date.now();
+        const rowId = 'edu_' + Date.now() + Math.random().toString(36).substr(2, 5); // Unique ID
+        
+        const school = data ? data.school_name : '';
+        const degree = data ? data.qualification : '';
+        const start = data ? data.start_date : '';
+        const end = data ? data.end_date : '';
+
         const html = `
             <div id="${rowId}" class="p-4 rounded-lg bg-gray-50 dark:bg-white/5 border border-border-light dark:border-border-dark relative group animate-[fadeIn_0.3s_ease-out]">
                 <button type="button" onclick="removeRow('${rowId}')" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors">
@@ -589,19 +640,19 @@ $paymentEnabled = is_payment_enabled();
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
                     <label class="flex flex-col gap-1">
                         <span class="text-xs font-semibold text-text-secondary dark:text-gray-400">School / Institution</span>
-                        <input name="edu_school[]" class="form-input text-sm rounded-md border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-10 px-3" required placeholder="e.g. University of Lagos">
+                        <input name="edu_school[]" value="${school}" class="form-input text-sm rounded-md border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-10 px-3" required placeholder="e.g. University of Lagos">
                     </label>
                     <label class="flex flex-col gap-1">
                         <span class="text-xs font-semibold text-text-secondary dark:text-gray-400">Qualification</span>
-                        <input name="edu_degree[]" class="form-input text-sm rounded-md border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-10 px-3" required placeholder="e.g. BSc Computer Science">
+                        <input name="edu_degree[]" value="${degree}" class="form-input text-sm rounded-md border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-10 px-3" required placeholder="e.g. BSc Computer Science">
                     </label>
                     <label class="flex flex-col gap-1">
                         <span class="text-xs font-semibold text-text-secondary dark:text-gray-400">Start Date</span>
-                        <input name="edu_start[]" type="date" class="form-input text-sm rounded-md border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-10 px-3" required>
+                        <input name="edu_start[]" type="date" value="${start}" class="form-input text-sm rounded-md border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-10 px-3" required>
                     </label>
                     <label class="flex flex-col gap-1">
                         <span class="text-xs font-semibold text-text-secondary dark:text-gray-400">End Date</span>
-                        <input name="edu_end[]" type="date" class="form-input text-sm rounded-md border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-10 px-3">
+                        <input name="edu_end[]" type="date" value="${end}" class="form-input text-sm rounded-md border-border-light dark:border-border-dark bg-white dark:bg-background-dark h-10 px-3">
                     </label>
                 </div>
             </div>

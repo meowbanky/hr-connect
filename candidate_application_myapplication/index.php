@@ -45,20 +45,7 @@ $stmt = $pdo->prepare("SELECT * FROM candidates WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $candidate_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$total_fields = 9; // dob, gender, address, state, lga, resume, linkedin, qualification, experience
-$filled_fields = 0;
-if ($candidate_data) {
-    if (!empty($candidate_data['date_of_birth'])) $filled_fields++;
-    if (!empty($candidate_data['gender'])) $filled_fields++;
-    if (!empty($candidate_data['address'])) $filled_fields++;
-    if (!empty($candidate_data['state_of_origin'])) $filled_fields++;
-    if (!empty($candidate_data['lga'])) $filled_fields++;
-    if (!empty($candidate_data['resume_path'])) $filled_fields++;
-    if (!empty($candidate_data['linkedin_profile'])) $filled_fields++;
-    if (!empty($candidate_data['highest_qualification'])) $filled_fields++;
-    if (isset($candidate_data['years_of_experience'])) $filled_fields++;
-}
-$profile_percentage = round(($filled_fields / $total_fields) * 100);
+$profile_percentage = calculateProfileCompletion($candidate_data);
 
 // Helper for status colors
 function getStatusBadge($status) {
@@ -144,7 +131,7 @@ function getStatusBadge($status) {
                         <?php endif; ?>
                     </p>
                     <?php if($profile_percentage < 100): ?>
-                        <a href="#" class="text-xs text-primary font-medium hover:underline mt-1">Complete Profile</a>
+                        <a href="../candidate_profile/index.php" class="text-xs text-primary font-medium hover:underline mt-1">Complete Profile</a>
                     <?php endif; ?>
                 </div>
             </div>

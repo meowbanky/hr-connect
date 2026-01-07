@@ -66,4 +66,34 @@ function format_currency($amount) {
 function is_payment_enabled() {
     return get_setting('enable_payment', '1') === '1';
 }
+
+function calculateProfileCompletion($candidate) {
+    if (!$candidate) return 0;
+    
+    $filled = 0;
+    $total = 9; // Total fields to track
+    
+    // List of fields to check
+    $fields = [
+        'date_of_birth',
+        'gender',
+        'address', // Bio
+        'linkedin_profile',
+        'resume_path',
+        'state_of_origin',
+        'lga',
+        'highest_qualification'
+    ];
+    
+    foreach ($fields as $field) {
+        if (!empty($candidate[$field])) $filled++;
+    }
+    
+    // Zero experience is valid, so custom check
+    if (isset($candidate['years_of_experience']) && $candidate['years_of_experience'] !== '') {
+        $filled++;
+    }
+    
+    return round(($filled / $total) * 100);
+}
 ?>

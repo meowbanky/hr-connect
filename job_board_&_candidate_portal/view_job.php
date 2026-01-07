@@ -335,7 +335,7 @@ $userName = $_SESSION['user_name'] ?? '';
                     $('#jobIdLabel').text('#JOB-' + job.id);
                     
                     // Update Apply Buttons
-                    const applyUrl = '../candidate_application_form/index.php?job_id=' + job.id;
+                    const applyUrl = '/candidate_application_form/index.php?job_id=' + job.id;
                     $('#applyBtnMain, #applyBtnSidebar').attr('href', applyUrl);
                     
                     // Bookmark State
@@ -353,11 +353,11 @@ $userName = $_SESSION['user_name'] ?? '';
                     fetchSimilarJobs(jobId);
 
                 } else {
-                    $('#mainContent').html('<div class="text-center py-20"><h2 class="text-2xl font-bold text-gray-700">Job not found</h2><a href="index.php" class="text-primary hover:underline mt-4 inline-block">Return to Job Board</a></div>');
+                    $('#mainContent').html('<div class="text-center py-20"><h2 class="text-2xl font-bold text-gray-700">Job not found</h2><a href="/jobs" class="text-primary hover:underline mt-4 inline-block">Return to Job Board</a></div>');
                 }
             },
             error: function() {
-                 $('#mainContent').html('<div class="text-center py-20"><h2 class="text-2xl font-bold text-red-600">Error loading content</h2><a href="index.php" class="text-primary hover:underline mt-4 inline-block">Return to Job Board</a></div>');
+                 $('#mainContent').html('<div class="text-center py-20"><h2 class="text-2xl font-bold text-red-600">Error loading content</h2><a href="/jobs" class="text-primary hover:underline mt-4 inline-block">Return to Job Board</a></div>');
             }
         });
 
@@ -378,7 +378,7 @@ $userName = $_SESSION['user_name'] ?? '';
                              const posted = new Date(job.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                              
                              const html = `
-                                <div class="bg-white dark:bg-[#1a1a2e] p-5 rounded-xl border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow group cursor-pointer" onclick="window.location.href='view_job.php?id=${job.id}'">
+                                <div class="bg-white dark:bg-[#1a1a2e] p-5 rounded-xl border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow group cursor-pointer" onclick="window.location.href='/view-job?id=${job.id}'">
                                     <div class="flex items-start justify-between mb-4">
                                         <div class="h-10 w-10 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-primary font-bold border border-gray-100 dark:border-gray-700">
                                             ${initials}

@@ -11,11 +11,14 @@ RewriteRule ^$ job_board_&_candidate_portal/index.php [L]
 # 2. Auth Routes
 RewriteRule ^login$ candidate_registration/login.php [L]
 RewriteRule ^register$ candidate_registration/register.php [L]
+RewriteRule ^job-details$ candidate_application_view_details/index.php [L]
+RewriteRule ^notifications$ candidate_notifications/index.php [L]
+RewriteRule ^notification-details$ candidate_notifications_details/index.php [L]
 RewriteRule ^logout$ candidate_registration/logout.php [L]
 
 # 3. Application Routes
 RewriteRule ^dashboard$ candidate_application_myapplication/index.php [L]
-RewriteRule ^profile$ candidate_application_form/index.php [L]
+RewriteRule ^profile$ candidate_profile/index.php [L]
 RewriteRule ^bookmarks$ candidate_application_bookmarks/index.php [L]
 
 # 4. Job Board Routes

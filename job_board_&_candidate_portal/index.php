@@ -319,7 +319,7 @@ $(document).ready(function() {
                     ${label}
                 </span>`;
             } else {
-                applyBtnHtml = `<a href="apply_job.php?id=${job.id}" class="inline-flex items-center px-4 py-2 bg-primary hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">Apply Now</a>`;
+                applyBtnHtml = `<a href="/candidate_application_form/index.php?job_id=${job.id}" class="inline-flex items-center px-4 py-2 bg-primary hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">Apply Now</a>`;
             }
 
             const html = `
@@ -332,7 +332,7 @@ $(document).ready(function() {
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-start mb-2">
                             <div>
-                                <a href="view_job.php?id=${job.id}" class="hover:underline">
+                                <a href="/view-job?id=${job.id}" class="hover:underline">
                                     <h3 class="text-lg font-bold text-text-main dark:text-white group-hover:text-primary transition-colors cursor-pointer">${job.title}</h3>
                                 </a>
                                 <p class="text-sm text-gray-500 font-medium">${dept} • <span class="text-gray-400 font-normal">Posted ${postedDate}</span></p>
@@ -363,7 +363,7 @@ $(document).ready(function() {
                                 ${exp}
                             </div>
                             <div class="flex items-center gap-4 w-full sm:w-auto mt-2 sm:mt-0">
-                                <a href="view_job.php?id=${job.id}" class="text-sm font-medium text-gray-500 hover:text-primary flex items-center gap-1 transition-colors">
+                                <a href="/view-job?id=${job.id}" class="text-sm font-medium text-gray-500 hover:text-primary flex items-center gap-1 transition-colors">
                                     View Details <span class="material-symbols-outlined text-sm">arrow_forward</span>
                                 </a>
                                 ${applyBtnHtml}

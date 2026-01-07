@@ -20,7 +20,8 @@ try {
     $defaults = [
         'currency_code' => 'NGN',
         'currency_symbol' => '₦',
-        'theme_color' => '#1919e6'
+        'theme_color' => '#1919e6',
+        'admin_email' => 'admin@hrconnect.com'
     ];
 
     $stmt = $pdo->prepare("INSERT IGNORE INTO settings (setting_key, setting_value) VALUES (?, ?)");
