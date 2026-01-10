@@ -80,31 +80,37 @@ function getDownloadUrl($path) {
     return $path;
 }
 
-// ... existing helper functions ...
 function getStepStatus($currentStatus, $stepName) {
-    // Steps: applied, screening (reviewed), interview (interviewed), evaluation (shortlisted?), offer (offered/hired)
-    
-    // Simpler mapping for layout:
-    // Applied -> Screening -> Interview -> Offer
+    // Pipeline: Applied -> Viewed (reviewed) -> Technical (technical_review) -> Interview (interviewed) -> Decision (offered/hired/rejected)
     
     $c = $currentStatus;
     
-    // Check (Completed) logic
+    // 1. Applied is always completed if record exists
     if ($stepName == 'applied') return 'completed';
     
-    if ($stepName == 'screening') {
-        if (in_array($c, ['reviewed', 'shortlisted', 'interviewed', 'offered', 'hired', 'rejected'])) return 'completed';
-        return 'pending'; // or active if current is pending?
+    // 2. Viewed
+    if ($stepName == 'viewed') {
+        if (in_array($c, ['reviewed', 'technical_review', 'shortlisted', 'interviewed', 'offered', 'hired', 'rejected'])) return 'completed';
+        return 'pending'; 
     }
     
+    // 3. Technical
+    if ($stepName == 'technical') {
+        if (in_array($c, ['technical_review', 'shortlisted', 'interviewed', 'offered', 'hired', 'rejected'])) return 'completed'; // Assumes if illegal state jump, we consider it done
+        // If just 'reviewed', it hasn't reached technical yet unless status is specifically technical_review
+        return 'pending';
+    }
+
+    // 4. Interview
     if ($stepName == 'interview') {
         if (in_array($c, ['interviewed', 'offered', 'hired'])) return 'completed';
-        if ($c == 'shortlisted') return 'active';
+        if ($c == 'shortlisted') return 'active'; // Shortlisted means ready for interview
         return 'pending';
     }
     
-    if ($stepName == 'offer') {
-        if (in_array($c, ['offered', 'hired'])) return 'completed';
+    // 5. Decision
+    if ($stepName == 'decision') {
+        if (in_array($c, ['offered', 'hired', 'rejected'])) return 'completed';
         return 'pending';
     }
     
@@ -134,13 +140,14 @@ function getStepIcon($status, $number) {
 // Progress Bar Width
 $progressWidth = '0%';
 switch($application['status']) {
-    case 'pending': $progressWidth = '10%'; break;
-    case 'reviewed': 
-    case 'shortlisted': $progressWidth = '40%'; break;
-    case 'interviewed': $progressWidth = '70%'; break;
+    case 'pending': $progressWidth = '5%'; break;
+    case 'reviewed': $progressWidth = '25%'; break;
+    case 'technical_review': $progressWidth = '50%'; break;
+    case 'shortlisted': $progressWidth = '75%'; break;
+    case 'interviewed': $progressWidth = '85%'; break;
     case 'offered': 
-    case 'hired': $progressWidth = '100%'; break;
-    case 'rejected': $progressWidth = '100%'; break; // Full width but maybe red?
+    case 'hired': 
+    case 'rejected': $progressWidth = '100%'; break;
 }
 ?>
 <!DOCTYPE html>
@@ -241,38 +248,47 @@ switch($application['status']) {
                             
                             <div class="relative flex justify-between">
                                 <!-- Step 1: Applied -->
-                                <div class="group flex flex-col items-center gap-2">
+                                <div class="group flex flex-col items-center gap-2 z-10">
                                     <div class="flex size-8 items-center justify-center rounded-full <?php echo getStepClass('completed'); ?>">
                                         <span class="material-symbols-outlined text-sm">check</span>
                                     </div>
                                     <span class="text-xs font-medium text-primary">Applied</span>
                                 </div>
                                 
-                                <!-- Step 2: Screening -->
-                                <?php $s2 = getStepStatus($application['status'], 'screening'); ?>
-                                <div class="group flex flex-col items-center gap-2">
+                                <!-- Step 2: Viewed (Reviewed) -->
+                                <?php $s2 = getStepStatus($application['status'], 'viewed'); ?>
+                                <div class="group flex flex-col items-center gap-2 z-10">
                                     <div class="flex size-8 items-center justify-center rounded-full <?php echo getStepClass($s2); ?>">
                                         <?php echo getStepIcon($s2, 2); ?>
                                     </div>
-                                    <span class="text-xs font-medium <?php echo $s2 == 'pending' ? 'text-text-sub-light dark:text-text-sub-dark' : 'text-primary'; ?>">Screening</span>
+                                    <span class="text-xs font-medium <?php echo $s2 == 'pending' ? 'text-text-sub-light dark:text-text-sub-dark' : 'text-primary'; ?>">Viewed</span>
                                 </div>
                                 
-                                <!-- Step 3: Interview -->
-                                <?php $s3 = getStepStatus($application['status'], 'interview'); ?>
-                                <div class="group flex flex-col items-center gap-2">
+                                <!-- Step 3: Technical Review -->
+                                <?php $s3 = getStepStatus($application['status'], 'technical'); ?>
+                                <div class="group flex flex-col items-center gap-2 z-10">
                                     <div class="flex size-8 items-center justify-center rounded-full <?php echo getStepClass($s3); ?>">
                                         <?php echo getStepIcon($s3, 3); ?>
                                     </div>
-                                    <span class="text-xs font-medium <?php echo $s3 == 'pending' ? 'text-text-sub-light dark:text-text-sub-dark' : 'text-primary'; ?>">Interview</span>
+                                    <span class="text-xs font-medium <?php echo $s3 == 'pending' ? 'text-text-sub-light dark:text-text-sub-dark' : 'text-primary'; ?>">Technical</span>
                                 </div>
                                 
-                                <!-- Step 4: Offer -->
-                                <?php $s4 = getStepStatus($application['status'], 'offer'); ?>
-                                <div class="group flex flex-col items-center gap-2">
+                                <!-- Step 4: Interview -->
+                                <?php $s4 = getStepStatus($application['status'], 'interview'); ?>
+                                <div class="group flex flex-col items-center gap-2 z-10">
                                     <div class="flex size-8 items-center justify-center rounded-full <?php echo getStepClass($s4); ?>">
                                         <?php echo getStepIcon($s4, 4); ?>
                                     </div>
-                                    <span class="text-xs font-medium <?php echo $s4 == 'pending' ? 'text-text-sub-light dark:text-text-sub-dark' : 'text-primary'; ?>">Offer</span>
+                                    <span class="text-xs font-medium <?php echo $s4 == 'pending' ? 'text-text-sub-light dark:text-text-sub-dark' : 'text-primary'; ?>">Interview</span>
+                                </div>
+                                
+                                <!-- Step 5: Decision -->
+                                <?php $s5 = getStepStatus($application['status'], 'decision'); ?>
+                                <div class="group flex flex-col items-center gap-2 z-10">
+                                    <div class="flex size-8 items-center justify-center rounded-full <?php echo getStepClass($s5); ?>">
+                                        <?php echo getStepIcon($s5, 5); ?>
+                                    </div>
+                                    <span class="text-xs font-medium <?php echo $s5 == 'pending' ? 'text-text-sub-light dark:text-text-sub-dark' : 'text-primary'; ?>">Decision</span>
                                 </div>
                             </div>
                         </div>

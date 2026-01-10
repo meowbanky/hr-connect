@@ -248,7 +248,7 @@ $userName = $_SESSION['user_name'] ?? '';
             }
 
             const html = `
-                <div class="group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl bg-white dark:bg-[#1a1a2e] shadow-sm border border-gray-100 dark:border-white/5 hover:border-primary/30 hover:shadow-md transition-all duration-300" id="job-${job.id}">
+                <div class="group relative flex flex-col md:flex-row gap-6 p-4 md:p-6 rounded-2xl bg-white dark:bg-[#1a1a2e] shadow-sm border border-gray-100 dark:border-white/5 hover:border-primary/30 hover:shadow-md transition-all duration-300" id="job-${job.id}">
                     <div class="flex flex-1 gap-5">
                         <div class="shrink-0 size-14 rounded-xl bg-gray-50 dark:bg-white/5 p-2 border border-gray-100 dark:border-white/5 flex items-center justify-center">
                             <span class="text-xl font-bold text-primary">${initials}</span>

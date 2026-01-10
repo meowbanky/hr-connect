@@ -259,11 +259,11 @@ $experience = $profile['years_of_experience'] ?? '';
                                     <span class="material-symbols-outlined">delete</span>
                                 </button>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input name="edu_school[]" value="<?php echo htmlspecialchars($edu['school_name']); ?>" class="form-input bg-white dark:bg-black/20" placeholder="School Name">
-                                    <input name="edu_degree[]" value="<?php echo htmlspecialchars($edu['qualification']); ?>" class="form-input bg-white dark:bg-black/20" placeholder="Degree/Qualification">
-                                    <div class="flex gap-2">
-                                        <input name="edu_start[]" type="date" value="<?php echo htmlspecialchars($edu['start_date']); ?>" class="form-input bg-white dark:bg-black/20">
-                                        <input name="edu_end[]" type="date" value="<?php echo htmlspecialchars($edu['end_date']); ?>" class="form-input bg-white dark:bg-black/20">
+                                    <input name="edu_school[]" value="<?php echo htmlspecialchars($edu['school_name']); ?>" class="form-input bg-white dark:bg-black/20 w-full rounded-lg border-border-light dark:border-border-dark px-3 h-10" placeholder="School Name">
+                                    <input name="edu_degree[]" value="<?php echo htmlspecialchars($edu['qualification']); ?>" class="form-input bg-white dark:bg-black/20 w-full rounded-lg border-border-light dark:border-border-dark px-3 h-10" placeholder="Degree/Qualification">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <input name="edu_start[]" type="date" value="<?php echo htmlspecialchars($edu['start_date']); ?>" class="form-input bg-white dark:bg-black/20 w-full rounded-lg border-border-light dark:border-border-dark px-3 h-10">
+                                        <input name="edu_end[]" type="date" value="<?php echo htmlspecialchars($edu['end_date']); ?>" class="form-input bg-white dark:bg-black/20 w-full rounded-lg border-border-light dark:border-border-dark px-3 h-10">
                                     </div>
                                 </div>
                             </div>
@@ -295,11 +295,11 @@ $experience = $profile['years_of_experience'] ?? '';
                     <span class="material-symbols-outlined">delete</span>
                 </button>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input name="edu_school[]" class="form-input rounded-lg border-border-light dark:border-border-dark bg-white dark:bg-black/20 h-10 px-3" placeholder="School Name" required>
-                    <input name="edu_degree[]" class="form-input rounded-lg border-border-light dark:border-border-dark bg-white dark:bg-black/20 h-10 px-3" placeholder="Degree/Qualification" required>
-                    <div class="flex gap-2">
-                        <input name="edu_start[]" type="date" class="form-input rounded-lg border-border-light dark:border-border-dark bg-white dark:bg-black/20 h-10 px-3" required>
-                        <input name="edu_end[]" type="date" class="form-input rounded-lg border-border-light dark:border-border-dark bg-white dark:bg-black/20 h-10 px-3">
+                    <input name="edu_school[]" class="form-input rounded-lg border-border-light dark:border-border-dark bg-white dark:bg-black/20 h-10 px-3 w-full" placeholder="School Name" required>
+                    <input name="edu_degree[]" class="form-input rounded-lg border-border-light dark:border-border-dark bg-white dark:bg-black/20 h-10 px-3 w-full" placeholder="Degree/Qualification" required>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input name="edu_start[]" type="date" class="form-input rounded-lg border-border-light dark:border-border-dark bg-white dark:bg-black/20 h-10 px-3 w-full" required>
+                        <input name="edu_end[]" type="date" class="form-input rounded-lg border-border-light dark:border-border-dark bg-white dark:bg-black/20 h-10 px-3 w-full">
                     </div>
                 </div>
             </div>

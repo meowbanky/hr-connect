@@ -163,7 +163,7 @@
                 <div class="mt-8 text-center lg:hidden">
                     <p class="text-sm text-text-secondary dark:text-slate-400">
                         Already have an account? 
-                        <a class="text-primary font-bold hover:underline" href="login.php">Log In</a>
+                        <a class="text-primary font-bold hover:underline" href="/login">Log In</a>
                     </p>
                 </div>
             </div>
@@ -248,7 +248,7 @@
             alert.addClass('hidden').removeClass('bg-red-100 border-red-400 text-red-700 bg-green-100 border-green-400 text-green-700');
 
             $.ajax({
-                url: '../api/auth_register.php',
+                url: '/api/auth_register.php',
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
@@ -256,7 +256,7 @@
                         alert.addClass('bg-green-100 border-green-400 text-green-700').removeClass('hidden');
                         alert.find('span').text('Success! Redirecting to login...');
                         setTimeout(function() {
-                            window.location.href = 'login.php';
+                            window.location.href = '/login';
                         }, 1500);
                     } else {
                         btn.removeClass('hidden');

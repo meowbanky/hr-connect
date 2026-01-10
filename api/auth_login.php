@@ -18,17 +18,22 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT id, password_hash, role_id, first_name, last_name FROM users WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT u.id, u.password_hash, u.role_id, u.first_name, u.last_name, r.name as role_name FROM users u JOIN roles r ON u.role_id = r.id WHERE u.email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, $user['password_hash'])) {
         // Authentication successful
         $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_role'] = $user['role_id'];
+        $_SESSION['user_role'] = $user['role_name']; // Use role name for easier checks
         $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
         
-        echo json_encode(['success' => true, 'redirect' => '../job_board_&_candidate_portal/index.php']);
+        $redirect = '/jobs'; // Default for candidates (Job Board)
+        if ($user['role_name'] === 'admin' || $user['role_name'] === 'hr_staff') {
+            $redirect = '/admin';
+        }
+        
+        echo json_encode(['success' => true, 'redirect' => $redirect]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Invalid email or password.']);
     }

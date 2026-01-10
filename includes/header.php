@@ -15,6 +15,7 @@ $userName = $_SESSION['user_name'] ?? '';
 // so '../' usually works. We can use a helper if needed, but hardcoded relative paths are requested in the prompt context often.
 // Let's use a standardized path assuming inclusion from 1-level deep scripts.
 $cssVersion = time();
+$headerLogo = get_setting('company_logo');
 ?>
 <nav class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-gray-800 bg-white dark:bg-[#1a1a2e]/90 backdrop-blur-md">
 <?php
@@ -25,6 +26,11 @@ if (isset($_SESSION['user_id'])) {
     if($pdo) {
          $stmtHead = $pdo->prepare("SELECT * FROM candidates WHERE user_id = ?");
          $stmtHead->execute([$_SESSION['user_id']]);
+         $headCand = $stmtHead->fetchColumn();
+         
+         // Fix: create mock array if fetching column failed or create validation logic
+         // Actually fetch(PDO::FETCH_ASSOC) is better
+         $stmtHead->execute([$_SESSION['user_id']]);
          $headCand = $stmtHead->fetch(PDO::FETCH_ASSOC);
          
          if ($headCand) {
@@ -33,15 +39,26 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 ?>
-    <div class="px-6 lg:px-12 flex items-center justify-between h-16 max-w-[1440px] mx-auto">
-        <a href="/jobs" class="flex items-center gap-4">
-            <div class="size-8 text-primary">
-                <svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                    <path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
-                </svg>
-            </div>
-            <h2 class="text-text-main dark:text-white text-xl font-bold tracking-tight">HR Connect</h2>
-        </a>
+    <div class="px-4 md:px-6 lg:px-12 flex items-center justify-between h-16 max-w-[1440px] mx-auto">
+        <div class="flex items-center gap-4">
+            <!-- Mobile Menu Button -->
+            <button onclick="document.getElementById('mobile-menu').classList.remove('hidden')" class="md:hidden text-slate-500 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <a href="/jobs" class="flex items-center gap-3">
+                <?php if ($headerLogo && file_exists(__DIR__ . '/..' . $headerLogo)): ?>
+                    <img src="<?php echo htmlspecialchars($headerLogo); ?>" alt="Logo" class="h-8 w-auto object-contain">
+                <?php else: ?>
+                    <div class="size-8 text-primary">
+                        <svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                <?php endif; ?>
+                <h2 class="text-text-main dark:text-white text-xl font-bold tracking-tight hidden sm:block">HR Connect</h2>
+            </a>
+        </div>
+        
         <div class="hidden md:flex items-center gap-8">
             <a class="text-text-main dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="/jobs">Job Board</a>
             <a class="text-text-main dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="/bookmarks">Saved Jobs</a>
@@ -82,8 +99,9 @@ if (isset($_SESSION['user_id'])) {
 
             <?php if ($isLoggedIn): ?>
                 <span class="hidden sm:inline text-sm font-medium text-text-main dark:text-white">Hi, <?php echo htmlspecialchars($userName); ?></span>
-                <a href="/logout" class="h-9 flex items-center justify-center rounded-lg px-4 border border-slate-200 dark:border-gray-700 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-text-main dark:text-white text-sm font-bold transition-colors">
-                    Log Out
+                <a href="/logout" class="h-9 w-9 sm:w-auto flex items-center justify-center rounded-lg sm:px-4 border border-slate-200 dark:border-gray-700 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-text-main dark:text-white text-sm font-bold transition-colors" title="Log Out">
+                    <span class="sm:hidden material-symbols-outlined text-[20px]">logout</span>
+                    <span class="hidden sm:inline">Log Out</span>
                 </a>
             <?php else: ?>
                 <a href="/login" class="flex h-9 items-center justify-center rounded-lg px-4 border border-slate-200 dark:border-gray-700 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-text-main dark:text-white text-sm font-bold transition-colors">
@@ -96,3 +114,53 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
 </nav>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="hidden fixed inset-0 z-[99999]" style="z-index: 99999;">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="document.getElementById('mobile-menu').classList.add('hidden')"></div>
+    
+    <!-- Drawer -->
+    <div class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-slate-900 shadow-xl flex flex-col z-[100000]" style="z-index: 100000;">
+        <!-- Header -->
+        <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100 dark:border-slate-800">
+            <span class="text-lg font-bold text-slate-900 dark:text-white">Menu</span>
+            <button onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <!-- Links -->
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+            <a href="/jobs" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">work</span>
+                Job Board
+            </a>
+            <a href="/bookmarks" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">bookmark</span>
+                Saved Jobs
+            </a>
+            <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">dashboard</span>
+                My Applications
+            </a>
+            <a href="/profile" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">person</span>
+                My Profile
+            </a>
+        </nav>
+        
+        <!-- Mobile Footer Info -->
+        <?php if ($isLoggedIn): ?>
+            <div class="p-4 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-3 px-2 mb-3">
+                        <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs"><?php echo substr($userName, 0, 1); ?></div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-semibold text-slate-900 dark:text-white"><?php echo htmlspecialchars($userName); ?></span>
+                            <span class="text-xs text-slate-500">Candidate</span>
+                        </div>
+                    </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

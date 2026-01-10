@@ -12,6 +12,10 @@ $userName = $_SESSION['user_name'] ?? '';
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Job Details - HR Connect</title>
+<?php $favicon = get_setting('company_logo'); ?>
+<?php if($favicon && file_exists(__DIR__ . '/..' . $favicon)): ?>
+    <link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($favicon); ?>">
+<?php endif; ?>
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -37,6 +41,16 @@ $userName = $_SESSION['user_name'] ?? '';
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Force Applied Button Style */
+        .btn-applied {
+            background-color: #16a34a !important; /* green-600 */
+            color: #ffffff !important;
+            border-color: #16a34a !important;
+        }
+        .btn-applied:hover {
+            background-color: #15803d !important; /* green-700 */
+        }
     </style>
 <?php echo get_theme_css(); ?>
 </head>
@@ -230,6 +244,39 @@ $userName = $_SESSION['user_name'] ?? '';
                             </div>
                         </div>
                     </div>
+
+                    <!-- Competitive Insights Card -->
+                    <div class="bg-gradient-to-br from-indigo-900 to-purple-900 p-6 rounded-xl border border-indigo-700 shadow-lg text-white relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-10">
+                            <span class="material-symbols-outlined text-6xl">analytics</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-yellow-400">lock_open</span> Applicant Insights
+                        </h4>
+                        
+                        <div class="space-y-4 relative z-10">
+                             <div class="flex justify-between items-end border-b border-white/10 pb-3">
+                                 <div>
+                                     <p class="text-xs text-indigo-200 uppercase tracking-widest font-semibold">Competition</p>
+                                     <p class="text-2xl font-black mt-1" id="applicantCount">0</p>
+                                     <p class="text-xs text-indigo-200">People applied</p>
+                                 </div>
+                                 <div class="text-right">
+                                     <p class="text-xs text-indigo-200 uppercase tracking-widest font-semibold">Avg. Experience</p>
+                                     <p class="text-2xl font-black mt-1"><span id="avgExperience">0</span> <span class="text-sm font-normal text-indigo-300">Years</span></p>
+                                 </div>
+                             </div>
+                             
+                             <!-- Pitch Helper (Only visible if applicable) -->
+                             <div id="pitchHelper" class="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20 hidden">
+                                 <p class="text-xs font-bold text-yellow-300 mb-1 flex items-center gap-1">
+                                     <span class="material-symbols-outlined text-[14px]">tips_and_updates</span> Your Edge
+                                 </p>
+                                 <p class="text-xs leading-relaxed" id="pitchText">You have key skills that match this profile.</p>
+                             </div>
+                        </div>
+                    </div>
+
                     <!-- Map/Location Card -->
                     <div class="bg-white dark:bg-[#1a1a2e] p-1 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                         <div class="relative w-full h-48 bg-gray-100 rounded-lg overflow-hidden">
@@ -335,8 +382,28 @@ $userName = $_SESSION['user_name'] ?? '';
                     $('#jobIdLabel').text('#JOB-' + job.id);
                     
                     // Update Apply Buttons
-                    const applyUrl = '/candidate_application_form/index.php?job_id=' + job.id;
-                    $('#applyBtnMain, #applyBtnSidebar').attr('href', applyUrl);
+                    if (job.application_id) {
+                        // User has already applied
+                        const viewUrl = '../candidate_application_view_details/index.php?id=' + job.application_id;
+                        const status = job.application_status.charAt(0).toUpperCase() + job.application_status.slice(1);
+                        
+                        // Main Button
+                        $('#applyBtnMain').attr('href', viewUrl)
+                            .removeClass('bg-primary hover:bg-blue-700 shadow-primary/30')
+                            .addClass('btn-applied shadow-green-600/30')
+                            .html(`<span class="material-symbols-outlined mr-2">check_circle</span> Application ${status}`);
+                            
+                        // Sidebar Button
+                        $('#applyBtnSidebar').attr('href', viewUrl)
+                            .removeClass('bg-primary hover:bg-blue-700 shadow-primary/25')
+                            .addClass('btn-applied shadow-green-600/25')
+                            .html(`View Status (${status}) <span class="material-symbols-outlined text-[20px]">arrow_forward</span>`);
+                            
+                    } else {
+                        // Default Apply Flow
+                        const applyUrl = '/candidate_application_form/index.php?job_id=' + job.id;
+                        $('#applyBtnMain, #applyBtnSidebar').attr('href', applyUrl);
+                    }
                     
                     // Bookmark State
                     $('#bookmarkBtn').data('id', job.id);
@@ -351,6 +418,27 @@ $userName = $_SESSION['user_name'] ?? '';
 
                     // Fetch Similar Jobs
                     fetchSimilarJobs(jobId);
+
+                    // --- POPULATE INSIGHTS ---
+                    // Applicant Count
+                    $('#applicantCount').text(job.applicant_count || '0');
+                    
+                    // Avg Experience
+                    const avgExp = job.avg_experience ? parseFloat(job.avg_experience).toFixed(1) : '0';
+                    $('#avgExperience').text(avgExp);
+                    
+                    // Pitch Helper logic
+                    // We assume the API returns 'user_percentile' or similar if user is logged in
+                    if (job.user_experience_percentile && parseFloat(job.user_experience_percentile) > 50) {
+                        $('#pitchHelper').show();
+                        const percentile = Math.round(parseFloat(job.user_experience_percentile));
+                        $('#pitchText').text(`You have more experience than ${percentile}% of applicants.`);
+                    } else if (job.applicant_count > 0 && job.avg_experience) {
+                         // Fallback generic or hide
+                         $('#pitchHelper').hide();
+                    } else {
+                        $('#pitchHelper').hide();
+                    }
 
                 } else {
                     $('#mainContent').html('<div class="text-center py-20"><h2 class="text-2xl font-bold text-gray-700">Job not found</h2><a href="/jobs" class="text-primary hover:underline mt-4 inline-block">Return to Job Board</a></div>');

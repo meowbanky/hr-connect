@@ -195,12 +195,12 @@ function getStatusBadge($status) {
         <!-- Applications Table -->
         <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-[#15152a] overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm" id="appsTable">
+                <table class="hidden md:table w-full text-left text-sm" id="appsTable">
                     <thead class="bg-slate-50 dark:bg-slate-800/50">
                         <tr>
                             <th class="px-6 py-4 font-semibold text-slate-900 dark:text-white" scope="col">Job Title</th>
-                            <th class="hidden px-6 py-4 font-semibold text-slate-900 dark:text-white sm:table-cell" scope="col">Department</th>
-                            <th class="hidden px-6 py-4 font-semibold text-slate-900 dark:text-white md:table-cell" scope="col">Date Applied</th>
+                            <th class="px-6 py-4 font-semibold text-slate-900 dark:text-white" scope="col">Department</th>
+                            <th class="px-6 py-4 font-semibold text-slate-900 dark:text-white" scope="col">Date Applied</th>
                             <th class="px-6 py-4 font-semibold text-slate-900 dark:text-white" scope="col">Status</th>
                             <th class="px-6 py-4 text-right font-semibold text-slate-900 dark:text-white" scope="col">Action</th>
                         </tr>
@@ -209,13 +209,10 @@ function getStatusBadge($status) {
                         <?php foreach($applications as $app): ?>
                         <tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50 item-row" data-status="<?php echo htmlspecialchars($app['status']); ?>">
                             <td class="px-6 py-4">
-                                <div class="flex flex-col">
-                                    <a href="/job-details?id=<?php echo $app['id']; ?>" class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer text-base"><?php echo htmlspecialchars($app['job_title']); ?></a>
-                                    <span class="sm:hidden text-xs text-slate-500 mt-1"><?php echo htmlspecialchars($app['department_name'] ?? 'General'); ?></span>
-                                </div>
+                                <a href="/job-details?id=<?php echo $app['id']; ?>" class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer text-base"><?php echo htmlspecialchars($app['job_title']); ?></a>
                             </td>
-                            <td class="hidden px-6 py-4 text-slate-600 dark:text-slate-300 sm:table-cell"><?php echo htmlspecialchars($app['department_name'] ?? 'General'); ?></td>
-                            <td class="hidden px-6 py-4 text-slate-500 dark:text-slate-400 md:table-cell"><?php echo date('M d, Y', strtotime($app['application_date'])); ?></td>
+                            <td class="px-6 py-4 text-slate-600 dark:text-slate-300"><?php echo htmlspecialchars($app['department_name'] ?? 'General'); ?></td>
+                            <td class="px-6 py-4 text-slate-500 dark:text-slate-400"><?php echo date('M d, Y', strtotime($app['application_date'])); ?></td>
                             <td class="px-6 py-4">
                                 <?php echo getStatusBadge($app['status']); ?>
                             </td>
@@ -228,6 +225,34 @@ function getStatusBadge($status) {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                
+                <!-- Mobile Card View -->
+                <div class="md:hidden flex flex-col divide-y divide-slate-100 dark:divide-slate-800">
+                    <?php foreach($applications as $app): ?>
+                    <div class="p-4 space-y-3 item-row" data-status="<?php echo htmlspecialchars($app['status']); ?>">
+                        <div class="flex justify-between items-start gap-4">
+                            <div class="space-y-1">
+                                <a href="/job-details?id=<?php echo $app['id']; ?>" class="font-bold text-slate-900 dark:text-white text-base block hover:text-primary transition-colors"><?php echo htmlspecialchars($app['job_title']); ?></a>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">business</span>
+                                    <?php echo htmlspecialchars($app['department_name'] ?? 'General'); ?>
+                                </p>
+                            </div>
+                            <?php echo getStatusBadge($app['status']); ?>
+                        </div>
+                        
+                        <div class="flex items-center justify-between pt-2">
+                            <span class="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                                Applied: <?php echo date('M d, Y', strtotime($app['application_date'])); ?>
+                            </span>
+                            <a href="/job-details?id=<?php echo $app['id']; ?>" class="text-sm font-medium text-primary hover:underline">
+                                View Details &rarr;
+                            </a>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
             
             <!-- Pagination / Results Count -->

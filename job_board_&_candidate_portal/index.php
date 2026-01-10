@@ -66,10 +66,10 @@ $userName = $_SESSION['user_name'] ?? '';
 </div>
 
 <!-- Main Content Layout -->
-<div class="flex-1 max-w-[1440px] mx-auto w-full px-6 lg:px-12 py-12 flex flex-col lg:flex-row gap-8">
+<div class="flex-1 max-w-[1440px] mx-auto w-full px-4 md:px-6 lg:px-12 py-8 md:py-12 flex flex-col lg:flex-row gap-8">
     
-    <!-- Sidebar Filters -->
-    <aside class="w-full lg:w-72 flex-shrink-0 space-y-8">
+    <!-- Sidebar Filters (Desktop) -->
+    <aside class="hidden lg:block w-72 flex-shrink-0 space-y-8">
          <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-gray-800">
             <h3 class="text-text-main dark:text-white text-lg font-bold">Filters</h3>
             <button id="clearFilters" class="text-sm text-primary font-medium hover:underline">Clear all</button>
@@ -123,19 +123,19 @@ $userName = $_SESSION['user_name'] ?? '';
              <div class="space-y-3 filter-group" data-filter="salary">
                  <label class="flex items-center gap-3 cursor-pointer group">
                     <input type="radio" name="salary" value="40000" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer">
-                    <span class="text-gray-600 dark:text-gray-300">$40k +</span>
+                    <span class="text-gray-600 dark:text-gray-300"><?php echo get_currency_symbol(); ?>40k +</span>
                 </label>
                  <label class="flex items-center gap-3 cursor-pointer group">
                     <input type="radio" name="salary" value="80000" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer">
-                    <span class="text-gray-600 dark:text-gray-300">$80k +</span>
+                    <span class="text-gray-600 dark:text-gray-300"><?php echo get_currency_symbol(); ?>80k +</span>
                 </label>
                  <label class="flex items-center gap-3 cursor-pointer group">
                     <input type="radio" name="salary" value="120000" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer">
-                    <span class="text-gray-600 dark:text-gray-300">$120k +</span>
+                    <span class="text-gray-600 dark:text-gray-300"><?php echo get_currency_symbol(); ?>120k +</span>
                 </label>
                  <label class="flex items-center gap-3 cursor-pointer group">
                     <input type="radio" name="salary" value="160000" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer">
-                    <span class="text-gray-600 dark:text-gray-300">$160k +</span>
+                    <span class="text-gray-600 dark:text-gray-300"><?php echo get_currency_symbol(); ?>160k +</span>
                 </label>
              </div>
         </div>
@@ -154,12 +154,18 @@ $userName = $_SESSION['user_name'] ?? '';
 
     <!-- Job Feed -->
     <main class="flex-1">
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="text-text-main dark:text-white font-bold text-xl"><span id="jobCount" class="text-primary">0</span> Jobs Found</h3>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+             <div class="flex items-center justify-between w-full sm:w-auto gap-4">
+                <h3 class="text-text-main dark:text-white font-bold text-xl"><span id="jobCount" class="text-primary">0</span> Jobs Found</h3>
+                <button onclick="toggleMobileFilters()" class="lg:hidden flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1a1a2e] border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                    <span class="material-symbols-outlined text-[20px]">filter_list</span>
+                    Filters
+                </button>
+            </div>
              <!-- Sort Options -->
              <div class="flex items-center gap-2">
                 <span class="text-gray-500 text-sm hidden sm:inline">Sort by:</span>
-                <select id="sortFilter" class="rounded-lg border-gray-300 bg-white py-1 pl-2 pr-8 text-sm font-semibold text-text-main focus:ring-primary cursor-pointer">
+                <select id="sortFilter" class="rounded-lg border-gray-300 bg-white py-1 pl-2 pr-8 text-sm font-semibold text-text-main focus:ring-primary cursor-pointer w-full sm:w-auto">
                     <option value="Newest">Newest</option>
                     <option value="Most Relevant">Most Relevant</option>
                     <option value="Highest Salary">Highest Salary</option>
@@ -183,6 +189,114 @@ $userName = $_SESSION['user_name'] ?? '';
     </main>
 </div>
 
+<!-- Mobile Filter Drawer -->
+<div id="mobileFilterDrawer" class="hidden fixed inset-0 z-[10000]">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="toggleMobileFilters()"></div>
+    
+    <!-- Drawer Content -->
+    <div class="absolute inset-y-0 right-0 w-80 bg-white dark:bg-slate-900 shadow-2xl flex flex-col h-full transform transition-transform" style="z-index: 100001;">
+        <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-gray-800">
+            <h3 class="text-lg font-bold text-text-main dark:text-white">Filters</h3>
+            <button onclick="toggleMobileFilters()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-4 space-y-8">
+            <!-- Job Type Filter (Duplicate) -->
+            <div class="space-y-4">
+                <h4 class="text-text-main dark:text-white font-semibold">Job Type</h4>
+                <div class="space-y-3 filter-group" data-filter="type">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" value="Full-time" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors">
+                        <span class="text-gray-600 dark:text-gray-300">Full-time</span>
+                    </label>
+                     <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" value="Contract" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors">
+                        <span class="text-gray-600 dark:text-gray-300">Contract</span>
+                    </label>
+                     <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" value="Part-time" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors">
+                        <span class="text-gray-600 dark:text-gray-300">Part-time</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Experience Level (Duplicate) -->
+            <div class="space-y-4 pt-6 border-t border-slate-200 dark:border-gray-800">
+                <h4 class="text-text-main dark:text-white font-semibold">Experience Level</h4>
+                <div class="space-y-3 filter-group" data-filter="level">
+                     <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" value="Entry Level" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors">
+                        <span class="text-gray-600 dark:text-gray-300">Entry Level</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" value="Mid Level" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors">
+                        <span class="text-gray-600 dark:text-gray-300">Mid Level</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" value="Senior Level" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors">
+                        <span class="text-gray-600 dark:text-gray-300">Senior Level</span>
+                    </label>
+                     <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" value="Director" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/25 cursor-pointer transition-colors">
+                        <span class="text-gray-600 dark:text-gray-300">Director</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Salary Range (Duplicate) -->
+            <div class="space-y-4 pt-6 border-t border-slate-200 dark:border-gray-800">
+                 <h4 class="text-text-main dark:text-white font-semibold">Salary Range</h4>
+                 <div class="space-y-3 filter-group" data-filter="salary">
+                     <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="radio" name="salary" value="40000" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer">
+                        <span class="text-gray-600 dark:text-gray-300"><?php echo get_currency_symbol(); ?>40k +</span>
+                    </label>
+                     <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="radio" name="salary" value="80000" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer">
+                        <span class="text-gray-600 dark:text-gray-300"><?php echo get_currency_symbol(); ?>80k +</span>
+                    </label>
+                     <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="radio" name="salary" value="120000" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer">
+                        <span class="text-gray-600 dark:text-gray-300"><?php echo get_currency_symbol(); ?>120k +</span>
+                    </label>
+                     <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="radio" name="salary" value="160000" class="w-5 h-5 border-gray-300 text-primary focus:ring-primary/25 cursor-pointer">
+                        <span class="text-gray-600 dark:text-gray-300"><?php echo get_currency_symbol(); ?>160k +</span>
+                    </label>
+                 </div>
+            </div>
+
+             <!-- Date Posted (Duplicate with ID changed) -->
+            <div class="space-y-4 pt-6 border-t border-slate-200 dark:border-gray-800">
+                 <h4 class="text-text-main dark:text-white font-semibold">Date Posted</h4>
+                 <select id="mobileDateFilter" class="w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a2e] text-gray-700 dark:text-gray-300 focus:border-primary focus:ring-primary/25">
+                    <option value="">Any time</option>
+                    <option value="24h">Past 24 hours</option>
+                    <option value="7d">Past week</option>
+                    <option value="30d">Past month</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="p-4 border-t border-slate-200 dark:border-gray-800 bg-white dark:bg-slate-900 absolute bottom-0 inset-x-0 z-10 flex flex-col gap-3">
+             <div class="grid grid-cols-2 gap-3">
+                 <button id="clearMobileFilters" class="px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 text-slate-700 dark:text-slate-300 font-bold text-sm bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    Clear All
+                </button>
+                <button onclick="toggleMobileFilters()" class="px-4 py-3 bg-primary hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-500/20 transition-all">
+                    Show Jobs
+                </button>
+             </div>
+             <button onclick="toggleMobileFilters()" class="w-full py-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-semibold flex items-center justify-center gap-1">
+                Close Filter
+             </button>
+        </div>
+    </div>
+</div>
+
 <!-- Scripts -->
 <script>
 $(document).ready(function() {
@@ -204,13 +318,13 @@ $(document).ready(function() {
         $('.filter-group[data-filter="level"] input:checked').each(function() { levels.push($(this).val()); });
 
         const salary = $('input[name="salary"]:checked').val() || '';
-        const date = $('#dateFilter').val();
+        const date = $('#dateFilter').val() || $('#mobileDateFilter').val();
         const sort = $('#sortFilter').val();
         const search = $('#searchInput').val();
         const location = $('#locationInput').val();
 
         $.ajax({
-            url: '../api/fetch_jobs.php',
+            url: '/api/fetch_jobs.php',
             method: 'GET',
             data: {
                 page: page,
@@ -420,9 +534,28 @@ $(document).ready(function() {
         fetchJobs(page);
     };
 
+    window.toggleMobileFilters = function() {
+        const drawer = $('#mobileFilterDrawer');
+        drawer.toggleClass('hidden');
+    }
+    
+    window.closeMobileFilters = function() {
+        $('#mobileFilterDrawer').addClass('hidden');
+    }
+
     // Event Listeners
-    $('input[type="checkbox"], input[type="radio"], #dateFilter, #sortFilter').on('change', function() {
+    $('input[type="checkbox"], input[type="radio"], #dateFilter, #mobileDateFilter, #sortFilter').on('change', function() {
         fetchJobs(1); // Reset to page 1 on filter change
+    });
+    
+     $('#clearMobileFilters').on('click', function() {
+        $('input[type="checkbox"]').prop('checked', false);
+        $('input[type="radio"]').prop('checked', false);
+        $('select').val('');
+        $('#searchInput').val('');
+        $('#locationInput').val('');
+        fetchJobs(1);
+        toggleMobileFilters(); // Close drawer
     });
 
     $('#searchBtn').on('click', function() {
@@ -451,7 +584,7 @@ $(document).ready(function() {
         const icon = btn.find('span');
 
         $.ajax({
-            url: '../api/toggle_bookmark.php',
+            url: '/api/toggle_bookmark.php',
             method: 'POST',
             data: { job_id: jobId },
             dataType: 'json',
@@ -464,7 +597,7 @@ $(document).ready(function() {
                     }
                 } else {
                     if (response.message === 'Unauthorized') {
-                         window.location.href = '../candidate_registration/login.php';
+                         window.location.href = '/login';
                     } else {
                         alert(response.message);
                     }
