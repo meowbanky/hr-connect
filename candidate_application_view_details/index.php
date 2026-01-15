@@ -47,11 +47,19 @@ $query = "
         j.id AS job_id,
         d.name AS department_name,
         c.resume_path,
-        c.portfolio_url
+        c.portfolio_url,
+        i.interview_date,
+        i.interview_time,
+        i.id as interview_id,
+        i.venue_name,
+        i.venue_address,
+        i.venue_link,
+        i.status as interview_status
     FROM applications a
     JOIN job_postings j ON a.job_id = j.id
     LEFT JOIN departments d ON j.department_id = d.id
     JOIN candidates c ON a.candidate_id = c.id
+    LEFT JOIN interviews i ON a.id = i.application_id
     WHERE a.id = ? AND a.candidate_id = ?
 ";
 $stmt = $pdo->prepare($query);
@@ -312,6 +320,61 @@ switch($application['status']) {
                         </div>
                     </div>
                 </div>
+
+                <!-- Interview Details Card (Conditional) -->
+                <?php if (!empty($application['interview_id'])): ?>
+                <div class="mt-6 overflow-hidden rounded-xl border border-primary/20 bg-primary/5 dark:bg-primary/10 shadow-sm">
+                    <div class="border-b border-primary/10 px-6 py-4 flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-primary dark:text-blue-400 flex items-center gap-2">
+                            <span class="material-symbols-outlined">event</span> Interview Scheduled
+                        </h3>
+                        <?php if($application['interview_status'] == 'completed'): ?>
+                            <span class="inline-flex items-center rounded-full bg-green-100 text-green-800 px-2 py-1 text-xs font-semibold">
+                                Completed
+                            </span>
+                        <?php else: ?>
+                            <span class="inline-flex items-center rounded-full bg-blue-100 text-blue-800 px-2 py-1 text-xs font-semibold">
+                                Upcoming
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid gap-6 sm:grid-cols-2">
+                            <div>
+                                <p class="text-xs font-semibold text-text-sub-light dark:text-text-sub-dark uppercase tracking-wider mb-1">Date & Time</p>
+                                <p class="text-base font-bold text-text-main-light dark:text-white">
+                                    <?php echo date('l, F j, Y', strtotime($application['interview_date'])); ?>
+                                </p>
+                                <p class="text-sm font-medium text-text-main-light dark:text-white">
+                                    <?php echo date('g:i A', strtotime($application['interview_time'])); ?>
+                                </p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold text-text-sub-light dark:text-text-sub-dark uppercase tracking-wider mb-1">Venue</p>
+                                <p class="text-sm font-bold text-text-main-light dark:text-white">
+                                    <?php echo htmlspecialchars($application['venue_name']); ?>
+                                </p>
+                                <p class="text-sm text-text-sub-light dark:text-text-sub-dark">
+                                    <?php echo htmlspecialchars($application['venue_address']); ?>
+                                </p>
+                                <?php if(!empty($application['venue_link'])): ?>
+                                    <a href="<?php echo htmlspecialchars($application['venue_link']); ?>" target="_blank" class="mt-2 inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline">
+                                        <span class="material-symbols-outlined text-sm">map</span> View Map
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="mt-6 rounded-lg bg-white dark:bg-surface-dark p-4 border border-blue-100 dark:border-blue-900/30">
+                            <h4 class="text-sm font-bold text-text-main-light dark:text-white mb-2">Instructions</h4>
+                            <ul class="list-disc list-inside text-sm text-text-sub-light dark:text-text-sub-dark space-y-1">
+                                <li>Please arrive 15 minutes before your scheduled time.</li>
+                                <li>Bring a copy of your resume and a valid ID.</li>
+                                <li>Dress code is Business Formal.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
 
                 <!-- Application Details -->
                 <div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark">

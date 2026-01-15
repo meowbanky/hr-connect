@@ -11,14 +11,17 @@ RewriteRule ^logout/?$ candidate_registration/logout.php [L]
 
 # 3. Candidate Portal
 RewriteRule ^dashboard/?$ candidate_application_myapplication/index.php [L]
+RewriteRule ^dashboard/applications/?$ candidate_application_myapplication/index.php [L]
 RewriteRule ^profile/?$ candidate_profile/index.php [L]
 RewriteRule ^saved-jobs/?$ candidate_application_bookmarks/index.php [L]
 RewriteRule ^bookmarks/?$ candidate_application_bookmarks/index.php [L]
+RewriteRule ^interviews/?$ candidate_interviews/index.php [L]
 
 # 4. Job Board
 RewriteRule ^jobs/?$ job_board_&_candidate_portal/index.php [L]
 RewriteRule ^job/([0-9]+)/?$ job_board_&_candidate_portal/view_job.php?id=$1 [L,QSA]
 RewriteRule ^view-job/?$ job_board_&_candidate_portal/view_job.php [L,QSA]
+RewriteRule ^job-details/?$ job_board_&_candidate_portal/view_job.php [L,QSA]
 
 # 5. Applications
 RewriteRule ^application/([0-9]+)/?$ candidate_application_view_details/index.php?id=$1 [L,QSA]
@@ -37,6 +40,8 @@ RewriteRule ^admin/candidates/?$ admin/candidates.php [L]
 RewriteRule ^admin/interviews/?$ admin/interviews.php [L]
 RewriteRule ^admin/employees/?$ admin/employees.php [L]
 RewriteRule ^admin/settings/?$ admin/settings.php [L]
+RewriteRule ^admin/applications/?$ admin/applications.php [L]
+RewriteRule ^admin/application/([0-9]+)/?$ admin/view_application.php?id=$1 [L,QSA]
 
 # Prevent directory listing
 Options -Indexes

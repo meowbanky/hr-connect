@@ -13,13 +13,21 @@ $action = $_POST['action'] ?? '';
 
 if ($action === 'mark_all_read') {
     if (NotificationHelper::markAllAsRead($user_id)) {
-        echo json_encode(['success' => true]);
+        // Get count
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
+        $stmt->execute([$user_id]);
+        $count = $stmt->fetchColumn();
+        echo json_encode(['success' => true, 'unread_count' => $count]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Database error']);
     }
 } elseif ($action === 'mark_read' && isset($_POST['id'])) {
     if (NotificationHelper::markAsRead($_POST['id'], $user_id)) {
-        echo json_encode(['success' => true]);
+        // Get count
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
+        $stmt->execute([$user_id]);
+        $count = $stmt->fetchColumn();
+        echo json_encode(['success' => true, 'unread_count' => $count]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Database error']);
     }
@@ -46,7 +54,11 @@ if ($action === 'mark_all_read') {
     }
 } elseif ($action === 'delete' && isset($_POST['id'])) {
     if (NotificationHelper::delete($_POST['id'], $user_id)) {
-        echo json_encode(['success' => true]);
+        // Get count
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
+        $stmt->execute([$user_id]);
+        $count = $stmt->fetchColumn();
+        echo json_encode(['success' => true, 'unread_count' => $count]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Database error']);
     }

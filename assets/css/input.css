@@ -6,4 +6,18 @@
 body {
   font-family: "Inter", sans-serif;
 }
-/* trigger build */
+/* Fix SweetAlert2 Button Visibility (conflicts with Tailwind Preflight) */
+button.swal2-styled.swal2-confirm {
+  background-color: var(--color-primary, #5749e9) !important;
+  color: #fff !important;
+}
+
+button.swal2-styled.swal2-cancel {
+  background-color: #64748b !important;
+  color: #fff !important;
+}
+
+/* Dark Mode adjustment for Cancel */
+.dark button.swal2-styled.swal2-cancel {
+  background-color: #475569 !important;
+}

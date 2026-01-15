@@ -15,12 +15,35 @@
             </div>
             <input class="block w-64 pl-10 pr-3 py-2 border-none rounded-lg leading-5 bg-white dark:bg-surface-dark text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm transition-all text-sm" placeholder="Search candidates, jobs..." type="text"/>
         </div>
-        <button class="p-2 rounded-full bg-white dark:bg-surface-dark text-slate-500 dark:text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all relative">
-            <span class="absolute top-2 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-surface-dark"></span>
+        <?php
+        // Fetch unread notifications count for header
+        $headerUnreadCount = 0;
+        if(isset($pdo) && isset($_SESSION['user_id'])) {
+            $hStmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
+            $hStmt->execute([$_SESSION['user_id']]);
+            $headerUnreadCount = $hStmt->fetchColumn();
+        }
+        ?>
+        <a href="/admin/notifications.php" class="p-2 rounded-full bg-white dark:bg-surface-dark text-slate-500 dark:text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all relative">
+            <span id="adminHeaderBadge" class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold <?php echo $headerUnreadCount > 0 ? '' : 'hidden'; ?>"><?php echo $headerUnreadCount > 0 ? ($headerUnreadCount > 9 ? '9+' : $headerUnreadCount) : '0'; ?></span>
             <span class="material-symbols-outlined" style="font-size: 22px;">notifications</span>
-        </button>
+        </a>
         <button class="p-2 rounded-full bg-white dark:bg-surface-dark text-slate-500 dark:text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all">
             <span class="material-symbols-outlined" style="font-size: 22px;">help</span>
         </button>
     </div>
+    <!-- SweetAlert2 Fix -->
+    <style>
+        div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+            background-color: var(--color-primary, #5749e9) !important;
+            color: #fff !important;
+        }
+        div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
+            background-color: #64748b !important;
+            color: #fff !important;
+        }
+        .dark div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
+            background-color: #475569 !important;
+        }
+    </style>
 </header>

@@ -114,5 +114,119 @@ class MailHelper {
         
         return self::send($adminEmail, $subject, $body);
     }
+    /**
+     * Send Status Change Notification
+     */
+    public static function sendStatusChange($email, $candidateName, $jobTitle, $status) {
+        $subject = "";
+        $body = "";
+        $siteUrl = get_setting('site_url', 'https://hr.prismtechnologies.com.ng');
+
+        switch ($status) {
+            case 'reviewed':
+                $subject = "Application Under Review: $jobTitle";
+                $body = "Dear $candidateName,\n\n";
+                $body .= "Your application for the position of <strong>$jobTitle</strong> is now being reviewed by our hiring team.\n";
+                $body .= "We will notify you of any updates regarding your application status.\n";
+                break;
+
+            case 'shortlisted':
+                $subject = "Good News! You've been Shortlisted: $jobTitle";
+                $body = "Dear $candidateName,\n\n";
+                $body .= "Congratulations! We are pleased to inform you that you have been shortlisted for the position of <strong>$jobTitle</strong> at Prism Technologies.\n";
+                $body .= "Our team was impressed with your profile, and we will be in touch shortly regarding the next steps of the selection process.\n";
+                break;
+
+            case 'interviewed':
+                $subject = "Interview Status Update: $jobTitle";
+                $body = "Dear $candidateName,\n\n";
+                $body .= "Thank you for taking the time to interview with us for the <strong>$jobTitle</strong> position.\n";
+                $body .= "We are currently reviewing all candidate interviews and will get back to you with a final decision soon.\n";
+                break;
+
+            case 'offered':
+                $subject = "Job Offer: $jobTitle";
+                $body = "Dear $candidateName,\n\n";
+                $body .= "Congratulations! We are excited to offer you the position of <strong>$jobTitle</strong> at Prism Technologies.\n";
+                $body .= "Please check your dashboard or email for the official offer letter and further instructions.\n";
+                $body .= "<br><a href='$siteUrl/dashboard' class='btn'>View Offer</a>";
+                break;
+
+            case 'hired':
+                $subject = "Welcome to the Team!";
+                $body = "Dear $candidateName,\n\n";
+                $body .= "Welcome aboard! We are delighted to officially hire you for the <strong>$jobTitle</strong> position.\n";
+                $body .= "We look forward to working with you. HR will be in touch regarding onboarding details.\n";
+                break;
+
+            case 'rejected':
+                $subject = "Update on your application: $jobTitle";
+                $body = "Dear $candidateName,\n\n";
+                $body .= "Thank you for your interest in the <strong>$jobTitle</strong> position at Prism Technologies.\n";
+                $body .= "After careful consideration, we regret to inform you that we will not be moving forward with your application at this time.\n";
+                $body .= "We received many qualified applications, and this decision was not easy. We will keep your resume on file for future opportunities that match your skills.\n\n";
+                $body .= "We wish you the best in your job search.\n";
+                break;
+
+            default:
+                // Do not send email for unknown statuses or 'pending'
+                return false;
+        }
+
+        $body .= "\n\nBest Regards,\nHR Team";
+
+        return self::send($email, $subject, $body);
+    }
+    /**
+     * Send Password Reset Email
+     */
+    public static function sendPasswordReset($email, $name, $resetLink) {
+        $subject = "Password Reset Request";
+        
+        $body = "Dear $name,\n\n";
+        $body .= "We received a request to reset your password for your account at Prism Technologies.\n";
+        $body .= "Click the button below to reset it:\n";
+        $body .= "<br><a href='$resetLink' class='btn'>Reset Password</a>\n\n";
+        $body .= "If you did not request this, please ignore this email. This link will expire in 1 hour.\n";
+        $body .= "Or paste this link into your browser: $resetLink";
+        
+        return self::send($email, $subject, $body);
+    }
+    /**
+     * Send Interview Invitation Email
+     */
+    public static function sendInterviewInvitation($email, $name, $details) {
+        $subject = "Interview Invitation: " . $details['job_title'];
+        $date = date('l, F j, Y', strtotime($details['date']));
+        $time = date('g:i A', strtotime($details['time']));
+        
+        // Google Calendar Link Generation
+        // Format: https://calendar.google.com/calendar/render?action=TEMPLATE&text={title}&dates={start}/{end}&details={details}&location={location}
+        $startTime = date('Ymd\THis', strtotime($details['date'] . ' ' . $details['time']));
+        $endTime = date('Ymd\THis', strtotime($details['date'] . ' ' . $details['time'] . ' +1 hour')); // Assume 1 hour default
+        
+        $calTitle = urlencode("Interview for " . $details['job_title']);
+        $calDetails = urlencode("Interview with Prism Technologies.\nVenue: " . $details['venue'] . "\nAddress: " . $details['address']);
+        $calLocation = urlencode($details['venue'] . ', ' . $details['address']);
+        
+        $gCalLink = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=$calTitle&dates=$startTime/$endTime&details=$calDetails&location=$calLocation";
+
+        $body = "Dear $name,\n\n";
+        $body .= "We are pleased to invite you for an interview for the position of <strong>" . $details['job_title'] . "</strong>.\n\n";
+        $body .= "<strong>Date:</strong> $date\n";
+        $body .= "<strong>Time:</strong> $time\n";
+        $body .= "<strong>Venue:</strong> " . $details['venue'] . "\n";
+        $body .= "<strong>Address:</strong> " . $details['address'] . "\n";
+        
+        if (!empty($details['map_link'])) {
+            $body .= "<a href='" . $details['map_link'] . "'>View on Google Maps</a>\n";
+        }
+        
+        $body .= "\n<br><a href='$gCalLink' class='btn' style='background-color:#4285F4;'>Add to Google Calendar</a>\n\n";
+        $body .= "Please arrive 15 minutes early and bring a copy of your CV/Resume.\n";
+        $body .= "On the day of the interview, please log in to your candidate portal to check in.\n";
+        
+        return self::send($email, $subject, $body);
+    }
 }
 ?>

@@ -93,7 +93,7 @@
                     <div class="flex flex-col gap-1.5">
                          <div class="flex justify-between items-center">
                             <label class="text-text-main dark:text-gray-200 text-sm font-medium leading-normal" for="password">Password</label>
-                            <a href="#" class="text-xs text-primary font-medium hover:underline">Forgot password?</a>
+                            <a href="../forgot_password.php" class="text-xs text-primary font-medium hover:underline">Forgot password?</a>
                         </div>
                         <div class="relative">
                             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">lock</span>

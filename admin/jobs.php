@@ -427,7 +427,7 @@ $(document).ready(function() {
     // Handle Pagination Clicks (Delegated to body for dynamic content)
     // Note: The new pagination uses `onclick="fetchJobs(N)"` inline, which is fine.
     // But if we want to intercept links (<a> tags) from the initial load:
-    $(document).on('click', 'nav a', function(e) {
+    $(document).on('click', '#paginationContainer nav a', function(e) {
         e.preventDefault();
         const href = $(this).attr('href');
         const urlParams = new URLSearchParams(href.split('?')[1]);

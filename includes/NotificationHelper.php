@@ -71,5 +71,46 @@ class NotificationHelper {
         $stmt = $pdo->prepare("DELETE FROM notifications WHERE id = ? AND user_id = ?");
         return $stmt->execute([$notificationId, $userId]);
     }
+
+    /**
+     * Create Notification for Status Change
+     */
+    public static function createForStatusChange($userId, $jobTitle, $status) {
+        $title = "";
+        $message = "";
+        $type = "application";
+        $actionUrl = "/dashboard/applications"; // Default link
+
+        switch ($status) {
+            case 'reviewed':
+                $title = "Application Reviewed 📝";
+                $message = "Your application for <strong>$jobTitle</strong> is currently under review.";
+                break;
+            case 'shortlisted':
+                $title = "You've been Shortlisted! 🎉";
+                $message = "Great news! You have been shortlisted for the <strong>$jobTitle</strong> position.";
+                break;
+            case 'interviewed':
+                $title = "Interview Status Update 📅";
+                $message = "We have updated the status of your interview for <strong>$jobTitle</strong>.";
+                break;
+            case 'offered':
+                $title = "Job Offer Received! 💼";
+                $message = "Congratulations! You have received an offer for <strong>$jobTitle</strong>. Check your email/dashboard.";
+                break;
+            case 'hired':
+                $title = "You're Hired! 🚀";
+                $message = "Welcome to the team! You have been hired for <strong>$jobTitle</strong>.";
+                break;
+            case 'rejected':
+                $title = "Application Update 📄";
+                $message = "Update regarding your application for <strong>$jobTitle</strong>.";
+                break;
+            default:
+                return false;
+        }
+
+        return self::create($userId, $type, $title, $message, $actionUrl);
+    }
 }
 ?>

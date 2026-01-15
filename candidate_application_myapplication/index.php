@@ -28,11 +28,23 @@ $query = "
         a.id, 
         a.status, 
         a.application_date,
+        j.id AS job_id,
         j.title AS job_title,
-        d.name AS department_name
+        d.name AS department_name,
+        i.id as interview_id,
+        i.interview_date,
+        i.interview_time,
+        i.venue_name,
+        i.venue_address,
+        i.venue_link,
+        i.venue_lat,
+        i.venue_lng,
+        i.status as interview_status,
+        i.check_in_time
     FROM applications a
     JOIN job_postings j ON a.job_id = j.id
     LEFT JOIN departments d ON j.department_id = d.id
+    LEFT JOIN interviews i ON a.id = i.application_id
     WHERE a.candidate_id = ?
     ORDER BY a.application_date DESC
 ";
@@ -40,7 +52,7 @@ $stmt = $pdo->prepare($query);
 $stmt->execute([$candidate_id]);
 $applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Calculate Profile Completion
+// ... keep profile calculation ...
 $stmt = $pdo->prepare("SELECT * FROM candidates WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $candidate_data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -67,6 +79,7 @@ function getStatusBadge($status) {
 ?>
 <!DOCTYPE html>
 <html class="light" lang="en">
+<!-- ... Head and Scripts ... -->
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -74,6 +87,7 @@ function getStatusBadge($status) {
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script id="tailwind-config">
     tailwind.config = {
         darkMode: "class",
@@ -103,7 +117,7 @@ function getStatusBadge($status) {
 <main class="flex-1 w-full bg-background-light dark:bg-background-dark py-8 px-4 sm:px-6 md:px-8">
     <div class="mx-auto flex w-full max-w-6xl flex-col gap-6">
         
-        <!-- Header & Profile Stats -->
+        <!-- ... Header and Stats ... -->
         <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
             <header class="flex flex-col gap-2">
                 <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">My Applications</h1>
@@ -137,8 +151,8 @@ function getStatusBadge($status) {
             </div>
         </div>
         
-        <!-- Checks if No Applications -->
         <?php if(empty($applications)): ?>
+            <!-- ... Empty State ... -->
             <div class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center dark:border-slate-700 dark:bg-slate-800/30">
                 <div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                     <span class="material-symbols-outlined text-slate-400">folder_open</span>
@@ -154,7 +168,7 @@ function getStatusBadge($status) {
             </div>
         <?php else: ?>
 
-        <!-- Toolbar (Search & Filters) -->
+        <!-- ... Filters ... -->
         <div class="flex flex-col gap-4">
             <!-- Search Bar -->
             <div class="relative w-full md:max-w-md">
@@ -165,34 +179,15 @@ function getStatusBadge($status) {
             </div>
             <!-- Filter Chips -->
             <div class="flex flex-wrap gap-2" id="filterContainer">
-                <button onclick="filterStatus('all', this)" class="filter-btn active group flex items-center gap-2 rounded-full border border-primary bg-primary px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors" data-filter="all">
-                    <span class="material-symbols-outlined text-[18px]">check_circle</span>
-                    All
-                </button>
-                <button onclick="filterStatus('pending', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="pending">
-                    <span class="material-symbols-outlined text-[18px]">send</span>
-                    Submitted
-                </button>
-                <button onclick="filterStatus('reviewed', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="reviewed">
-                    <span class="material-symbols-outlined text-[18px]">schedule</span>
-                    Under Review
-                </button>
-                <button onclick="filterStatus('interviewed', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="interviewed">
-                    <span class="material-symbols-outlined text-[18px]">event</span>
-                    Interview
-                </button>
-                <button onclick="filterStatus('offered', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="offered">
-                    <span class="material-symbols-outlined text-[18px]">star</span>
-                    Offer Extended
-                </button>
-                <button onclick="filterStatus('rejected', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="rejected">
-                    <span class="material-symbols-outlined text-[18px]">cancel</span>
-                    Rejected
-                </button>
+                <button onclick="filterStatus('all', this)" class="filter-btn active group flex items-center gap-2 rounded-full border border-primary bg-primary px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 transition-colors" data-filter="all">All</button>
+                <button onclick="filterStatus('pending', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="pending">Submitted</button>
+                <button onclick="filterStatus('reviewed', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="reviewed">Under Review</button>
+                <button onclick="filterStatus('interviewed', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="interviewed">Interview</button>
+                <button onclick="filterStatus('offered', this)" class="filter-btn group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-sm font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors" data-filter="offered">Offer Extended</button>
             </div>
         </div>
 
-        <!-- Applications Table -->
+        <!-- Table -->
         <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-[#15152a] overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="hidden md:table w-full text-left text-sm" id="appsTable">
@@ -209,15 +204,34 @@ function getStatusBadge($status) {
                         <?php foreach($applications as $app): ?>
                         <tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50 item-row" data-status="<?php echo htmlspecialchars($app['status']); ?>">
                             <td class="px-6 py-4">
-                                <a href="/job-details?id=<?php echo $app['id']; ?>" class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer text-base"><?php echo htmlspecialchars($app['job_title']); ?></a>
+                                <a href="/job-details?id=<?php echo $app['job_id']; ?>" class="font-medium text-primary dark:text-indigo-400 group-hover:underline cursor-pointer text-base"><?php echo htmlspecialchars($app['job_title']); ?></a>
+                                <?php if($app['interview_date']): ?>
+                                    <div class="mt-1 text-xs text-slate-500">
+                                        <span class="font-semibold text-slate-700 dark:text-slate-300">Interview:</span> 
+                                        <?php echo date('M d, g:i A', strtotime($app['interview_date'] . ' ' . $app['interview_time'])); ?>
+                                        <?php if(!empty($app['venue_link'])): ?>
+                                            <a href="<?php echo htmlspecialchars($app['venue_link']); ?>" target="_blank" class="text-primary underline ml-1">Map</a>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4 text-slate-600 dark:text-slate-300"><?php echo htmlspecialchars($app['department_name'] ?? 'General'); ?></td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400"><?php echo date('M d, Y', strtotime($app['application_date'])); ?></td>
                             <td class="px-6 py-4">
                                 <?php echo getStatusBadge($app['status']); ?>
+                                
+                                <?php if($app['interview_status'] == 'completed'): ?>
+                                    <div class="mt-1 text-xs text-green-600 font-medium flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Checked In
+                                    </div>
+                                <?php elseif($app['interview_date'] == date('Y-m-d') && $app['interview_status'] == 'scheduled'): ?>
+                                    <button onclick="checkIn(<?php echo $app['interview_id']; ?>)" class="mt-2 text-xs bg-primary text-white px-2 py-1 rounded hover:bg-primary/90 transition-colors flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[14px]">location_on</span> Check In
+                                    </button>
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a href="/job-details?id=<?php echo $app['id']; ?>" class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
+                                <a href="/application/<?php echo $app['id']; ?>" class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
                                     View Details
                                 </a>
                             </td>
@@ -232,7 +246,7 @@ function getStatusBadge($status) {
                     <div class="p-4 space-y-3 item-row" data-status="<?php echo htmlspecialchars($app['status']); ?>">
                         <div class="flex justify-between items-start gap-4">
                             <div class="space-y-1">
-                                <a href="/job-details?id=<?php echo $app['id']; ?>" class="font-bold text-slate-900 dark:text-white text-base block hover:text-primary transition-colors"><?php echo htmlspecialchars($app['job_title']); ?></a>
+                                <a href="/job-details?id=<?php echo $app['job_id']; ?>" class="font-bold text-slate-900 dark:text-white text-base block hover:text-primary transition-colors"><?php echo htmlspecialchars($app['job_title']); ?></a>
                                 <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[14px]">business</span>
                                     <?php echo htmlspecialchars($app['department_name'] ?? 'General'); ?>
@@ -241,12 +255,26 @@ function getStatusBadge($status) {
                             <?php echo getStatusBadge($app['status']); ?>
                         </div>
                         
+                        <?php if($app['interview_date']): ?>
+                            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded text-xs text-indigo-800 dark:text-indigo-300">
+                                <p class="font-bold">Interview Scheduled</p>
+                                <p><?php echo date('M d, Y @ g:i A', strtotime($app['interview_date'] . ' ' . $app['interview_time'])); ?></p>
+                                <p class="mt-1"><?php echo htmlspecialchars($app['venue_name']); ?></p>
+                                <?php if(!empty($app['venue_link'])): ?>
+                                    <a href="<?php echo htmlspecialchars($app['venue_link']); ?>" target="_blank" class="block mt-1 text-primary underline text-xs">View Map</a>
+                                <?php endif; ?>
+                                <?php if($app['interview_date'] == date('Y-m-d') && $app['interview_status'] == 'scheduled'): ?>
+                                    <button onclick="checkIn(<?php echo $app['interview_id']; ?>)" class="mt-2 w-full text-center bg-primary text-white px-3 py-1.5 rounded hover:bg-primary/90 transition-colors font-medium">
+                                        Tap to Check In
+                                    </button>
+                                <?php elseif($app['interview_status'] == 'completed'): ?>
+                                     <p class="text-green-600 font-bold mt-1">Checked In ✅</p>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+
                         <div class="flex items-center justify-between pt-2">
-                            <span class="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
-                                Applied: <?php echo date('M d, Y', strtotime($app['application_date'])); ?>
-                            </span>
-                            <a href="/job-details?id=<?php echo $app['id']; ?>" class="text-sm font-medium text-primary hover:underline">
+                             <a href="/application/<?php echo $app['id']; ?>" class="text-sm font-medium text-primary hover:underline">
                                 View Details &rarr;
                             </a>
                         </div>
@@ -255,7 +283,7 @@ function getStatusBadge($status) {
                 </div>
             </div>
             
-            <!-- Pagination / Results Count -->
+            <!-- Result Count ... -->
             <div class="flex items-center justify-between border-t border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-[#15152a] sm:px-6">
                 <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                      <div>
@@ -271,11 +299,11 @@ function getStatusBadge($status) {
     </div>
 </main>
 
-<!-- Footer -->
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 
 <script>
     function filterTable() {
+        // ... existing filter logic ...
         const input = document.getElementById("searchInput");
         const filter = input.value.toUpperCase();
         const table = document.getElementById("appsTable");
@@ -283,18 +311,23 @@ function getStatusBadge($status) {
         let visibleCount = 0;
 
         for (let i = 0; i < tr.length; i++) {
-            // Skip header
             if (tr[i].getElementsByTagName("th").length > 0) continue;
             
-            // Should also respect current status filter
             const activeFilterBtn = document.querySelector('.filter-btn.active');
             const currentStatus = activeFilterBtn ? activeFilterBtn.dataset.filter : 'all';
             const rowStatus = tr[i].dataset.status;
 
-            // Check Status Match
-            const statusMatch = (currentStatus === 'all') || (rowStatus === currentStatus) || (currentStatus === 'pending' && rowStatus === 'pending'); // Adjust 'pending' logic if needed
+            let statusMatch = false;
+            if (currentStatus === 'all') {
+                statusMatch = true;
+            } else if (currentStatus === 'reviewed') {
+                statusMatch = (rowStatus === 'reviewed' || rowStatus === 'shortlisted');
+            } else if (currentStatus === 'offered') {
+                statusMatch = (rowStatus === 'offered' || rowStatus === 'hired');
+            } else {
+                statusMatch = (rowStatus === currentStatus);
+            }
             
-            // Check Search Match
             let searchMatch = false;
             let tdTitle = tr[i].getElementsByTagName("td")[0];
             let tdDept = tr[i].getElementsByTagName("td")[1];
@@ -316,9 +349,9 @@ function getStatusBadge($status) {
         }
         updateResultText(visibleCount);
     }
-
+    
     function filterStatus(status, btnElement) {
-        // Toggle Active Class
+        // ... existing filter logic ...
         const buttons = document.querySelectorAll('.filter-btn');
         const activeClass = ['border-primary', 'bg-primary', 'text-white'];
         const inactiveClass = ['border-slate-200', 'bg-white', 'text-slate-600', 'hover:border-slate-300', 'hover:bg-slate-50', 'dark:border-slate-700', 'dark:bg-slate-800', 'dark:text-slate-300', 'dark:hover:bg-slate-700'];
@@ -335,16 +368,15 @@ function getStatusBadge($status) {
             btnElement.classList.add('active');
         }
 
-        // Trigger Filter Logic (re-uses filterTable to combine with search)
         filterTable();
     }
     
     function updateResultText(count) {
+        // ... existing text update ...
         const activeFilterBtn = document.querySelector('.filter-btn.active');
         let statusText = 'All';
         
         if (activeFilterBtn) {
-            // Clone to avoid modifying DOM, remove icon to get just text
             const clone = activeFilterBtn.cloneNode(true);
             const icon = clone.querySelector('.material-symbols-outlined');
             if (icon) icon.remove();
@@ -353,6 +385,67 @@ function getStatusBadge($status) {
         
         const textElement = document.getElementById('resultCountText');
         textElement.innerHTML = `Showing ${statusText} <span class="font-medium">${count}</span> results`;
+    }
+
+    // CHECK-IN LOGIC
+    function checkIn(interviewId) {
+        Swal.fire({
+            title: 'Permission Required',
+            text: 'We need your location to verify you are at the venue.',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Allow Location',
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (navigator.geolocation) {
+                    Swal.showLoading();
+                    
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+                            
+                            $.ajax({
+                                url: '/api/candidate_checkin.php',
+                                method: 'POST',
+                                data: {
+                                    interview_id: interviewId,
+                                    lat: lat,
+                                    lng: lng
+                                },
+                                dataType: 'json',
+                                success: function(response) {
+                                    Swal.hideLoading();
+                                    if (response.success) {
+                                        Swal.fire({
+                                            title: 'Checked In!',
+                                            text: response.message,
+                                            icon: 'success'
+                                        }).then(() => {
+                                            location.reload();
+                                        });
+                                    } else {
+                                        Swal.fire('Check In Failed', response.message + (response.distance_detected ? ` (Distance: ${response.distance_detected})` : ''), 'error');
+                                    }
+                                },
+                                error: function() {
+                                    Swal.fire('Error', 'Network error occurred.', 'error');
+                                }
+                            });
+                        },
+                        (error) => {
+                            let msg = 'Unable to retrieve location.';
+                            if (error.code === error.PERMISSION_DENIED) msg = 'Location permission denied.';
+                            Swal.fire('Error', msg, 'error');
+                        },
+                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    );
+                } else {
+                    Swal.fire('Error', 'Geolocation is not supported by your browser', 'error');
+                }
+            }
+        });
     }
 </script>
 </body>

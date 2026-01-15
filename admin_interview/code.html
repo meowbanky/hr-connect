@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Interview Management | RecruitPro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2222c3",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121220",
+                        "slate-custom": "#535393",
+                        "dark-custom": "#0f0f1a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav {
+            background-color: #e8e8f2;
+            color: #2222c3;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-dark-custom dark:text-white min-h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-[#e8e8f2] dark:border-slate-800 bg-white dark:bg-[#1a1a2e] flex flex-col sticky top-0 h-screen">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">layers</span>
+</div>
+<div>
+<h1 class="text-base font-bold leading-none">RecruitPro</h1>
+<p class="text-xs text-slate-custom mt-1">HR Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-custom hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-custom hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Candidates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg active-nav" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="text-sm font-medium">Interviews</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-custom hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">work</span>
+<span class="text-sm font-medium">Jobs</span>
+</a>
+<div class="pt-4 pb-2 px-3 text-[10px] font-bold uppercase tracking-wider text-slate-custom/60">Recruitment Tool</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-custom hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Pipeline Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-custom hover:bg-background-light dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-[#e8e8f2] dark:border-slate-800">
+<button class="w-full bg-primary text-white py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">add</span>
+                New Request
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="h-16 border-b border-[#e8e8f2] dark:border-slate-800 bg-white/80 dark:bg-[#1a1a2e]/80 backdrop-blur-md sticky top-0 z-10 px-8 flex items-center justify-between">
+<div class="flex items-center gap-6 flex-1">
+<h2 class="text-lg font-bold">Interview Management</h2>
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-custom text-xl">search</span>
+<input class="w-full bg-background-light dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20" placeholder="Search candidate or job title..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 border-r border-[#e8e8f2] dark:border-slate-800 pr-4">
+<button class="p-2 text-slate-custom hover:bg-background-light dark:hover:bg-slate-800 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800"></span>
+</button>
+<button class="p-2 text-slate-custom hover:bg-background-light dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-2">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold leading-none">Alex Rivera</p>
+<p class="text-[10px] text-slate-custom font-medium mt-1 uppercase">Senior Recruiter</p>
+</div>
+<div class="size-10 rounded-full bg-slate-200 border-2 border-white shadow-sm overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Profile picture of HR Administrator Alex Rivera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4CYYwfAFQh8BMdaI_haMC81ZYGgLjNVXRMioHH1iihewKFuj1vjq4Rhl4jDC8FSmEOzjephAqvcYeXhQAmOfOQGyBO5B2pHFxJEVPB_H07Hnc7Fmflb7E5fUeMDiAuaQ8msTP172KPt3Q2cH70rmmOugMLO5N3II_y-NB0K9iRa6ed3wKJIuQwZ_TNEnt4wYpCIS5sna73iL4YynMIrMRrpRqMYzkRPKVQgL0cRaIKDetSUMoWnJUyMi2gJWeuFbWNSF5ayM-FAQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Viewport Content -->
+<div class="p-8">
+<!-- Breadcrumbs & Actions -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<div class="flex items-center gap-2 text-sm text-slate-custom mb-1 font-medium">
+<span>Recruitment</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-dark-custom dark:text-white">Interviews</span>
+</div>
+<h3 class="text-2xl font-bold">Scheduled Sessions</h3>
+</div>
+<div class="flex items-center gap-3">
+<!-- Segmented Control View Switcher -->
+<div class="bg-[#e8e8f2] dark:bg-slate-800 p-1 rounded-xl flex">
+<button class="px-4 py-1.5 rounded-lg bg-white dark:bg-slate-700 shadow-sm text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">grid_view</span>
+                            Grid
+                        </button>
+<button class="px-4 py-1.5 rounded-lg text-slate-custom text-sm font-medium flex items-center gap-2 hover:text-dark-custom">
+<span class="material-symbols-outlined text-lg">calendar_month</span>
+                            Calendar
+                        </button>
+</div>
+<button class="bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                        Schedule Interview
+                    </button>
+</div>
+</div>
+<!-- Tabs Section -->
+<div class="flex border-b border-[#e8e8f2] dark:border-slate-800 mb-6 gap-8 overflow-x-auto">
+<button class="pb-4 border-b-2 border-primary text-dark-custom dark:text-white text-sm font-bold whitespace-nowrap">
+                    Upcoming <span class="ml-2 px-2 py-0.5 bg-primary/10 text-primary rounded-full text-[10px]">12</span>
+</button>
+<button class="pb-4 border-b-2 border-transparent text-slate-custom hover:text-dark-custom text-sm font-medium whitespace-nowrap">
+                    In Progress <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-[10px]">2</span>
+</button>
+<button class="pb-4 border-b-2 border-transparent text-slate-custom hover:text-dark-custom text-sm font-medium whitespace-nowrap">
+                    Completed
+                </button>
+<button class="pb-4 border-b-2 border-transparent text-slate-custom hover:text-dark-custom text-sm font-medium whitespace-nowrap">
+                    Rescheduled
+                </button>
+</div>
+<!-- Bento Interview Cards Grid -->
+<div class="bento-grid">
+<!-- Card 1: In Progress -->
+<div class="bg-white dark:bg-[#1a1a2e] border-2 border-green-500/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3">
+<div class="flex items-center gap-1.5 bg-green-50 text-green-600 px-2 py-1 rounded-full">
+<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Live</span>
+</div>
+</div>
+<div class="flex items-start gap-4 mb-4">
+<div class="size-12 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
+<img class="w-full h-full object-cover" data-alt="Portrait of candidate Sarah Jenkins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmiDvfCHs5ZX7W7qZIi190fKV0soSrfdEJNdsHbB5izG4SKfIs0GJsw06RSJGWTfDO-CkayUzOOv2QTax5-5aAwFUBecfOXDF2XIxO2UE3W44UM_EtSwqwSkzqPOt_mjUc0DAsL1sz7eE2Yf7aykArVDaxFuskFyUtQfwOkeIthaHb_fvXiWnWF01CVzbNzFbgiNoYHHcW1SMMsiOtb03wso-jaP7sKrTtxr1uL1ZkW4o6CknmDJ0CNJMJYZBzg82rAWdaIty54OE"/>
+</div>
+<div>
+<h4 class="font-bold text-base">Sarah Jenkins</h4>
+<p class="text-xs text-slate-custom font-medium">Sr. Frontend Engineer</p>
+<div class="mt-2 flex items-center gap-2 text-[11px] font-bold text-primary">
+<span class="material-symbols-outlined text-sm">code</span>
+                                Technical Interview
+                            </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 py-4 border-y border-dashed border-slate-200 dark:border-slate-800 my-4">
+<div>
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight">Time &amp; Date</p>
+<p class="text-xs font-semibold mt-0.5">Today, 10:30 AM</p>
+</div>
+<div>
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight">Room</p>
+<p class="text-xs font-semibold mt-0.5">Virtual #04</p>
+</div>
+</div>
+<div class="mb-5">
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight mb-2">Panel Committee</p>
+<div class="flex -space-x-2">
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-indigo-100 flex items-center justify-center overflow-hidden group cursor-help" title="Chairman: Dr. Emily Chen">
+<img class="w-full h-full object-cover" data-alt="Avatar of Chairman Dr. Emily Chen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1aTjcS7l4tu_d_2roL8JNYs6M6XpQgRXraUTLk9PVpNgGo7QubjIJF_Zb_1hHxBTb3_mtkYm8PiiXYQidDa-RYiBRlwU1MaouIPqYdZS4DqimPGePye2dvBgabEPjte9RGzOtZjALwdZMT4xuTtC__yjF2zFJoXd5jUvacjvRMrPetDamk9WIDz9HdpYWoozfGU2NWuFnqJThEIFn3492iN_Fe1T7FUUhMjAbQqvu_hD5oYE177Z2H_6ElyqRdK2bJTQbgAcAEFE"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-indigo-100 flex items-center justify-center overflow-hidden group cursor-help" title="Panelist: Marcus Thorne">
+<img class="w-full h-full object-cover" data-alt="Avatar of Panelist Marcus Thorne" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0_ebLdaj5Q0hFbEb67SAfah334byBwZ02wFo2ejtbvKhxjIf9ZWpW3dbGfvc7cIWR2PLokU-TxmpSuTMRl0iKCCGgVgc98sx9nf0s_ZSsh7luhDUulAc-TzHEGrSTRqGzXU3Hv1SF2jh1Yss11Q6GVLzHJRbTc_4m7e_yq8qOTY5rUAoQTmYNd1a9tyaoRD7hB02bLxeME4wc2oalaKtP5Osqm3s8bS_WcNSKtv-txWZgE3UPn4Qsk27MJ8ypzXWsHJ8RwwOazn0"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-indigo-100 flex items-center justify-center overflow-hidden group cursor-help" title="Panelist: Sarah Loh">
+<img class="w-full h-full object-cover" data-alt="Avatar of Panelist Sarah Loh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3z-NiDwFd29NBHDakVDyLNw5j0Ns-pBwS2SwgpQ1EL7QjAxuCUfagpPU5qghmOhoVrYOHV-YZQgx7BxjzYEFB56ET3m_xhotdxY1yRrk67pdvDu1xdH-dB-O8d_32z0ndN9GYbWmLM9XmhEwggvxmkI_-V6g0-ult74k0Ekpnykhvqhxgr9qKruhtDd-9hk6K914ihrAXhG5y_poxGiRIZLbjkRKmkhUHTmH_OrOj8WAe3Sh80ClTnuq5SfgaXArGHj1GnlCx-PU"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500">+1</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-xs font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base">fact_check</span>
+                            Join &amp; Score
+                        </button>
+<button class="p-2 border border-[#e8e8f2] dark:border-slate-800 rounded-lg text-slate-custom hover:bg-background-light dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-base">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Upcoming -->
+<div class="bg-white dark:bg-[#1a1a2e] border border-[#e8e8f2] dark:border-slate-800 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start gap-4 mb-4">
+<div class="size-12 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
+<img class="w-full h-full object-cover" data-alt="Portrait of candidate David Miller" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKWhAaPkMZJCFf-bAIt9pz0ND208nf0qIPdkTALg2DGHClD0lUtb0XekvVThMKlAtJURTZJXEpH2JsSxnoOoTtP5osp8uAldntm8VmrQjYlPVy5jyVKCfdJ120ehouGOHyx-6ReEUcRXJ00gfBlpZRC_dk_m1FBIziF8Us4Poxoanp5s28K1ss_FAGx2KMpsYikZRZ9ZOvTdxYvU6o21T-NXG-VMKaobLV79G8YFj18l4FgOmmhqlxhP6cSlNXh7uvLvBMoUZr4Fg"/>
+</div>
+<div>
+<h4 class="font-bold text-base">David Miller</h4>
+<p class="text-xs text-slate-custom font-medium">Marketing Lead</p>
+<div class="mt-2 flex items-center gap-2 text-[11px] font-bold text-slate-custom">
+<span class="material-symbols-outlined text-sm">groups</span>
+                                Cultural Fit
+                            </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 py-4 border-y border-dashed border-slate-200 dark:border-slate-800 my-4">
+<div>
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight">Time &amp; Date</p>
+<p class="text-xs font-semibold mt-0.5">Tomorrow, 02:00 PM</p>
+</div>
+<div>
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight">Location</p>
+<p class="text-xs font-semibold mt-0.5">Meeting Room B</p>
+</div>
+</div>
+<div class="mb-5">
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight mb-2">Panel Committee</p>
+<div class="flex -space-x-2">
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-indigo-100 flex items-center justify-center overflow-hidden" title="Chairman: Robert Vance">
+<img class="w-full h-full object-cover" data-alt="Avatar of Chairman Robert Vance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfSPAHG967XgYExh-Fos0S4vm2fH2Lc3tDZbvhUKcEDvO7VodmrKEnOh5K2EUjYAYXB2JUkYp_BjNKiz6CpoqXknZm0lgW_ZROk9ra2Ioxoo5yPTXREhifLR3mLIpu6D5jNJ3edIU9RnmdF-a1xLMRyM8lU8iuV7-LkY-Xf6HphI8jxKvt9rIuoppvzUr7ogVJH98HDdQbKIZO2Y4214_713ZNgK424GWp8iyx8I9wwsu63HrIdu0cMgy4333LjIJbBhBwJpEPCz8"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-indigo-100 flex items-center justify-center overflow-hidden" title="Panelist: Julia Kim">
+<img class="w-full h-full object-cover" data-alt="Avatar of Panelist Julia Kim" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhxI5AbyFUX1VCc3UnLvaIa2HJ4gvND2NA84W3zs1nZ-N7-OBbo2YIeZsh5OruZ2KYpYdbhuNZA1ih53GYIHIOAgZpUax-aL-_AP8-D9fOFPl3KAo40uFD3R9qxoe03etRAyXHpToDXZ19YdWGOXdi4-ADafLfM1iLMw-8RlTRGy2k_4Z5h4bQUGlpF6cEI4-f-wjiu7poUwa0URGNOGFjkUaguysfuRAor5J_aJXVI-nvDfXY-2IFBeurgsIJMACrHJdxngjlNaM"/>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 border border-primary text-primary py-2 rounded-lg text-xs font-bold hover:bg-primary/5 transition-colors">
+                            Reschedule
+                        </button>
+<button class="p-2 border border-[#e8e8f2] dark:border-slate-800 rounded-lg text-slate-custom hover:bg-background-light dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-base">edit</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Upcoming -->
+<div class="bg-white dark:bg-[#1a1a2e] border border-[#e8e8f2] dark:border-slate-800 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start gap-4 mb-4">
+<div class="size-12 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
+<img class="w-full h-full object-cover" data-alt="Portrait of candidate Anna Watson" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEs_XIBXuydmRE9s8WxmTEnYMs2asq_d949ixIEirRx-rm4zIzkiOc1kdCX9qjRGlfVfDDQWjJLdS8F0QBRrvjiAd6YLFSFs_WYmEjk2rANjZqamAoQHtRb3WVmnuIECSYl-EEukZzQUJmr8sr6qWc_ZrWJN_rTZxqdcHMFQO_3_5O8rbYCP0hVzOjxOgdfi4jvD4pw-W5gJzTOKgAJGkyyOCQOuWwMG0xsg53bvTrp0y8Tn1nYi-k759wt-i5KXHye5ABBo5GHSQ"/>
+</div>
+<div>
+<h4 class="font-bold text-base">Anna Watson</h4>
+<p class="text-xs text-slate-custom font-medium">Product Designer</p>
+<div class="mt-2 flex items-center gap-2 text-[11px] font-bold text-slate-custom">
+<span class="material-symbols-outlined text-sm">palette</span>
+                                Portfolio Review
+                            </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 py-4 border-y border-dashed border-slate-200 dark:border-slate-800 my-4">
+<div>
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight">Time &amp; Date</p>
+<p class="text-xs font-semibold mt-0.5">Aug 24, 09:00 AM</p>
+</div>
+<div>
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight">Room</p>
+<p class="text-xs font-semibold mt-0.5">Virtual #01</p>
+</div>
+</div>
+<div class="mb-5">
+<p class="text-[10px] text-slate-custom uppercase font-bold tracking-tight mb-2">Panel Committee</p>
+<div class="flex -space-x-2">
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-indigo-100 flex items-center justify-center overflow-hidden" title="Chairman: Liam O'Brien">
+<img class="w-full h-full object-cover" data-alt="Avatar of Chairman Liam O'Brien" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy93GDS5cXEl9y_fvwOPoc3mkUrhRVPZih9gw1K7X3Y-WVRH6MqLCDw1yifgsFu5xIJbZhUbQ4o_6_QKuT_y7bjgqMT_mFCCT4t3WzPcRRnM7zyhOL4zufUDC8nksgrAH8XHBmj1GiNef_9PycaQMmben5l03XmnogQb1nyS-6N_SypivVLfj-XwXeQ6MGY82hST1EsLSbxk_3Vm0q8GTBXA4k61jqRRNAs81fzMcwcf1jxYGInCcnKR6st9exJWaZHAG9LpSlA6k"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-indigo-100 flex items-center justify-center overflow-hidden" title="Panelist: Sarah Jenkins">
+<img class="w-full h-full object-cover" data-alt="Avatar of Panelist Sarah Jenkins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ0imDkDHmTzzH8CObVKJHUlwFrnaQ4vQLpLqj7TodDTO1lmPVkvXb4YKxmKNpU23fo4tirdR1e6dnnZPe8VGEL6Tud8wljItth79TqRLsfLDD-ZzTa0m2dOvQjAwMmFtW7wvdBqpWujz_UHrzi6ZpeGdGQUNPW2b7kK16vbtiOIi2wb1zBBXBsPIM6UZ4FTdWh64_saqLEouapYuSek3VWeUv1wSuBEkT7FkEHPvU7fTyAMnIWQioQ8SnBfHMOCkwL8pEb2Ni51U"/>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-indigo-100 flex items-center justify-center overflow-hidden" title="Panelist: Tom Hiddleston">
+<img class="w-full h-full object-cover" data-alt="Avatar of Panelist Tom Hiddleston" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsNJU4iPWAHsqbVnALeUr4THWZBBz57o2H9sjKzekwgm6vDz6FRTtI_1vHAxmfd2WywC6fZg5yY8GILyeRFtr9Em_ben3Ppl_r-rHqdBVR0wXWBRA85NkYva5uPv1enwDA9y3CgFnWHv9ygeEyr06_GSVDUgNBjcAwlKDgqXr9Zh8yGZlg8jWmra_gSW7Gn8D_7nvoCRWSQJEJbBmzXHDSy8fSag0uptbkudchA__euW-gVHRnI9TzcPZ_pur_nJn_5L1tff6QwZs"/>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 border border-primary text-primary py-2 rounded-lg text-xs font-bold hover:bg-primary/5 transition-colors">
+                            Reschedule
+                        </button>
+<button class="p-2 border border-[#e8e8f2] dark:border-slate-800 rounded-lg text-slate-custom hover:bg-background-light dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-base">edit</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Panelist Insights Horizontal Scroll (Surprise Element) -->
+<div class="mt-12 bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/10">
+<div class="flex items-center justify-between mb-6">
+<h5 class="text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                        Panelist Availability &amp; Load
+                    </h5>
+<a class="text-xs font-bold text-primary hover:underline" href="#">View Full Schedule</a>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+<div class="min-w-[200px] bg-white dark:bg-[#1a1a2e] p-3 rounded-xl shadow-sm border border-white dark:border-slate-800">
+<div class="flex items-center gap-3 mb-3">
+<div class="size-10 rounded-full bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar of Panelist Dr. Emily Chen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEuxJXiqqmWKw1_alKNGJ65hpJPNSpQNdDKgPllj7OEBEE2TTc8QmIUV2dzxGLjcv9STZ7ZX9aRKQxNuz1gk3HBEs0Z-eyB5BFkuyOMOFhXKLevZm_HrO0mhs9xIzo43yzrnSbq3JQifRNKoxsrWWVgpayzPzkojywV0lgKzgWXLatm1pkFlvUZCWKyYwQKn-FoUcGGnrs97nOwmYUK6tQ5WWwUqa2StJZ3xnCQ24F_DsoNSO9Veim7M-7ht9MRg3l0-RVIbgXnu8"/>
+</div>
+<div>
+<p class="text-xs font-bold">Dr. Emily Chen</p>
+<p class="text-[10px] text-slate-custom">Engineering</p>
+</div>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[80%]"></div>
+</div>
+<p class="text-[9px] mt-2 font-bold text-slate-custom">8/10 hours scheduled this week</p>
+</div>
+<div class="min-w-[200px] bg-white dark:bg-[#1a1a2e] p-3 rounded-xl shadow-sm border border-white dark:border-slate-800">
+<div class="flex items-center gap-3 mb-3">
+<div class="size-10 rounded-full bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar of Panelist Marcus Thorne" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsP5dkr6SySZXQS2X9ytP6p_5AqA4VuNWje8sUpnv6_Pw55JdiVXd5W-Lx9X7E6oTIYQVn2ITvToW1UcNuvcnUrj640GNXGtaQF1NVqTTQMKZj-n_3y2Mb613KCgpHnioMgfnWkqAExYB8hgzh7ODCdA1WBasDxDv5M4B3LLGLDRAe0Wj_W6G3l5bhCy518vrh-h5wKqTPvyW8S_wEgFhLGXZb1VPqOowkfPYKylnHXlMPGwies8CH0urpTwYiG08cMiSZEshokW0"/>
+</div>
+<div>
+<p class="text-xs font-bold">Marcus Thorne</p>
+<p class="text-[10px] text-slate-custom">Design</p>
+</div>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-green-500 h-full w-[40%]"></div>
+</div>
+<p class="text-[9px] mt-2 font-bold text-slate-custom">4/10 hours scheduled this week</p>
+</div>
+<div class="min-w-[200px] bg-white dark:bg-[#1a1a2e] p-3 rounded-xl shadow-sm border border-white dark:border-slate-800">
+<div class="flex items-center gap-3 mb-3">
+<div class="size-10 rounded-full bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar of Panelist Sarah Loh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_Muu4GiG7pTBKlD5OJ9bALUBsqCXV_JmFmdt_CK6NOgQt3hVqHk5dGgTt7b1x_1obeH8sTjXo5BOB21XVothx-Vm2-579zy1fzdMHaHum8cJwTiI5O2dNZ8nk5NHrJRRTilKubcyd5P_CnOPCi3FvBFHTY1kmgXnFlwNHyyaOSxpxqMD6hu5GEL_r3ww3uSaleAlxyv1IY1NM5gZDUrJQ49AaHL_uLPlUT0BfW3Y2TZ10yxBCzlnVxk-gmwXdJf479UuA6Y0qths"/>
+</div>
+<div>
+<p class="text-xs font-bold">Sarah Loh</p>
+<p class="text-[10px] text-slate-custom">HR Operations</p>
+</div>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[95%]"></div>
+</div>
+<p class="text-[9px] mt-2 font-bold text-slate-custom">9.5/10 hours scheduled this week</p>
+</div>
+<div class="min-w-[200px] bg-white dark:bg-[#1a1a2e] p-3 rounded-xl shadow-sm border border-white dark:border-slate-800 flex items-center justify-center border-dashed border-2 border-slate-200 dark:border-slate-800">
+<button class="text-[10px] font-bold text-slate-custom flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-lg">add</span>
+                            Invite Panelist
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Candidate Notifications Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5245e8",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121121",
+                        "card-dark": "#1e293b",
+                        "card-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="w-64 h-full flex flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#131221] shrink-0 transition-all duration-300">
+<div class="p-6 flex flex-col h-full justify-between">
+<div class="flex flex-col gap-8">
+<!-- User Profile Summary -->
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shrink-0 border-2 border-slate-100 dark:border-slate-700" data-alt="Profile picture of candidate Alex Morgan" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAtamz679WnkoDqmp_MdPNfYWw8VY4FpvS0Ql_7Y81YN44H-BdaVSz7x5APBE4yeY1Drp0KTZVoenlbjLoaxopKcakM55ONzT0246EYNxpRxWIYnbl-S1faTHkS6EuVVxOi9eEpoo8dWwSDWmkIqAv85MjPLTcT3S0CYKzKnBZIBpaGRWOL7f6hzvLnfhPLHaiXPAwsen5XhmW67IDXYgyG4C_1JR3lzT3PWc2q5IY6tmX_fbP54S-mXR9Mv6ePXAUHkPG1pzgfrM4");'>
+</div>
+<div class="flex flex-col overflow-hidden">
+<h1 class="text-slate-900 dark:text-white text-base font-semibold leading-tight truncate">Alex Morgan</h1>
+<p class="text-slate-500 dark:text-[#9894c7] text-xs font-normal leading-normal truncate">ID: #8821</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">work</span>
+<span class="text-sm font-medium">Jobs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">description</span>
+<span class="text-sm font-medium">My Applications</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 dark:bg-[#282546] text-primary dark:text-white group" href="#">
+<span class="material-symbols-outlined icon-fill text-primary dark:text-white">notifications</span>
+<span class="text-sm font-medium">Notifications</span>
+<div class="ml-auto bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">2</div>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group" href="#">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Action -->
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-400 cursor-pointer transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Sign Out</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 h-full overflow-y-auto relative">
+<div class="max-w-5xl mx-auto px-6 py-8 w-full flex flex-col gap-6">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Notifications</h2>
+<p class="text-slate-500 dark:text-[#9894c7] text-base">You have 2 unread alerts needing your attention.</p>
+</div>
+<button class="flex items-center gap-2 justify-center rounded-lg h-10 px-4 bg-white dark:bg-[#282546] border border-slate-200 dark:border-transparent text-slate-700 dark:text-white text-sm font-bold shadow-sm hover:bg-slate-50 dark:hover:bg-[#322f54] transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">done_all</span>
+<span>Mark all as read</span>
+</button>
+</div>
+<!-- Toolbar: Search & Filters -->
+<div class="flex flex-col gap-4">
+<!-- Search Bar -->
+<div class="w-full">
+<label class="flex flex-col w-full h-12">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full shadow-sm bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-slate-700 focus-within:border-primary dark:focus-within:border-primary transition-colors overflow-hidden">
+<div class="text-slate-400 flex items-center justify-center pl-4 pr-2">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="flex w-full min-w-0 flex-1 bg-transparent text-slate-900 dark:text-white focus:outline-0 border-none h-full placeholder:text-slate-400 px-2 text-sm font-normal" placeholder="Search notifications by keyword..." value=""/>
+</div>
+</label>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 transition-transform active:scale-95">
+<p class="text-sm font-medium leading-normal">All</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-[#282546] hover:bg-slate-300 dark:hover:bg-[#363259] px-4 transition-colors">
+<p class="text-slate-700 dark:text-white text-sm font-medium leading-normal">Unread</p>
+<span class="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-white">2</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-[#282546] hover:bg-slate-300 dark:hover:bg-[#363259] px-4 transition-colors">
+<p class="text-slate-700 dark:text-white text-sm font-medium leading-normal">Interviews</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-[#282546] hover:bg-slate-300 dark:hover:bg-[#363259] px-4 transition-colors">
+<p class="text-slate-700 dark:text-white text-sm font-medium leading-normal">Applications</p>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-slate-200 dark:bg-[#282546] hover:bg-slate-300 dark:hover:bg-[#363259] px-4 transition-colors">
+<p class="text-slate-700 dark:text-white text-sm font-medium leading-normal">System</p>
+</button>
+</div>
+</div>
+<!-- Notifications Feed -->
+<div class="flex flex-col gap-3">
+<!-- Item 1: Interview (Unread) -->
+<div class="group relative flex flex-col md:flex-row gap-4 bg-white dark:bg-card-dark p-5 rounded-xl border-l-4 border-primary shadow-sm hover:shadow-md transition-all hover:bg-slate-50 dark:hover:bg-[#26334d] cursor-pointer">
+<div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 hover:text-slate-600 dark:hover:text-white" title="Mark as read"><span class="material-symbols-outlined text-[20px]">mark_email_read</span></button>
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 hover:text-red-400" title="Dismiss"><span class="material-symbols-outlined text-[20px]">close</span></button>
+</div>
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-lg bg-primary/10 dark:bg-[#282546] text-primary shrink-0 size-12">
+<span class="material-symbols-outlined icon-fill">calendar_month</span>
+</div>
+<div class="flex flex-col gap-1.5 flex-1 pr-8">
+<div class="flex items-center gap-2">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-tight">Invitation: Technical Screen with Engineering Team</p>
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+</div>
+<p class="text-slate-600 dark:text-[#9894c7] text-sm font-normal leading-relaxed">
+                                You have been invited to a technical interview for the <span class="font-medium text-slate-900 dark:text-white">Senior Frontend Developer</span> role.
+                            </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Scheduled for tomorrow at 2:00 PM EST.</p>
+<div class="mt-2 flex gap-3">
+<button class="bg-primary hover:bg-primary/90 text-white text-xs font-semibold py-2 px-4 rounded-lg transition-colors">View Details</button>
+<button class="bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 text-xs font-semibold py-2 px-4 rounded-lg transition-colors">Reschedule</button>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex flex-col items-end justify-between">
+<p class="text-slate-400 text-xs font-medium">10m ago</p>
+</div>
+</div>
+<!-- Item 2: Status Update (Unread) -->
+<div class="group relative flex flex-col md:flex-row gap-4 bg-white dark:bg-card-dark p-5 rounded-xl border-l-4 border-green-500 shadow-sm hover:shadow-md transition-all hover:bg-slate-50 dark:hover:bg-[#26334d] cursor-pointer">
+<div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 hover:text-slate-600 dark:hover:text-white" title="Mark as read"><span class="material-symbols-outlined text-[20px]">mark_email_read</span></button>
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 hover:text-red-400" title="Dismiss"><span class="material-symbols-outlined text-[20px]">close</span></button>
+</div>
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-lg bg-green-500/10 dark:bg-green-900/20 text-green-600 dark:text-green-400 shrink-0 size-12">
+<span class="material-symbols-outlined icon-fill">check_circle</span>
+</div>
+<div class="flex flex-col gap-1.5 flex-1 pr-8">
+<div class="flex items-center gap-2">
+<p class="text-slate-900 dark:text-white text-base font-semibold leading-tight">Application Status Update</p>
+<span class="size-2 rounded-full bg-primary"></span>
+</div>
+<p class="text-slate-600 dark:text-[#9894c7] text-sm font-normal leading-relaxed">
+                                Good news! Your application for <span class="font-medium text-slate-900 dark:text-white">Senior Frontend Developer</span> has moved to the <span class="text-green-600 dark:text-green-400 font-bold">Offer</span> stage.
+                            </p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">HR will contact you shortly regarding the next steps.</p>
+</div>
+</div>
+<div class="shrink-0">
+<p class="text-slate-400 text-xs font-medium">2h ago</p>
+</div>
+</div>
+<!-- Item 3: Message (Read) -->
+<div class="group relative flex flex-col md:flex-row gap-4 bg-slate-50 dark:bg-[#131221] p-5 rounded-xl border border-slate-200 dark:border-slate-800/50 hover:border-slate-300 dark:hover:border-slate-700 transition-all cursor-pointer opacity-90 hover:opacity-100">
+<div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 hover:text-red-400" title="Delete"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-lg bg-slate-200 dark:bg-[#1e1d32] text-slate-500 dark:text-slate-400 shrink-0 size-12">
+<span class="material-symbols-outlined">chat_bubble</span>
+</div>
+<div class="flex flex-col gap-1.5 flex-1 pr-8">
+<p class="text-slate-700 dark:text-slate-200 text-base font-medium leading-tight">New message from Sarah (HR)</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-relaxed italic">
+                                "Hi Alex, thanks for the quick response. Could you please upload your updated portfolio when you get a chance? Thanks!"
+                            </p>
+<a class="text-primary text-xs font-medium mt-1 hover:underline" href="#">Reply to message</a>
+</div>
+</div>
+<div class="shrink-0">
+<p class="text-slate-400 text-xs font-medium">Yesterday</p>
+</div>
+</div>
+<!-- Item 4: System (Read) -->
+<div class="group relative flex flex-col md:flex-row gap-4 bg-slate-50 dark:bg-[#131221] p-5 rounded-xl border border-slate-200 dark:border-slate-800/50 hover:border-slate-300 dark:hover:border-slate-700 transition-all cursor-pointer opacity-90 hover:opacity-100">
+<div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 hover:text-red-400" title="Delete"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+<div class="flex items-start gap-4 flex-1">
+<div class="flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/20 text-blue-500 dark:text-blue-400 shrink-0 size-12">
+<span class="material-symbols-outlined">info</span>
+</div>
+<div class="flex flex-col gap-1.5 flex-1 pr-8">
+<p class="text-slate-700 dark:text-slate-200 text-base font-medium leading-tight">Profile Completeness</p>
+<div class="w-full max-w-sm bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-1">
+<div class="bg-blue-500 h-1.5 rounded-full" style="width: 80%"></div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-relaxed mt-1">
+                                Your profile is 80% complete. Add your key skills to stand out to recruiters.
+                            </p>
+</div>
+</div>
+<div class="shrink-0">
+<p class="text-slate-400 text-xs font-medium">2 days ago</p>
+</div>
+</div>
+<!-- Loading / End State -->
+<div class="flex justify-center py-6">
+<p class="text-slate-400 text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                        You're all caught up!
+                    </p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

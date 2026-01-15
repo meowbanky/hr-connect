@@ -23,7 +23,7 @@ try {
 
     // 1. Create/Update Candidate Record
     // Check if candidate exists for this user
-    $stmt = $pdo->prepare("SELECT id FROM candidates WHERE user_id = ?");
+    $stmt = $pdo->prepare("SELECT * FROM candidates WHERE user_id = ?");
     $stmt->execute([$user_id]);
     $candidate = $stmt->fetch();
     
@@ -140,9 +140,9 @@ try {
             }
          }
          
-         $sqlApp = "INSERT INTO applications (job_id, candidate_id, cover_letter, status, profile_snapshot) VALUES (?, ?, ?, 'pending', ?)";
+         $sqlApp = "INSERT INTO applications (job_id, candidate_id, cover_letter, status) VALUES (?, ?, ?, 'pending')";
          // Storing path in cover_letter column for now (schema says text)
-         $pdo->prepare($sqlApp)->execute([$job_id, $candidate_id, $cover_letter_path ?: $bio, $snapshotJson]); 
+         $pdo->prepare($sqlApp)->execute([$job_id, $candidate_id, $cover_letter_path ?: $bio]); 
     }
 
     // 3. Process Education History

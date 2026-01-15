@@ -52,9 +52,26 @@ function isActive($path) {
     <nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
         <p class="px-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Main Menu</p>
         
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium group transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin') !== false && !strpos($_SERVER['REQUEST_URI'], 'jobs') && !strpos($_SERVER['REQUEST_URI'], 'settings')) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin">
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin') !== false && !strpos($_SERVER['REQUEST_URI'], 'jobs') && !strpos($_SERVER['REQUEST_URI'], 'settings') && !strpos($_SERVER['REQUEST_URI'], 'applications') && !strpos($_SERVER['REQUEST_URI'], 'interviews') && !strpos($_SERVER['REQUEST_URI'], 'employees') && !strpos($_SERVER['REQUEST_URI'], 'reports') && !strpos($_SERVER['REQUEST_URI'], 'notifications')) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin">
             <span class="material-symbols-outlined <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'fill' : ''; ?>">dashboard</span>
             <span>Dashboard</span>
+        </a>
+
+        <?php
+        // Fetch unread notifications count
+        $unreadNotifCount = 0;
+        if(isset($pdo) && isset($_SESSION['user_id'])) {
+            $nStmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
+            $nStmt->execute([$_SESSION['user_id']]);
+            $unreadNotifCount = $nStmt->fetchColumn();
+        }
+        ?>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], 'notifications') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/notifications.php">
+            <span class="material-symbols-outlined <?php echo (strpos($_SERVER['REQUEST_URI'], 'notifications') !== false) ? 'icon-fill' : ''; ?>">notifications</span>
+            <span>Notifications</span>
+             <?php if($unreadNotifCount > 0): ?>
+                <span class="ml-auto bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm"><?php echo $unreadNotifCount; ?></span>
+            <?php endif; ?>
         </a>
         
         <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/jobs') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/jobs">
@@ -62,10 +79,20 @@ function isActive($path) {
             <span>Jobs</span>
         </a>
         
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/candidates') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/candidates">
-            <span class="material-symbols-outlined">group</span>
-            <span>Candidates</span>
-            <span class="ml-auto bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded-full">12</span>
+        <?php
+        // Fetch pending applications count
+        $pendingCount = 0;
+        if(isset($pdo)) {
+            $stmt = $pdo->query("SELECT COUNT(*) FROM applications WHERE status = 'pending'");
+            $pendingCount = $stmt->fetchColumn();
+        }
+        ?>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], 'applications') !== false || strpos($_SERVER['REQUEST_URI'], 'view_application') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/applications">
+            <span class="material-symbols-outlined <?php echo (strpos($_SERVER['REQUEST_URI'], 'applications') !== false) ? 'fill' : ''; ?>">group</span>
+            <span>Applications</span>
+            <?php if($pendingCount > 0): ?>
+                <span class="ml-auto bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full"><?php echo $pendingCount; ?></span>
+            <?php endif; ?>
         </a>
         
         <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/interviews') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/interviews">

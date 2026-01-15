@@ -58,6 +58,8 @@ $userName = $_SESSION['user_name'] ?? '';
 <!-- Top Navigation Bar -->
 <?php include_once __DIR__ . '/../includes/header.php'; ?>
 
+
+
 <!-- Main Content Layout -->
 <main class="flex-grow w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8" id="mainContent">
     <div id="pageLoader" class="flex justify-center items-center h-64">
@@ -67,7 +69,7 @@ $userName = $_SESSION['user_name'] ?? '';
     <!-- Content Wrapper (Hidden until loaded) -->
     <div id="contentWrapper" class="hidden">
         <!-- Breadcrumbs -->
-        <div class="mb-6">
+        <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <nav aria-label="Breadcrumb" class="flex">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
@@ -84,6 +86,13 @@ $userName = $_SESSION['user_name'] ?? '';
                     </li>
                 </ol>
             </nav>
+
+            <!-- Admin Return Link -->
+            <?php if (isset($_SESSION['user_role']) && in_array($_SESSION['user_role'], ['admin', 'hr_staff'])): ?>
+                <a href="../admin/index.php" class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-white transition-colors bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[18px]">arrow_back</span> Back to Admin
+                </a>
+            <?php endif; ?>
         </div>
         <!-- Header Image & Overlay Title -->
         <div class="relative w-full h-[240px] rounded-xl overflow-hidden mb-8 shadow-sm group">

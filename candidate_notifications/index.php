@@ -99,70 +99,93 @@ foreach ($notifications as $n) {
                 <p>No notifications yet.</p>
             </div>
         <?php else: ?>
-            <?php foreach ($notifications as $notification): 
-                $isRead = $notification['is_read'];
-                $type = $notification['type'] ?? 'system';
-                
-                // Style based on type
-                $borderClass = 'border-slate-200 dark:border-slate-800/50';
-                $iconBg = 'bg-blue-100 dark:bg-blue-900/20 text-blue-500';
-                $iconName = 'info';
+            <?php 
+            $groups = ['Today' => [], 'Yesterday' => [], 'Earlier' => []];
+            $today = new DateTime('today');
+            $yesterday = new DateTime('yesterday');
 
-                if (!$isRead) {
-                    $borderClass = 'border-l-4 border-primary'; // Default unread
+            foreach ($notifications as $n) {
+                $nDate = new DateTime($n['created_at']);
+                $nDay = new DateTime($nDate->format('Y-m-d'));
+
+                if ($nDay == $today) {
+                    $groups['Today'][] = $n;
+                } elseif ($nDay == $yesterday) {
+                    $groups['Yesterday'][] = $n;
+                } else {
+                    $groups['Earlier'][] = $n;
                 }
+            }
 
-                if ($type == 'application') {
-                    $iconBg = 'bg-green-500/10 dark:bg-green-900/20 text-green-600';
-                    $iconName = 'check_circle';
-                    if (!$isRead) $borderClass = 'border-l-4 border-green-500';
-                } elseif ($type == 'interview') {
-                    $iconBg = 'bg-primary/10 dark:bg-[#282546] text-primary';
-                    $iconName = 'calendar_month';
-                    if (!$isRead) $borderClass = 'border-l-4 border-primary';
-                }
-
-                $readClass = $isRead ? 'opacity-90 bg-slate-50 dark:bg-[#131221]' : 'bg-white dark:bg-card-dark shadow-sm hover:shadow-md';
+            foreach ($groups as $label => $groupItems): 
+                if (empty($groupItems)) continue;
             ?>
-            <div class="notification-item group relative flex flex-col md:flex-row gap-4 <?php echo $readClass; ?> p-5 rounded-xl <?php echo $borderClass; ?> transition-all cursor-pointer hover:bg-slate-50 dark:hover:bg-[#26334d]" 
-                 onclick="window.location.href='/notification-details?id=<?php echo $notification['id']; ?>'"
-                 data-id="<?php echo $notification['id']; ?>" 
-                 data-read="<?php echo $isRead; ?>"
-                 data-type="<?php echo $type; ?>"
-                 data-archived="<?php echo $notification['is_archived'] ?? 0; ?>">
-                
-                <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <?php if (!$isRead): ?>
-                    <button class="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 hover:text-slate-600 dark:hover:text-white mark-read-btn" title="Mark as read">
-                        <span class="material-symbols-outlined text-[20px]">mark_email_read</span>
-                    </button>
-                    <?php endif; ?>
-                </div>
+                <h3 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-4 mb-2 pl-1"><?php echo $label; ?></h3>
+                <?php foreach ($groupItems as $notification): 
+                    $isRead = $notification['is_read'];
+                    $type = $notification['type'] ?? 'system';
+                    
+                    // Style based on type
+                    $borderClass = 'border-slate-200 dark:border-slate-800/50';
+                    $iconBg = 'bg-blue-100 dark:bg-blue-900/20 text-blue-500';
+                    $iconName = 'info';
 
-                <div class="flex items-start gap-4 flex-1">
-                    <div class="flex items-center justify-center rounded-lg <?php echo $iconBg; ?> shrink-0 size-12">
-                        <span class="material-symbols-outlined <?php echo !$isRead ? 'icon-fill' : ''; ?>"><?php echo $iconName; ?></span>
+                    if (!$isRead) {
+                        $borderClass = 'border-l-4 border-primary'; // Default unread
+                    }
+
+                    if ($type == 'application') {
+                        $iconBg = 'bg-green-500/10 dark:bg-green-900/20 text-green-600';
+                        $iconName = 'check_circle';
+                        if (!$isRead) $borderClass = 'border-l-4 border-green-500';
+                    } elseif ($type == 'interview') {
+                        $iconBg = 'bg-primary/10 dark:bg-[#282546] text-primary';
+                        $iconName = 'calendar_month';
+                        if (!$isRead) $borderClass = 'border-l-4 border-primary';
+                    }
+
+                    $readClass = $isRead ? 'opacity-90 bg-slate-50 dark:bg-[#131221]' : 'bg-white dark:bg-card-dark shadow-sm hover:shadow-md';
+                ?>
+                <div class="notification-item group relative flex flex-col md:flex-row gap-4 <?php echo $readClass; ?> p-5 rounded-xl <?php echo $borderClass; ?> transition-all cursor-pointer hover:bg-slate-50 dark:hover:bg-[#26334d]" 
+                     onclick="window.location.href='/notification/<?php echo $notification['id']; ?>'"
+                     data-id="<?php echo $notification['id']; ?>" 
+                     data-read="<?php echo $isRead; ?>"
+                     data-type="<?php echo $type; ?>"
+                     data-archived="<?php echo $notification['is_archived'] ?? 0; ?>">
+                    
+                    <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <?php if (!$isRead): ?>
+                        <button class="p-1 hover:bg-slate-200 dark:hover:bg-white/10 rounded text-slate-400 hover:text-slate-600 dark:hover:text-white mark-read-btn" title="Mark as read">
+                            <span class="material-symbols-outlined text-[20px]">mark_email_read</span>
+                        </button>
+                        <?php endif; ?>
                     </div>
-                    <div class="flex flex-col gap-1.5 flex-1 pr-8">
-                        <div class="flex items-center gap-2">
-                            <p class="text-slate-900 dark:text-white text-base font-semibold leading-tight"><?php echo htmlspecialchars($notification['title']); ?></p>
-                            <?php if (!$isRead): ?>
-                            <span class="size-2 rounded-full bg-primary animate-pulse"></span>
-                            <?php endif; ?>
+
+                    <div class="flex items-start gap-4 flex-1">
+                        <div class="flex items-center justify-center rounded-lg <?php echo $iconBg; ?> shrink-0 size-12">
+                            <span class="material-symbols-outlined <?php echo !$isRead ? 'icon-fill' : ''; ?>"><?php echo $iconName; ?></span>
                         </div>
-                <div class="text-slate-600 dark:text-[#9894c7] text-sm font-normal leading-relaxed">
-                            <?php echo $notification['message']; // Allow HTML in message ?>
+                        <div class="flex flex-col gap-1.5 flex-1 pr-8">
+                            <div class="flex items-center gap-2">
+                                <p class="text-slate-900 dark:text-white text-base font-semibold leading-tight"><?php echo htmlspecialchars($notification['title']); ?></p>
+                                <?php if (!$isRead): ?>
+                                <span class="size-2 rounded-full bg-primary animate-pulse"></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="text-slate-600 dark:text-[#9894c7] text-sm font-normal leading-relaxed">
+                                <?php echo $notification['message']; // Allow HTML in message ?>
+                            </div>
+                            
+                            <div class="mt-2 flex gap-3">
+                                <a href="/notification/<?php echo $notification['id']; ?>" class="bg-primary hover:bg-primary/90 text-white text-xs font-semibold py-2 px-4 rounded-lg transition-colors inline-block text-center min-w-[100px]" onclick="event.stopPropagation()">View Details</a>
+                            </div>
                         </div>
-                        
-                        <div class="mt-2 flex gap-3">
-                            <a href="/notification-details?id=<?php echo $notification['id']; ?>" class="bg-primary hover:bg-primary/90 text-white text-xs font-semibold py-2 px-4 rounded-lg transition-colors inline-block text-center min-w-[100px]" onclick="event.stopPropagation()">View Details</a>
-                        </div>
+                    </div>
+                    <div class="shrink-0">
+                        <p class="text-slate-400 text-xs font-medium"><?php echo time_elapsed_string($notification['created_at']); ?></p>
                     </div>
                 </div>
-                <div class="shrink-0">
-                    <p class="text-slate-400 text-xs font-medium"><?php echo time_elapsed_string($notification['created_at']); ?></p>
-                </div>
-            </div>
+                <?php endforeach; ?>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
@@ -194,12 +217,57 @@ $(document).ready(function() {
         e.stopPropagation(); // Prevent card click
         var id = $(this).closest('.notification-item').data('id');
         var btn = $(this);
+        var card = $(this).closest('.notification-item');
+        
         $.post('/api/notifications_read.php', { action: 'mark_read', id: id }, function(res) {
             if (res.success) {
-                location.reload(); // Simple reload for state update
+                // Update UI without reload
+                // 1. Mark card as read styling
+                card.removeClass('border-l-4 border-primary border-green-500 border-purple-500 bg-white dark:bg-card-dark shadow-sm hover:shadow-md')
+                    .addClass('opacity-90 bg-slate-50 dark:bg-[#131221] border-slate-200 dark:border-slate-800/50');
+                
+                // Remove pulse dot
+                card.find('.animate-pulse').remove();
+                
+                // Fill icon? No easier to leave as is or toggle class
+                // Remove button
+                btn.remove();
+
+                // Update Badges if count returned
+                if (res.unread_count !== undefined) {
+                    updateBadges(res.unread_count);
+                } else {
+                    // Fallback reload if API doesn't support count yet
+                    location.reload(); 
+                }
             }
-        });
+        }, 'json');
     });
+
+    function updateBadges(count) {
+        // Filter Badge
+        var filterBadge = $('.filter-btn[data-filter="unread"] span');
+        if (count > 0) {
+            if (filterBadge.length) filterBadge.text(count);
+            else $('.filter-btn[data-filter="unread"]').append('<span class="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">' + count + '</span>');
+        } else {
+            filterBadge.remove();
+        }
+
+        // Header Text
+        $('p.text-slate-500').text('You have ' + count + ' unread alerts.');
+
+        // Header Bell Badge
+        var headerBadge = $('#candidateHeaderBadge');
+        if (headerBadge.length) {
+             if (count > 0) {
+                 var display = count > 9 ? '9+' : count;
+                 headerBadge.text(display).removeClass('hidden');
+             } else {
+                 headerBadge.text('0').addClass('hidden');
+             }
+        }
+    }
 
     // Filtering
     // Filtering
@@ -265,8 +333,9 @@ function time_elapsed_string($datetime, $full = false) {
     $ago = new DateTime($datetime);
     $diff = $now->diff($ago);
 
-    $diff->w = floor($diff->d / 7);
-    $diff->d -= $diff->w * 7;
+    $days = $diff->d;
+    $weeks = floor($days / 7);
+    $days -= $weeks * 7;
 
     $string = array(
         'y' => 'year',
@@ -277,9 +346,20 @@ function time_elapsed_string($datetime, $full = false) {
         'i' => 'minute',
         's' => 'second',
     );
+    
     foreach ($string as $k => &$v) {
-        if ($diff->$k) {
-            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+        $val = 0;
+        if ($k === 'w') {
+            $val = $weeks;
+        } elseif ($k === 'd') {
+            $val = $days;
+        } else {
+            // Safe access for standard properties
+            $val = $diff->$k;
+        }
+
+        if ($val) {
+            $v = $val . ' ' . $v . ($val > 1 ? 's' : '');
         } else {
             unset($string[$k]);
         }

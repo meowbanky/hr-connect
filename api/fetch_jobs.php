@@ -1,30 +1,100 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
+session_start();
 
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-$status = isset($_GET['status']) ? trim($_GET['status']) : '';
 $limit = 10;
 $offset = ($page - 1) * $limit;
+
+// 1. Unified Search Term
+$search = isset($_GET['search']) ? trim($_GET['search']) : (isset($_GET['q']) ? trim($_GET['q']) : '');
+
+// 2. Status Logic (Default to 'published' if not specified, allowing 'all' or specific status for admin)
+$status = isset($_GET['status']) ? trim($_GET['status']) : 'published'; 
+if ($status === 'all') $status = ''; // Admin "All Statuses" usually passes empty or specific string
+
+// 3. Additional Public Filters
+$location = isset($_GET['location']) ? trim($_GET['location']) : '';
+$types = isset($_GET['type']) ? $_GET['type'] : []; // Array
+$levels = isset($_GET['level']) ? $_GET['level'] : []; // Array
+$minSalary = isset($_GET['salary']) ? (int)$_GET['salary'] : 0;
+$datePosted = isset($_GET['date']) ? $_GET['date'] : '';
+$sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'Newest';
 
 // Build Query
 $where = [];
 $params = [];
 
-if ($search) {
-    $where[] = "(j.title LIKE ? OR j.id LIKE ? OR d.name LIKE ?)";
-    $term = "%$search%";
-    $params[] = $term; // Title
-    $params[] = $term; // ID
-    $params[] = $term; // Department
-}
-
+// Status Filter
 if ($status) {
     $where[] = "j.status = ?";
     $params[] = $status;
 }
 
+// Search Filter (Title, ID, Dept, Description)
+if ($search) {
+    $where[] = "(j.title LIKE ? OR j.id LIKE ? OR d.name LIKE ? OR j.description LIKE ?)";
+    $term = "%$search%";
+    $params[] = $term; // Title
+    $params[] = $term; // ID
+    $params[] = $term; // Dept
+    $params[] = $term; // Desc
+}
+
+// Location Filter
+if ($location) {
+    $where[] = "j.location LIKE ?";
+    $params[] = "%$location%";
+}
+
+// Job Type Filter (Array)
+if (!empty($types) && is_array($types)) {
+    $placeholders = implode(',', array_fill(0, count($types), '?'));
+    $where[] = "j.employment_type IN ($placeholders)";
+    foreach($types as $type) $params[] = $type;
+}
+
+// Experience Level Filter (Array)
+if (!empty($levels) && is_array($levels)) {
+    $placeholders = implode(',', array_fill(0, count($levels), '?'));
+    $where[] = "j.experience_level IN ($placeholders)";
+    foreach($levels as $level) $params[] = $level;
+}
+
+// Salary Filter (Min Salary)
+if ($minSalary > 0) {
+    // Assuming max_salary or min_salary check. Let's check if max_salary >= requested or min_salary >= requested
+    // Simplest: min_salary >= requested value
+    $where[] = "(j.min_salary >= ? OR j.max_salary >= ?)";
+    $params[] = $minSalary;
+    $params[] = $minSalary;
+}
+
+// Date Posted Filter
+if ($datePosted) {
+    $interval = 0;
+    if ($datePosted === '24h') $interval = 1;
+    elseif ($datePosted === '7d') $interval = 7;
+    elseif ($datePosted === '30d') $interval = 30;
+
+    if ($interval > 0) {
+        $where[] = "j.created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)";
+        $params[] = $interval;
+    }
+}
+
 $whereSQL = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+
+// Sort Logic
+$orderBy = "j.created_at DESC"; // Default
+if ($sortBy === 'Highest Salary') {
+    $orderBy = "j.max_salary DESC";
+} elseif ($sortBy === 'Most Relevant') {
+    // Basic relevance if search term exists could be complex, keeping simple for now
+    $orderBy = "j.created_at DESC"; 
+} elseif ($sortBy === 'Oldest') {
+    $orderBy = "j.created_at ASC";
+}
 
 // Count Total
 $countQuery = "
@@ -39,21 +109,56 @@ $totalJobs = $countStmt->fetchColumn();
 $totalPages = ceil($totalJobs / $limit);
 
 // Fetch Jobs
+
+// If user logged in, add user_id to params at the START
+// We need to bind the user_id twice now (once for is_saved, once for application_status)
+// Actually, let's optimize the query string construction to make binding easier.
+// Or simpler: Just use a subquery that depends on a session value? No, bad practice.
+// Let's rewrite the query slightly to be cleaner with parameters.
+
+// New Query Construction with proper Parameter Binding order
+$selectFields = "
+    j.*, 
+    d.name as department_name, 
+    (SELECT COUNT(*) FROM applications WHERE job_id = j.id) as applicant_count,
+    (SELECT COUNT(*) FROM applications WHERE job_id = j.id AND status = 'hired') as hired_count
+";
+
+if (isset($_SESSION['user_id'])) {
+    // We need to fetch candidate_id first to be safe, or subquery it.
+    // Let's assume candidate_id link exists.
+    $candidateSubquery = "(SELECT id FROM candidates WHERE user_id = ? LIMIT 1)";
+    $selectFields .= ", 
+    (SELECT COUNT(*) FROM saved_jobs sj WHERE sj.job_id = j.id AND sj.user_id = ?) as is_saved,
+    (SELECT status FROM applications a WHERE a.job_id = j.id AND a.candidate_id = $candidateSubquery LIMIT 1) as application_status";
+} else {
+    $selectFields .= ", 0 as is_saved, NULL as application_status";
+}
+
 $query = "
-    SELECT 
-        j.*, 
-        d.name as department_name, 
-        (SELECT COUNT(*) FROM applications WHERE job_id = j.id) as applicant_count,
-        (SELECT COUNT(*) FROM applications WHERE job_id = j.id AND status = 'hired') as hired_count
+    SELECT $selectFields
     FROM job_postings j
     LEFT JOIN departments d ON j.department_id = d.id
     $whereSQL
-    ORDER BY j.created_at DESC
+    ORDER BY $orderBy
     LIMIT $limit OFFSET $offset
 ";
 
 $stmt = $pdo->prepare($query);
-$stmt->execute($params);
+
+// Bind Params Logic
+// 1. IS_SAVED and APP_STATUS params (User ID) - appearing TWICE in the SELECT clause if logged in
+$execParams = [];
+if (isset($_SESSION['user_id'])) {
+    $execParams[] = $_SESSION['user_id']; // For is_saved
+    $execParams[] = $_SESSION['user_id']; // For application_status
+}
+// 2. WHERE clause params (Search, Filters)
+foreach($params as $p) {
+    $execParams[] = $p;
+}
+
+$stmt->execute($execParams);
 $jobs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Start HTML Buffering for Rows
@@ -267,6 +372,10 @@ echo json_encode([
     'success' => true,
     'html' => $rowsHtml,
     'mobile_html' => $mobileHtml,
-    'pagination' => $paginationHtml
+    'pagination' => $paginationHtml,
+    'jobs' => $jobs,
+    'total_jobs' => $totalJobs,
+    'total_pages' => $totalPages,
+    'current_page' => $page
 ]);
 ?>

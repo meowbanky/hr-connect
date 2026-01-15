@@ -60,10 +60,21 @@ if (isset($_SESSION['user_id'])) {
         </div>
         
         <div class="hidden md:flex items-center gap-8">
-            <a class="text-text-main dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="/jobs">Job Board</a>
-            <a class="text-text-main dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="/bookmarks">Saved Jobs</a>
-            <a class="text-text-main dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="/dashboard">My Applications</a>
-            <a class="text-text-main dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors text-sm font-medium" href="/profile">My Profile</a>
+            <?php
+            function getNavClass($path) {
+                // Get current path path
+                $current = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+                // Simple match or start with
+                if ($path === '/jobs' && ($current === '/jobs' || $current === '/')) return 'text-primary font-bold';
+                if ($path !== '/jobs' && strpos($current, $path) === 0) return 'text-primary font-bold';
+                return 'text-text-main dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium';
+            }
+            ?>
+            <a class="<?php echo getNavClass('/jobs'); ?> transition-colors text-sm" href="/jobs">Job Board</a>
+            <a class="<?php echo getNavClass('/bookmarks'); ?> transition-colors text-sm" href="/bookmarks">Saved Jobs</a>
+            <a class="<?php echo getNavClass('/dashboard'); ?> transition-colors text-sm" href="/dashboard">My Applications</a>
+            <a class="<?php echo getNavClass('/interviews'); ?> transition-colors text-sm" href="/interviews">Interviews</a>
+            <a class="<?php echo getNavClass('/profile'); ?> transition-colors text-sm" href="/profile">My Profile</a>
         </div>
         <div class="flex gap-3 items-center">
             
@@ -83,14 +94,15 @@ if (isset($_SESSION['user_id'])) {
                 <span class="material-symbols-outlined text-[24px]">notifications</span>
                 <?php
                 if (isset($_SESSION['user_id'])) {
-                    // $pdo assumed global from previous snippet or settings
+                    global $pdo;
                     if ($pdo) {
                         $stmtBadge = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
                         $stmtBadge->execute([$_SESSION['user_id']]);
                         $badgeCount = $stmtBadge->fetchColumn();
                         if($badgeCount > 0) {
-                            $displayCount = $badgeCount > 9 ? '9+' : $badgeCount;
-                            echo '<span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold">' . $displayCount . '</span>';
+                        $displayCount = $badgeCount > 9 ? '9+' : $badgeCount;
+                        $hiddenClass = $badgeCount > 0 ? '' : 'hidden';
+                        echo '<span id="candidateHeaderBadge" class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-[10px] font-bold ' . $hiddenClass . '">' . ($badgeCount > 0 ? $displayCount : '0') . '</span>';
                         }
                     }
                 }
@@ -131,20 +143,38 @@ if (isset($_SESSION['user_id'])) {
         </div>
         
         <!-- Links -->
+        <!-- Links -->
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <a href="/jobs" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors">
+            <?php
+            function getMobileNavClass($path) {
+                $current = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+                $isActive = ($path === '/jobs' && ($current === '/jobs' || $current === '/')) || ($path !== '/jobs' && strpos($current, $path) === 0);
+                
+                if ($isActive) return 'bg-primary text-white';
+                return 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary';
+            }
+            ?>
+            <a href="/jobs" class="flex items-center gap-3 px-4 py-3 rounded-lg <?php echo getMobileNavClass('/jobs'); ?> transition-colors">
                 <span class="material-symbols-outlined">work</span>
                 Job Board
             </a>
-            <a href="/bookmarks" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors">
+            <a href="/bookmarks" class="flex items-center gap-3 px-4 py-3 rounded-lg <?php echo getMobileNavClass('/bookmarks'); ?> transition-colors">
                 <span class="material-symbols-outlined">bookmark</span>
                 Saved Jobs
             </a>
-            <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors">
+            <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg <?php echo getMobileNavClass('/dashboard'); ?> transition-colors">
                 <span class="material-symbols-outlined">dashboard</span>
                 My Applications
             </a>
-            <a href="/profile" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-colors">
+            <a href="/interviews" class="flex items-center gap-3 px-4 py-3 rounded-lg <?php echo getMobileNavClass('/interviews'); ?> transition-colors">
+                <span class="material-symbols-outlined">event</span>
+                Interviews
+            </a>
+            <a href="/notifications" class="flex items-center gap-3 px-4 py-3 rounded-lg <?php echo getMobileNavClass('/notifications'); ?> transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+                Notifications
+            </a>
+            <a href="/profile" class="flex items-center gap-3 px-4 py-3 rounded-lg <?php echo getMobileNavClass('/profile'); ?> transition-colors">
                     <span class="material-symbols-outlined">person</span>
                 My Profile
             </a>
