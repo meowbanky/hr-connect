@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Manage Panelists List - HR Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#452ed6",
+                        "background-light": "#f9fafb",
+                        "background-dark": "#0f1729",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-size: 20px; }
+        .table-container { scrollbar-gutter: stable; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col h-screen sticky top-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">dashboard_customize</span>
+</div>
+<div>
+<h1 class="font-bold text-sm tracking-tight">HR Management</h1>
+<p class="text-xs text-slate-500">Admin Portal</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="text-sm font-medium">Recruitment</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-sm font-medium">Candidates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-primary">badge</span>
+<span class="text-sm font-semibold">Panelists</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-sm font-medium">Interviews</span>
+</a>
+<div class="pt-4 pb-2 px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">System</div>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<button class="w-full py-2.5 bg-primary text-white text-sm font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">person_add</span>
+<span>Add Panelist</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Top Navigation -->
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-8 z-10 sticky top-0">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="Search panelists by name, email or role..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 border-2 border-white dark:border-slate-900 rounded-full"></span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700"></div>
+<div class="flex items-center gap-3">
+<span class="text-sm font-medium hidden md:block">Alex Rivera</span>
+<div class="w-8 h-8 rounded-full bg-slate-200" data-alt="Avatar of the logged in administrator" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDueLwSgb00APRgnuzTFYL22bNNcVLd930dpNWnZ_tbftLOp6l9_ybJBsDZbR6tNuiUdnx9hNQ-1xzIknNMmpNYp1zUQBNABjVKhvK8x8EYuTU_2tsfrQHeRLHsNshHwX6oU-T6mwHLFvVTYNEJ3NCib0ngi97MgTzJqB5UBSJguos8Bag6Jjqy9jxGectClsVntEAPHF6fO1-P1O5Kz11x45brGni-gygBTzGkiICMu-BVR-I5dkk8j7VIzqsoDaWOD2ijKc0jFA4');"></div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-8">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-6 uppercase tracking-widest">
+<a class="hover:text-primary" href="#">Admin</a>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<a class="hover:text-primary" href="#">Recruitment</a>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-slate-900 dark:text-white">Manage Panelists</span>
+</nav>
+<!-- Page Heading & Actions -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Manage Panelists</h2>
+<p class="text-slate-500 mt-1">Configure your interview board and track invitation lifecycle.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined">file_download</span>
+                        Export List
+                    </button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-all shadow-md">
+<span class="material-symbols-outlined">add</span>
+                        New Panelist
+                    </button>
+</div>
+</div>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 text-sm font-medium mb-1">Total Panelists</p>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-black">128</span>
+<span class="text-green-600 text-xs font-bold bg-green-50 px-2 py-1 rounded-full">+12%</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 text-sm font-medium mb-1">Pending Invites</p>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-black">14</span>
+<span class="text-amber-600 text-xs font-bold bg-amber-50 px-2 py-1 rounded-full">8% total</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 text-sm font-medium mb-1">Active Sessions</p>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-black">42</span>
+<span class="text-slate-500 text-xs font-bold bg-slate-100 px-2 py-1 rounded-full">Today</span>
+</div>
+</div>
+</div>
+<!-- Table Filters Bar -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-wrap gap-4 items-center justify-between">
+<div class="flex gap-2">
+<select class="text-sm border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg py-1.5 focus:ring-primary">
+<option>All Statuses</option>
+<option>Account Active</option>
+<option>Invite Sent</option>
+</select>
+<select class="text-sm border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg py-1.5 focus:ring-primary">
+<option>All Departments</option>
+<option>Engineering</option>
+<option>Product</option>
+<option>Design</option>
+</select>
+</div>
+<div class="text-xs font-medium text-slate-400">Showing 1-8 of 128 panelists</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto table-container">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="p-4 w-10">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</th>
+<th class="p-4 text-xs font-bold uppercase text-slate-500 tracking-wider">Name / Contact</th>
+<th class="p-4 text-xs font-bold uppercase text-slate-500 tracking-wider">Role / Dept</th>
+<th class="p-4 text-xs font-bold uppercase text-slate-500 tracking-wider">Status</th>
+<th class="p-4 text-xs font-bold uppercase text-slate-500 tracking-wider">Active Sessions</th>
+<th class="p-4 text-xs font-bold uppercase text-slate-500 tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="p-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-400 text-xs" data-alt="Portrait of Jordan Smith" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFj4Syd1E-GLXW6COifVpbOmRyZ2FsI6dhDTL2T-zQEN5Bo5LSp3JDky0e5Xvmg1tCwFo_cUJNUGjn-Yke9X5aTgxCV5goGWKCUEbPuZ-WW7SuD6hykaOaB4_XSGu3w-soygLJqkh35R3EtxVDujQr0eLHFWcpbSdngtYPjV3gn4RgVVsCM4777nr1tu3AyjB5nxGpVe4_aHOGrljXJK4tFvtlxbkfOtvwJabFo3qd1GNl0JRm-Z_ik6oVbxQfHl1DXlwkWlOQvG4');"></div>
+<div>
+<p class="font-bold text-sm text-slate-900 dark:text-white">Jordan Smith</p>
+<p class="text-xs text-slate-500">jordan.s@company.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium">Senior Architect</span>
+<span class="text-xs text-slate-400">Engineering</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Account Active
+                                    </span>
+</td>
+<td class="p-4">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-primary/10 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold text-primary" title="Frontend Dev Interview">FD</div>
+<div class="w-7 h-7 rounded-full bg-indigo-100 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold text-indigo-700" title="Backend Lead Interview">BL</div>
+<div class="w-7 h-7 rounded-full bg-slate-100 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold text-slate-500">+1</div>
+</div>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md text-slate-400 hover:text-primary transition-colors" title="Edit Role">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md text-slate-400 hover:text-red-500 transition-colors" title="Remove">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="p-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-400 text-xs" data-alt="Portrait of Sarah Chen" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCFizapM8XrKeitvx8-lzK1g7ZK1ZYAJeVByGaLCLS8hLwZKC-h9l5S_V1LYaBnH_w6Wb5wiDm_7-9HgnBNFGY2k3lMAjtncNMeT2mHhYURdQjXZ4VlFgIEfZwo5OQ_3f6_H25lsDUnpV_BVk7P7YNrL84ONiMaSvJnvN1nWNPJssJo5o9rrRUGLRDeXsNk8QmztBvov-Fa01iq91e3vxGqs3IdGI0VijUwla1Kjk1yQj2Mt_fgyi48V83HkjxMt6MM6_96LoQ3Gy4');"></div>
+<div>
+<p class="font-bold text-sm text-slate-900 dark:text-white">Sarah Chen</p>
+<p class="text-xs text-slate-500">s.chen@company.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium">UX Lead</span>
+<span class="text-xs text-slate-400">Design</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                        Invite Sent
+                                    </span>
+</td>
+<td class="p-4">
+<span class="text-xs text-slate-400 font-medium italic">None assigned</span>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-xs font-bold text-primary hover:underline">Resend Invite</button>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md text-slate-400 hover:text-red-500 transition-colors" title="Remove">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="p-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-400 text-xs" data-alt="Portrait of Marcus Thorne" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD4Ad6ERlT--K3stFpB9-TVrzPtkgw4jA3fYtGIymGFB4EsZEoohusj8kqxxil-S8BEUSsHC4x_GNc3wm-w-Ol41dRMOlPWwXKXmk9BCnRdG7OhTKLUn58W1nLjlr1vCYyLhT6RxBd4w6b_HlGVdDpmhxeD8GHR53yv-hScSxlUW-Wy2trvvZXK6pzADuZ6GX5K3ysqtE6OxN73j3xb4DXueeNXSpKkIQ-TDwXyOVZKJCWYOwHBfDTWqqZIYicSiVzSRtM6Chftu4A');"></div>
+<div>
+<p class="font-bold text-sm text-slate-900 dark:text-white">Marcus Thorne</p>
+<p class="text-xs text-slate-500">m.thorne@company.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium">Product Manager</span>
+<span class="text-xs text-slate-400">Product</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Account Active
+                                    </span>
+</td>
+<td class="p-4">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-emerald-100 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold text-emerald-700" title="Strategy Review">SR</div>
+</div>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md text-slate-400 hover:text-primary transition-colors" title="Edit Role">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md text-slate-400 hover:text-red-500 transition-colors" title="Remove">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="p-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-400 text-xs" data-alt="Portrait of Elena Rodriguez" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCAQGE3j6d3uL-4g_E7pYfmFMiJ3kWfbpORe00H9CU5zc45xDY-lZKnFt1DrhEOK1O-R0Zh8pNO0icm-tTDIbskZ6YAH4aYHfHtnHA61OPWCRt7D8hXmLbk-fpkN9OPzHe-bXGbV90mzv_hA5MmEsIXuw1byCqh9NF4jbHRbSAXpubeKrAWfLAYxQWr9eDKXoeSu1-JerBk7io-8elcdjkbwQwZeBdWsGLoHz581lcXnxMFekRAXonc0IsYdJ2pW8jT9Jkv_s5cErE');"></div>
+<div>
+<p class="font-bold text-sm text-slate-900 dark:text-white">Elena Rodriguez</p>
+<p class="text-xs text-slate-500">e.rodriguez@company.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium">Staff Engineer</span>
+<span class="text-xs text-slate-400">Engineering</span>
+</div>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Account Active
+                                    </span>
+</td>
+<td class="p-4">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-rose-100 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold text-rose-700" title="Security Audit">SA</div>
+<div class="w-7 h-7 rounded-full bg-orange-100 border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold text-orange-700" title="System Design">SD</div>
+</div>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md text-slate-400 hover:text-primary transition-colors" title="Edit Role">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded-md text-slate-400 hover:text-red-500 transition-colors" title="Remove">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="p-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex gap-2">
+<button class="w-9 h-9 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-9 h-9 flex items-center justify-center bg-primary text-white rounded-lg font-bold text-sm">1</button>
+<button class="w-9 h-9 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm">2</button>
+<button class="w-9 h-9 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm">3</button>
+<span class="px-2 self-center text-slate-300">...</span>
+<button class="w-9 h-9 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm">16</button>
+<button class="w-9 h-9 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<div class="text-xs text-slate-400 font-medium">
+                        Showing 4 of 128 results
+                    </div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="p-6 text-center text-slate-400 text-xs">
+            © 2024 HR Management Systems Admin. All rights reserved.
+        </footer>
+</main>
+</body></html>

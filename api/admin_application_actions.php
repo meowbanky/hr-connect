@@ -5,7 +5,8 @@ session_start();
 header('Content-Type: application/json');
 
 // Security Check
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || 
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
@@ -47,7 +48,7 @@ try {
         
         // 1. Fetch details for notification BEFORE update (to ensure we have valid data)
         // Explicitly select u.id as user_id for notifications
-        $fetchSql = "SELECT a.id, u.id as user_id, u.email, u.first_name, u.last_name, j.title as job_title 
+        $fetchSql = "SELECT a.id, u.id as user_id, u.email, u.first_name, u.last_name, j.title as job_title, j.status as job_status 
                      FROM applications a 
                      JOIN candidates c ON a.candidate_id = c.id 
                      JOIN users u ON c.user_id = u.id 
@@ -56,6 +57,17 @@ try {
         $stmt = $pdo->prepare($fetchSql);
         $stmt->execute($ids);
         $appsToNotify = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Constraint Check: Recruitment only begins after Ad is Closed
+        foreach ($appsToNotify as $app) {
+            if ($app['job_status'] === 'published') {
+                echo json_encode([
+                    'success' => false, 
+                    'message' => 'Recruitment actions are blocked because the Job Advertisement is still Active (Published). Please Close the cycle first.'
+                ]);
+                exit;
+            }
+        }
 
         // Debug log (can be checked in php error log if needed)
         // error_log("Notification Prep: IDs=" . implode(',', $ids) . " Count=" . count($appsToNotify));

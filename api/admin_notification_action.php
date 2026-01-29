@@ -4,7 +4,8 @@ session_start();
 header('Content-Type: application/json');
 
 // 1. Security Check
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || 
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }

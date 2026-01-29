@@ -3,7 +3,8 @@ session_start();
 require_once __DIR__ . '/../config/db.php';
 
 // Check Admin Access
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || 
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     header("Location: /admin/login.php");
     exit;
 }
@@ -114,7 +115,7 @@ $progressWidth = ($currentStepIndex / (count($pipelineSteps) - 1)) * 100;
                 <div class="flex flex-col md:flex-row gap-6 justify-between items-start">
                     <div class="flex gap-5">
                        <?php if($app['profile_image']): ?>
-                            <div class="h-24 w-24 rounded-full bg-cover bg-center border-4 border-white dark:border-slate-700 shadow-sm flex-shrink-0" style="background-image: url('/uploads/profile_images/<?php echo htmlspecialchars($app['profile_image']); ?>');"></div>
+                            <div class="h-24 w-24 rounded-full bg-cover bg-center border-4 border-white dark:border-slate-700 shadow-sm flex-shrink-0" style="background-image: url('<?php echo htmlspecialchars($app['profile_image']); ?>');"></div>
                         <?php else: ?>
                             <div class="h-24 w-24 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 text-3xl font-bold border-4 border-white dark:border-slate-700 shadow-sm flex-shrink-0">
                                 <?php echo strtoupper(substr($app['first_name'], 0, 1) . substr($app['last_name'], 0, 1)); ?>
@@ -551,7 +552,7 @@ function updateStatus(newStatus) {
     });
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $_ENV['GOOGLE_MAPS_API_KEY']; ?>&libraries=places&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $_ENV['GOOGLE_MAPS_API_KEY'] ?? ''; ?>&libraries=places&callback=initMap" async defer></script>
 <script>
 let map;
 let marker;

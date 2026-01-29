@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Panelist My Candidates Roster</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3e34ad",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#020818",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="size-9 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">group_work</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-tight">Interview Portal</h1>
+<p class="text-xs text-slate-500">HR Management</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto p-4 space-y-1 custom-scrollbar">
+<p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Navigation</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">My Candidates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">work</span>
+<span class="text-sm font-medium">Job Postings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+<span class="text-sm font-medium">Interviews</span>
+</a>
+<div class="pt-6">
+<p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Active Filters</p>
+<div class="space-y-4 px-3">
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Interview Session</label>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-[10px] font-medium border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-primary">Morning</span>
+<span class="px-2 py-1 bg-primary/10 text-primary rounded text-[10px] font-medium border border-primary/20 cursor-pointer">Afternoon</span>
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-[10px] font-medium border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-primary">Evening</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Department</label>
+<div class="space-y-1">
+<label class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
+<input checked="" class="rounded border-slate-300 text-primary focus:ring-primary size-3" type="checkbox"/>
+                                    Engineering
+                                </label>
+<label class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
+<input class="rounded border-slate-300 text-primary focus:ring-primary size-3" type="checkbox"/>
+                                    Product
+                                </label>
+<label class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
+<input class="rounded border-slate-300 text-primary focus:ring-primary size-3" type="checkbox"/>
+                                    Design
+                                </label>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="size-8 rounded-full bg-slate-200 bg-cover bg-center" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBziiGZMyccQkK7WesY1RJCaqHxp6M6JBCrOvdVSxp-aUIiHU5dIjtUwWf1t7OusU9X0a4vc6-CPoe7FGK6pcc3FLHww7wP8NHs2gTPsH2dkDrorGTIfGV4CKXfD1nAzTL8DWxWvucvQrtJ2NXKHuhjUSPaRL2xhYaey4cGo3OOXuLdr-2fLNG8MTwJVdqRFcbYu59U6dWLm1q7TktHFyJ2J3G8h4maNDvG2rzQ2OWgUZ5dMuhXx46JV9G4BLxip9VWuoMBnhK0u3Q");'></div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-bold truncate">Alex Panelist</p>
+<p class="text-[10px] text-slate-500 truncate">Senior Interviewer</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">settings</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4 flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="w-full h-10 pl-10 pr-4 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="Search by candidate name, role or status..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3 ml-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors relative">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        New Session
+                    </button>
+</div>
+</header>
+<!-- Content Body -->
+<div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Candidate Roster</h2>
+<p class="text-slate-500 text-sm mt-1">Manage and score your assigned candidate interviews for the Q4 hiring cycle.</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Export Roster
+                        </button>
+<button class="p-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-500 hover:text-primary transition-all">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- Table Filters / Chips -->
+<div class="flex flex-wrap items-center gap-2 mb-4">
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary text-xs font-bold rounded-full border border-primary/20">
+                        All Candidates
+                        <span class="bg-primary text-white text-[10px] px-1.5 rounded-full">12</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-xs font-semibold rounded-full border border-slate-200 dark:border-slate-800 hover:border-slate-300">
+                        In Progress
+                    </button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-xs font-semibold rounded-full border border-slate-200 dark:border-slate-800 hover:border-slate-300">
+                        Completed
+                    </button>
+<div class="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-2"></div>
+<button class="flex items-center gap-1 text-slate-500 text-xs font-medium hover:text-primary">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+                        More Filters
+                    </button>
+</div>
+<!-- Data Table -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-12">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Candidate Name</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Job Role</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Interview Date</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Scoring Status</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 overflow-hidden ring-2 ring-white dark:ring-slate-900">
+<img class="w-full h-full object-cover" data-alt="Portrait of John Doe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxyZ7OkV4RW9ugVguxayTei6Ur7INZYXS0ls3S8MgpiQj2gV8J1-iv5hjbXaUdmVoxFaKMvYBtU4lhLK3Kp_Gcrrmt1teKdNyWHHJneaox3v0gciR7zen_J0KBuM8NS8FzX_ZsfLare2pULGVlGstCeHKF2Ht_ynqkhxe8y7mOQth_U-5sz012DzNM6062Nmtvpq_C30SpIy21GzXEzfEhNRR_JhroZe0zOKcuXZVVS_bC0PED9YnAZjTjUxeHIVaVaGGbqfgEg3Q"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">John Doe</p>
+<p class="text-xs text-slate-500">john.doe@example.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded uppercase">Frontend Engineer</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<p class="text-sm text-slate-700 dark:text-slate-300 font-medium">Oct 24, 2023</p>
+<p class="text-xs text-slate-500">10:00 AM - 11:30 AM</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold rounded-full uppercase tracking-wide">In Progress</span>
+<div class="flex-1 max-w-[80px] h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="px-4 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:opacity-90 transition-opacity">
+                                        Continue
+                                    </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 overflow-hidden ring-2 ring-white dark:ring-slate-900">
+<img class="w-full h-full object-cover" data-alt="Portrait of Jane Smith" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjSZ5RFe64099rDp-FsA7xvameO82Gu1wdyDRWOLGDIoqEqhREz_epK7rCS0SRZJ7Gk1svLP5uB7DT87r2ZIkTafVsmleD2ArPgpPRAXup7CGGT7k54XffU7-DQIOnS0GrtTcT_X8zgyNIZBga_pax6m2NfAXX2ell8f7kkoflMpRK2o7sWEs5ZQc_qtC9s-jkasgNOJygX770LLz5C-8hobPScI_AAixcCl5AzGP6XW2aR_nIMRnuD8IYAx5p8eBZDCI6p7NkD88"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Jane Smith</p>
+<p class="text-xs text-slate-500">jane.s@product.io</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 text-[10px] font-bold rounded uppercase">Product Manager</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<p class="text-sm text-slate-700 dark:text-slate-300 font-medium">Oct 24, 2023</p>
+<p class="text-xs text-slate-500">02:00 PM - 03:00 PM</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold rounded-full uppercase tracking-wide">Not Started</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                                        Start Session
+                                    </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 overflow-hidden ring-2 ring-white dark:ring-slate-900">
+<img class="w-full h-full object-cover" data-alt="Portrait of Robert Chen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCosOUVBb-thfOVkEViO46v8IMRlatUTph0Dsrg7kzsaU5ZvCUGmpAxFtRvqD-biKyALktgbIaiO54DwW4rdY0Nr5WDRal18r4jFk0rmq2JyJ8Tm3QVzxKv-FM5IBoNXhKJUvSC-TzY_EutVg3p9vaDEBxz15XBcTZHfFhRL13G7NnqcirL4Ijk-2Aga5LPeEciNh2jv4V6UM-9SW5DVB7ZA_LSy0F162z4ZSBwCYYi5_-w8ByF6tPuxHC6NWcsLcjriokhSCaIoYw"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Robert Chen</p>
+<p class="text-xs text-slate-500">robert.chen@design.co</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 text-[10px] font-bold rounded uppercase">UX Designer</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<p class="text-sm text-slate-700 dark:text-slate-300 font-medium text-opacity-60">Oct 23, 2023</p>
+<p class="text-xs text-slate-400 uppercase">Archive Session</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-wide">Completed</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 overflow-hidden ring-2 ring-white dark:ring-slate-900">
+<img class="w-full h-full object-cover" data-alt="Portrait of Sarah Jenkins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDovEfFtnsSgFzaAb0mzcGMNBqhCiBbFrTKwXMY8w-hTCpC-u_5F-UyH4H9voRkvGjr4_yDAQEZtdCS8ko2ZMFuh80nG_5XN8ICxXABQQu38RvJ3M31iaScCrSWA9c5JlN8V8bnQLUlelEWX_vi9_2vTrLswzjy-hfwLdX5RmpFWl4Z99JmMoNcviGu_atzY9nNhbF9xcpoZ3mg-Pl4wEBm7RqQJUySii-WtJfFRxC3LCE5CB_mGpoZkUe2xfHJCC1fspa5zbwwQWA"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Sarah Jenkins</p>
+<p class="text-xs text-slate-500">s.jenkins@cloud.net</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded uppercase">Frontend Engineer</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<p class="text-sm text-slate-700 dark:text-slate-300 font-medium">Oct 25, 2023</p>
+<p class="text-xs text-slate-500">09:30 AM - 10:30 AM</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold rounded-full uppercase tracking-wide">Not Started</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                                        Start Session
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Table Footer / Pagination -->
+<div class="px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/20 flex items-center justify-between">
+<p class="text-xs text-slate-500 font-medium">Showing 1 to 4 of 12 entries</p>
+<div class="flex items-center gap-1">
+<button class="p-1 text-slate-400 hover:text-primary disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-7 flex items-center justify-center rounded bg-primary text-white text-xs font-bold">1</button>
+<button class="size-7 flex items-center justify-center rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold">2</button>
+<button class="size-7 flex items-center justify-center rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold">3</button>
+<button class="p-1 text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Stats Summary -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+<div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl flex items-center gap-4">
+<div class="size-12 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">check_circle</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Completed</p>
+<p class="text-2xl font-black">08</p>
+</div>
+</div>
+<div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl flex items-center gap-4">
+<div class="size-12 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">pending</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Pending</p>
+<p class="text-2xl font-black">03</p>
+</div>
+</div>
+<div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl flex items-center gap-4">
+<div class="size-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">event</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Remaining Today</p>
+<p class="text-2xl font-black">01</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

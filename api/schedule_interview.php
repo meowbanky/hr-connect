@@ -8,7 +8,8 @@ require_once __DIR__ . '/../includes/NotificationHelper.php';
 require_once __DIR__ . '/../includes/settings.php';
 
 // Check Admin Auth
-if (!isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+if (!isset($_SESSION['user_role']) || 
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
@@ -37,49 +38,64 @@ if (empty($applicationId) || empty($date) || empty($time) || empty($venueName) |
 try {
     $pdo->beginTransaction();
 
-    // 1. Insert Interview
-    $sql = "INSERT INTO interviews (application_id, interview_date, interview_time, venue_name, venue_address, venue_link, venue_lat, venue_lng, status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'scheduled')";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$applicationId, $date, $time, $venueName, $venueAddress, $venueLink, $venueLat, $venueLng]);
-    
-    // 2. Update Application Status
-    $updateStmt = $pdo->prepare("UPDATE applications SET status = 'interviewed' WHERE id = ?");
-    $updateStmt->execute([$applicationId]);
+    // Support single or multiple IDs
+    $appIds = [];
+    if (strpos($applicationId, ',') !== false) {
+        $appIds = explode(',', $applicationId); // Comma separated string
+    } elseif (is_array($applicationId)) {
+        $appIds = $applicationId;
+    } else {
+        $appIds = [$applicationId];
+    }
 
-    // 3. Fetch Candidate Info for Email
-    $appStmt = $pdo->prepare("SELECT u.id as user_id, u.email, u.first_name, u.last_name, j.title as job_title 
-                              FROM applications a 
-                              JOIN candidates c ON a.candidate_id = c.id
-                              JOIN users u ON c.user_id = u.id 
-                              JOIN job_postings j ON a.job_id = j.id 
-                              WHERE a.id = ?");
-    $appStmt->execute([$applicationId]);
-    $appData = $appStmt->fetch(PDO::FETCH_ASSOC);
+    foreach ($appIds as $id) {
+        $id = trim($id);
+        if (empty($id)) continue;
 
-    if ($appData) {
-        $fullName = $appData['first_name'] . ' ' . $appData['last_name'];
+        // 1. Insert Interview
+        $sql = "INSERT INTO interviews (application_id, interview_date, interview_time, venue_name, venue_address, venue_link, venue_lat, venue_lng, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'scheduled')";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$id, $date, $time, $venueName, $venueAddress, $venueLink, $venueLat, $venueLng]);
         
-        $interviewDetails = [
-            'job_title' => $appData['job_title'],
-            'date' => $date,
-            'time' => $time,
-            'venue' => $venueName,
-            'address' => $venueAddress,
-            'map_link' => $venueLink
-        ];
+        // 2. Update Application Status
+        $updateStmt = $pdo->prepare("UPDATE applications SET status = 'interviewed' WHERE id = ?");
+        $updateStmt->execute([$id]);
 
-        // Send Email (We need to update MailHelper next)
-        if (method_exists('MailHelper', 'sendInterviewInvitation')) {
-            MailHelper::sendInterviewInvitation($appData['email'], $fullName, $interviewDetails);
-        }
+        // 3. Fetch Candidate Info for Email
+        $appStmt = $pdo->prepare("SELECT u.id as user_id, u.email, u.first_name, u.last_name, j.title as job_title 
+                                  FROM applications a 
+                                  JOIN candidates c ON a.candidate_id = c.id
+                                  JOIN users u ON c.user_id = u.id 
+                                  JOIN job_postings j ON a.job_id = j.id 
+                                  WHERE a.id = ?");
+        $appStmt->execute([$id]);
+        $appData = $appStmt->fetch(PDO::FETCH_ASSOC);
 
-        // Create In-App Notification
-        if (class_exists('NotificationHelper')) {
-            $notifTitle = "Interview Invitation: " . $appData['job_title'];
-            $notifMsg = "You have been invited for an interview on " . date('M j, Y', strtotime($date)) . " at " . date('g:i A', strtotime($time)) . ". Check your application details for more info.";
-            $actionUrl = "/application/" . $applicationId; // Using the rewrite rule we set up earlier
-            NotificationHelper::create($appData['user_id'], 'interview', $notifTitle, $notifMsg, $actionUrl);
+        if ($appData) {
+            $fullName = $appData['first_name'] . ' ' . $appData['last_name'];
+            
+            $interviewDetails = [
+                'job_title' => $appData['job_title'],
+                'date' => $date,
+                'time' => $time,
+                'venue' => $venueName,
+                'address' => $venueAddress,
+                'map_link' => $venueLink
+            ];
+
+            // Send Email (We need to update MailHelper next)
+            if (method_exists('MailHelper', 'sendInterviewInvitation')) {
+                MailHelper::sendInterviewInvitation($appData['email'], $fullName, $interviewDetails);
+            }
+
+            // Create In-App Notification
+            if (class_exists('NotificationHelper')) {
+                $notifTitle = "Interview Invitation: " . $appData['job_title'];
+                $notifMsg = "You have been invited for an interview on " . date('M j, Y', strtotime($date)) . " at " . date('g:i A', strtotime($time)) . ". Check your application details for more info.";
+                $actionUrl = "/application/" . $id; 
+                NotificationHelper::create($appData['user_id'], 'interview', $notifTitle, $notifMsg, $actionUrl);
+            }
         }
     }
 

@@ -110,7 +110,16 @@ if (isset($_SESSION['user_id'])) {
             </a>
 
             <?php if ($isLoggedIn): ?>
-                <span class="hidden sm:inline text-sm font-medium text-text-main dark:text-white">Hi, <?php echo htmlspecialchars($userName); ?></span>
+                <?php 
+                    $headerProfileImg = !empty($_SESSION['profile_image']) ? $_SESSION['profile_image'] : null; 
+                ?>
+                <a href="/profile" class="hidden sm:flex items-center gap-2 mr-2">
+                    <?php if ($headerProfileImg): ?>
+                        <img src="<?php echo htmlspecialchars($headerProfileImg); ?>" alt="Profile" class="h-8 w-8 rounded-full object-cover border border-slate-200 dark:border-slate-700">
+                    <?php endif; ?>
+                    <span class="text-sm font-medium text-text-main dark:text-white">Hi, <?php echo htmlspecialchars($userName); ?></span>
+                </a>
+                
                 <a href="/logout" class="h-9 w-9 sm:w-auto flex items-center justify-center rounded-lg sm:px-4 border border-slate-200 dark:border-gray-700 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 text-text-main dark:text-white text-sm font-bold transition-colors" title="Log Out">
                     <span class="sm:hidden material-symbols-outlined text-[20px]">logout</span>
                     <span class="hidden sm:inline">Log Out</span>
@@ -142,7 +151,6 @@ if (isset($_SESSION['user_id'])) {
             </button>
         </div>
         
-        <!-- Links -->
         <!-- Links -->
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
             <?php
@@ -184,7 +192,11 @@ if (isset($_SESSION['user_id'])) {
         <?php if ($isLoggedIn): ?>
             <div class="p-4 border-t border-slate-100 dark:border-slate-800">
                     <div class="flex items-center gap-3 px-2 mb-3">
-                        <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs"><?php echo substr($userName, 0, 1); ?></div>
+                        <?php if(!empty($_SESSION['profile_image'])): ?>
+                            <div class="size-8 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" style="background-image: url('<?php echo htmlspecialchars($_SESSION['profile_image']); ?>');"></div>
+                        <?php else: ?>
+                            <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs"><?php echo substr($userName, 0, 1); ?></div>
+                        <?php endif; ?>
                         <div class="flex flex-col">
                             <span class="text-sm font-semibold text-slate-900 dark:text-white"><?php echo htmlspecialchars($userName); ?></span>
                             <span class="text-xs text-slate-500">Candidate</span>

@@ -20,20 +20,57 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 try {
     $pdo->beginTransaction();
 
-    // 1. Update User Record (First/Last Name, Phone)
-    $firstName = $_POST['first_name'] ?? '';
-    $lastName = $_POST['last_name'] ?? '';
-    $phone = $_POST['phone'] ?? '';
-    
-    // We shouldn't update email here usually for security unless we have verification, 
-    // but the form has it readonly anyway.
+    // 1. Update User Record (Dynamic)
+    $updateFields = [];
+    $updateParams = [];
 
-    $stmtUser = $pdo->prepare("UPDATE users SET first_name = ?, last_name = ?, phone_number = ? WHERE id = ?");
-    $stmtUser->execute([$firstName, $lastName, $phone, $user_id]);
+    if (isset($_POST['first_name'])) {
+        $updateFields[] = "first_name = ?";
+        $updateParams[] = $_POST['first_name'];
+    }
+    if (isset($_POST['last_name'])) {
+        $updateFields[] = "last_name = ?";
+        $updateParams[] = $_POST['last_name'];
+    }
+    if (isset($_POST['phone'])) {
+        $updateFields[] = "phone_number = ?";
+        $updateParams[] = $_POST['phone'];
+    }
 
-    // 2. Candidate Record Logic
-    // Check existence
-    $stmtCand = $pdo->prepare("SELECT id FROM candidates WHERE user_id = ?");
+    // Profile Image Upload
+    $profileImgPath = null;
+    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../assets/uploads/profile/';
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+        
+        $fileName = 'profile_' . $user_id . '_' . time() . '.' . pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION);
+        $targetPath = $uploadDir . $fileName;
+        
+        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetPath)) {
+            $profileImgPath = '/assets/uploads/profile/' . $fileName;
+            $updateFields[] = "profile_image = ?";
+            $updateParams[] = $profileImgPath;
+            $_SESSION['profile_image'] = $profileImgPath;
+        }
+    }
+
+    if (!empty($updateFields)) {
+        $sqlUser = "UPDATE users SET " . implode(', ', $updateFields) . " WHERE id = ?";
+        $updateParams[] = $user_id;
+        $pdo->prepare($sqlUser)->execute($updateParams);
+        
+        // Update session names if changed
+        if (isset($_POST['first_name']) && isset($_POST['last_name'])) {
+             $_SESSION['user_name'] = $_POST['first_name'] . ' ' . $_POST['last_name'];
+        }
+    }
+
+    // 2. Candidate Record Logic (Only for candidates)
+    $resume_path = null;
+    if ($_SESSION['user_role'] === 'candidate') {
+        // Check existence
+        $stmtCand = $pdo->prepare("SELECT id FROM candidates WHERE user_id = ?");
+
     $stmtCand->execute([$user_id]);
     $candidate = $stmtCand->fetch();
     $candidate_id = $candidate['id'] ?? null;
@@ -96,6 +133,8 @@ try {
                 $stmtEdu->execute([$candidate_id, $school, $degree, $start, $end ?: null]);
             }
         }
+    }
+
     }
 
     $pdo->commit();

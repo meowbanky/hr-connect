@@ -18,7 +18,7 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT u.id, u.password_hash, u.role_id, u.first_name, u.last_name, r.name as role_name FROM users u JOIN roles r ON u.role_id = r.id WHERE u.email = ?");
+    $stmt = $pdo->prepare("SELECT u.id, u.password_hash, u.role_id, u.first_name, u.last_name, u.profile_image, r.name as role_name FROM users u JOIN roles r ON u.role_id = r.id WHERE u.email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -27,9 +27,10 @@ try {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_role'] = $user['role_name']; // Use role name for easier checks
         $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
+        $_SESSION['profile_image'] = $user['profile_image'];
         
         $redirect = '/jobs'; // Default for candidates (Job Board)
-        if ($user['role_name'] === 'admin' || $user['role_name'] === 'hr_staff') {
+        if ($user['role_name'] === 'admin' || $user['role_name'] === 'hr_staff' || $user['role_name'] === 'superadmin') {
             $redirect = '/admin';
         }
         

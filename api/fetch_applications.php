@@ -3,7 +3,8 @@ require_once __DIR__ . '/../config/db.php';
 session_start();
 
 // Security Check: Only Admins or HR Staff
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || 
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
@@ -132,7 +133,7 @@ try {
             <td class="p-4 align-middle">
                 <div class="flex items-center gap-3">
                     <?php if($app['profile_image']): ?>
-                        <div class="h-10 w-10 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" style="background-image: url('/uploads/profile_images/<?php echo htmlspecialchars($app['profile_image']); ?>');"></div>
+                        <div class="h-10 w-10 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" style="background-image: url('<?php echo htmlspecialchars($app['profile_image']); ?>');"></div>
                     <?php else: ?>
                         <div class="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 text-xs font-bold border border-slate-200 dark:border-slate-700">
                             <?php echo $initials; ?>
@@ -210,7 +211,7 @@ try {
             <div class="flex justify-between items-start">
                 <div class="flex items-center gap-3">
                     <?php if($app['profile_image']): ?>
-                        <div class="h-10 w-10 min-w-[2.5rem] rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" style="background-image: url('/uploads/profile_images/<?php echo htmlspecialchars($app['profile_image']); ?>');"></div>
+                        <div class="h-10 w-10 min-w-[2.5rem] rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" style="background-image: url('<?php echo htmlspecialchars($app['profile_image']); ?>');"></div>
                     <?php else: ?>
                         <div class="h-10 w-10 min-w-[2.5rem] rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 text-xs font-bold border border-slate-200 dark:border-slate-700">
                             <?php echo $initials; ?>

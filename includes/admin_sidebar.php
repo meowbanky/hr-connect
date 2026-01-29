@@ -52,7 +52,7 @@ function isActive($path) {
     <nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
         <p class="px-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Main Menu</p>
         
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin') !== false && !strpos($_SERVER['REQUEST_URI'], 'jobs') && !strpos($_SERVER['REQUEST_URI'], 'settings') && !strpos($_SERVER['REQUEST_URI'], 'applications') && !strpos($_SERVER['REQUEST_URI'], 'interviews') && !strpos($_SERVER['REQUEST_URI'], 'employees') && !strpos($_SERVER['REQUEST_URI'], 'reports') && !strpos($_SERVER['REQUEST_URI'], 'notifications')) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin">
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin') !== false && !strpos($_SERVER['REQUEST_URI'], 'jobs') && !strpos($_SERVER['REQUEST_URI'], 'settings') && !strpos($_SERVER['REQUEST_URI'], 'applications') && !strpos($_SERVER['REQUEST_URI'], 'interviews') && !strpos($_SERVER['REQUEST_URI'], 'employees') && !strpos($_SERVER['REQUEST_URI'], 'reports') && !strpos($_SERVER['REQUEST_URI'], 'notifications') && !strpos($_SERVER['REQUEST_URI'], 'panelists') && !strpos($_SERVER['REQUEST_URI'], 'invite_panelist') && !strpos($_SERVER['REQUEST_URI'], 'add_employee') && !strpos($_SERVER['REQUEST_URI'], 'edit_employee') && !strpos($_SERVER['REQUEST_URI'], 'staff_details')) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin">
             <span class="material-symbols-outlined <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'fill' : ''; ?>">dashboard</span>
             <span>Dashboard</span>
         </a>
@@ -95,18 +95,27 @@ function isActive($path) {
             <?php endif; ?>
         </a>
         
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/panelists') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/panelists">
+            <span class="material-symbols-outlined <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/panelists') !== false) ? 'fill' : ''; ?>">groups_3</span>
+            <span>Panelists</span>
+        </a>
+
         <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/interviews') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/interviews">
             <span class="material-symbols-outlined">calendar_month</span>
             <span>Interviews</span>
         </a>
         
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/employees') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/employees">
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/employees') !== false || strpos($_SERVER['REQUEST_URI'], '/admin/add_employee') !== false || strpos($_SERVER['REQUEST_URI'], '/admin/edit_employee') !== false || strpos($_SERVER['REQUEST_URI'], '/admin/staff_details') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/employees">
             <span class="material-symbols-outlined">badge</span>
             <span>Employees</span>
         </a>
         
         <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
             <p class="px-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">System</p>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/assessment_criteria.php') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/assessment_criteria.php">
+                <span class="material-symbols-outlined">assignment</span>
+                <span>Criteria</span>
+            </a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/reports') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/reports">
                 <span class="material-symbols-outlined">bar_chart</span>
                 <span>Reports</span>
@@ -115,17 +124,28 @@ function isActive($path) {
                 <span class="material-symbols-outlined">settings</span>
                 <span>Settings</span>
             </a>
+            <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'superadmin'): ?>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all <?php echo (strpos($_SERVER['REQUEST_URI'], '/admin/generate_token') !== false) ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'; ?>" href="/admin/generate_token.php">
+                <span class="material-symbols-outlined">key</span>
+                <span>Generate Token</span>
+            </a>
+            <?php endif; ?>
         </div>
     </nav>
     
     <div class="p-4 border-t border-slate-200 dark:border-slate-800">
-        <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
-            <div class="size-10 rounded-full bg-cover bg-center border-2 border-white dark:border-slate-700 shadow-sm" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdmmkd7BVKmHzXUh_VEowlcJ_xivlLfpBqN4FCU3OxL0iSdnWxYIT6RsXYsHaDB_Faimp7VFJG2EEL6FlgGCT8-HU9Z45bfdabUDA_vVOL2QqjmWJgd13ZWp9hAfyDLE5cwbcXZQZaWwmkLcxbwAmsM50eZRS7u7P5w3IPKRW-Qr_7Rvj0KuuSfgdlqDrJuQpNyHe7VHm0ot8jQImafpFi86vKgUtR6Iajkeip_dPHUnimQ-0ldCnCEqHB_VHcc2wZMip71IkZwek');"></div>
-            <div class="flex flex-col overflow-hidden">
-                <p class="text-sm font-semibold text-slate-900 dark:text-white truncate"><?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Admin User'; ?></p>
-                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Administrator</p>
-            </div>
-            <a href="/logout" class="ml-auto text-slate-400 hover:text-red-500 transition-colors" title="Logout">
+        <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group relative">
+            <?php 
+                $sidebarProfileImg = !empty($_SESSION['profile_image']) ? $_SESSION['profile_image'] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAdmmkd7BVKmHzXUh_VEowlcJ_xivlLfpBqN4FCU3OxL0iSdnWxYIT6RsXYsHaDB_Faimp7VFJG2EEL6FlgGCT8-HU9Z45bfdabUDA_vVOL2QqjmWJgd13ZWp9hAfyDLE5cwbcXZQZaWwmkLcxbwAmsM50eZRS7u7P5w3IPKRW-Qr_7Rvj0KuuSfgdlqDrJuQpNyHe7VHm0ot8jQImafpFi86vKgUtR6Iajkeip_dPHUnimQ-0ldCnCEqHB_VHcc2wZMip71IkZwek';
+            ?>
+            <a href="/admin/profile.php" class="flex items-center gap-3 flex-1 min-w-0">
+                <div class="size-10 rounded-full bg-cover bg-center border-2 border-white dark:border-slate-700 shadow-sm shrink-0" style="background-image: url('<?php echo htmlspecialchars($sidebarProfileImg); ?>');"></div>
+                <div class="flex flex-col overflow-hidden">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white truncate"><?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Admin User'; ?></p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Account Settings</p>
+                </div>
+            </a>
+            <a href="/logout" class="text-slate-400 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700" title="Logout">
                 <span class="material-symbols-outlined" style="font-size: 20px;">logout</span>
             </a>
         </div>

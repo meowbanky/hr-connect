@@ -42,6 +42,14 @@ RewriteRule ^admin/employees/?$ admin/employees.php [L]
 RewriteRule ^admin/settings/?$ admin/settings.php [L]
 RewriteRule ^admin/applications/?$ admin/applications.php [L]
 RewriteRule ^admin/application/([0-9]+)/?$ admin/view_application.php?id=$1 [L,QSA]
+RewriteRule ^admin/panelists/?$ admin/panelists.php [L]
+RewriteRule ^admin/invite-panelist/?$ admin/invite_panelist.php [L]
+RewriteRule ^admin/invite_panelist/?$ admin/invite_panelist.php [L]
+
+# 8. Panelist Portal
+RewriteRule ^panelist/?$ panelist/dashboard.php [L]
+RewriteRule ^panelist/login/?$ panelist/login.php [L]
+RewriteRule ^panelist/dashboard/?$ panelist/dashboard.php [L]
 
 # Prevent directory listing
 Options -Indexes

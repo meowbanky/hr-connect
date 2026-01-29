@@ -3,7 +3,7 @@ session_start();
 
 // Security Check
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || 
-    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     header('Location: /admin/login');
     exit;
 }
@@ -11,12 +11,14 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) ||
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/settings.php';
 
-$pageTitle = 'Manage Job Postings';
+// Auto-close expired jobs
+$pdo->query("UPDATE job_postings SET status = 'closed' WHERE status = 'published' AND application_deadline < CURDATE()");
+
+$pageTitle = 'Manage Job Templates';
 
 try {
     $page   = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
     $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-    $status = isset($_GET['status']) ? trim($_GET['status']) : '';
     $limit  = 10;
     $offset = ($page - 1) * $limit;
 
@@ -24,49 +26,51 @@ try {
     $params = [];
 
     if ($search) {
-        $where[] = "(j.title LIKE ? OR j.id LIKE ? OR d.name LIKE ?)";
+        $where[] = "(t.title LIKE ? OR d.name LIKE ?)";
         $term = "%$search%";
-        $params = array_merge($params, [$term, $term, $term]);
-    }
-
-    if ($status) {
-        $where[] = "j.status = ?";
-        $params[] = $status;
+        $params = array_merge($params, [$term, $term]);
     }
 
     $whereSQL = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
+    // Count Templates
     $countStmt = $pdo->prepare("
         SELECT COUNT(*) 
-        FROM job_postings j
-        LEFT JOIN departments d ON j.department_id = d.id
+        FROM job_templates t
+        LEFT JOIN departments d ON t.department_id = d.id
         $whereSQL
     ");
     $countStmt->execute($params);
-    $totalJobs = $countStmt->fetchColumn();
-    $totalPages = ceil($totalJobs / $limit);
+    $totalTemplates = $countStmt->fetchColumn();
+    $totalPages = ceil($totalTemplates / $limit);
 
+    // Fetch Templates with Cycle Info
+    // We want to know if there is an active cycle
     $stmt = $pdo->prepare("
         SELECT 
-            j.*,
+            t.*,
             d.name AS department_name,
-            (SELECT COUNT(*) FROM applications WHERE job_id = j.id) AS applicant_count
-        FROM job_postings j
-        LEFT JOIN departments d ON j.department_id = d.id
+            e.name AS employment_type_name,
+            (SELECT COUNT(*) FROM job_postings p WHERE p.job_template_id = t.id) AS cycle_count,
+            (SELECT COUNT(*) FROM job_postings p WHERE p.job_template_id = t.id AND p.status = 'published') AS active_cycles,
+            (SELECT cycle_label FROM job_postings p WHERE p.job_template_id = t.id ORDER BY p.created_at DESC LIMIT 1) AS latest_cycle_label,
+            (SELECT status FROM job_postings p WHERE p.job_template_id = t.id ORDER BY p.created_at DESC LIMIT 1) AS latest_cycle_status
+        FROM job_templates t
+        LEFT JOIN departments d ON t.department_id = d.id
+        LEFT JOIN employment_types e ON t.employment_type_id = e.id
         $whereSQL
-        ORDER BY j.created_at DESC
+        ORDER BY t.title ASC
         LIMIT $limit OFFSET $offset
     ");
     $stmt->execute($params);
-    $jobs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $templates = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Stats for Top Cards
     $stats = $pdo->query("
         SELECT
-            (SELECT COUNT(*) FROM job_postings WHERE status='published') AS active_jobs,
-            (SELECT COUNT(*) FROM candidates) AS total_candidates,
-            (SELECT COUNT(*) FROM job_postings 
-                WHERE application_deadline BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
-            ) AS closing_soon
+            (SELECT COUNT(*) FROM job_templates) AS total_templates,
+            (SELECT COUNT(*) FROM job_postings WHERE status='published') AS active_cycles,
+            (SELECT COUNT(*) FROM candidates) AS total_candidates
     ")->fetch(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
@@ -78,7 +82,7 @@ try {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manage Job Postings</title>
+<title>Manage Recruitment - HR Connect</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
@@ -88,15 +92,12 @@ try {
 
 <style>
 body { font-family: Inter, sans-serif; }
-
-/* Responsive Layout */
 @media (max-width: 767px) {
     .desktop-table { display: none; }
-    .mobile-jobs { display: flex; flex-direction: column; gap: 1rem; }
+    .mobile-list { display: flex; flex-direction: column; gap: 1rem; }
 }
-
 @media (min-width: 768px) {
-    .mobile-jobs { display: none; }
+    .mobile-list { display: none; }
 }
 </style>
 
@@ -116,156 +117,146 @@ body { font-family: Inter, sans-serif; }
 <!-- PAGE HEADER -->
 <div class="flex justify-between items-center">
     <div>
-        <h1 class="text-2xl sm:text-3xl font-black">Manage Job Postings</h1>
-        <p class="text-slate-500 text-sm">Recruitment & listings</p>
+        <h1 class="text-2xl sm:text-3xl font-black">Recruitment Management</h1>
+        <p class="text-slate-500 text-sm">Manage Job Templates & Cycles</p>
     </div>
-    <a href="/admin/jobs/create" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold">
-        + Create Job
+    <a href="/admin/create_job.php" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all">
+        + Create Template
     </a>
 </div>
 
 <!-- STATS -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
     <?php foreach ([
-        ['Active Jobs', $stats['active_jobs']],
-        ['Total Candidates', $stats['total_candidates']],
-        ['Closing This Week', $stats['closing_soon']]
+        ['Job Templates', $stats['total_templates'], 'description'],
+        ['Active Cycles', $stats['active_cycles'], 'campaign'],
+        ['Total Candidates', $stats['total_candidates'], 'group']
     ] as $s): ?>
-    <div class="bg-white dark:bg-surface-dark p-4 rounded-xl border">
-        <p class="text-xs text-slate-500"><?php echo $s[0]; ?></p>
-        <p class="text-3xl font-bold"><?php echo $s[1]; ?></p>
+    <div class="bg-white dark:bg-surface-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div>
+            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider"><?php echo $s[0]; ?></p>
+            <p class="text-3xl font-bold mt-1 text-slate-900 dark:text-white"><?php echo $s[1]; ?></p>
+        </div>
+        <div class="h-10 w-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined"><?php echo $s[2]; ?></span>
+        </div>
     </div>
     <?php endforeach; ?>
 </div>
 
-<!-- SEARCH & FILTER -->
+<!-- SEARCH -->
 <div class="flex flex-col sm:flex-row gap-4 py-4 border-b border-slate-200 dark:border-slate-800">
-    <form method="GET" class="flex-1 relative" onsubmit="event.preventDefault();">
+    <form method="GET" class="flex-1 relative">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-        <input type="text" id="searchInput" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search job title, ID..." 
+        <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Search job templates..." 
                class="w-full pl-10 pr-10 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark focus:ring-2 focus:ring-primary/50 outline-none transition-all shadow-sm">
         
-        <!-- Clear Button -->
-        <button type="button" id="clearSearch" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 <?php echo empty($search) ? 'hidden' : ''; ?>">
+        <?php if($search): ?>
+        <a href="?" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
             <span class="material-symbols-outlined text-[18px]">close</span>
-        </button>
-        
-        <?php if($status): ?><input type="hidden" name="status" value="<?php echo htmlspecialchars($status); ?>"><?php endif; ?>
-    </form>
-    <form method="GET" class="w-full sm:w-auto">
-        <?php if($search): ?><input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>"><?php endif; ?>
-        <select name="status" onchange="this.form.submit()" class="w-full sm:w-[180px] px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark focus:ring-2 focus:ring-primary/50 outline-none transition-all shadow-sm cursor-pointer">
-            <option value="">All Statuses</option>
-            <option value="published" <?php echo $status === 'published' ? 'selected' : ''; ?>>Published</option>
-            <option value="closed" <?php echo $status === 'closed' ? 'selected' : ''; ?>>Closed</option>
-            <option value="draft" <?php echo $status === 'draft' ? 'selected' : ''; ?>>Draft</option>
-        </select>
+        </a>
+        <?php endif; ?>
     </form>
 </div>
 
 <!-- DESKTOP TABLE -->
-<div class="desktop-table bg-white dark:bg-surface-dark rounded-xl border overflow-hidden">
-<table class="min-w-full divide-y">
-<thead class="bg-slate-50 dark:bg-slate-800">
+<div class="desktop-table bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+<thead class="bg-slate-50 dark:bg-slate-900">
 <tr>
-<th class="px-6 py-3 text-left text-xs">JOB</th>
-<th class="px-6 py-3 text-left text-xs hidden md:table-cell">DEPT</th>
-<th class="px-6 py-3 text-left text-xs hidden md:table-cell">STATUS</th>
-<th class="px-6 py-3 text-left text-xs hidden md:table-cell">CANDIDATES</th>
-<th class="px-6 py-3"></th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Template</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">Dept</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Recruitment Status</th>
+<th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">Latest Cycle</th>
+<th class="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
 </tr>
 </thead>
-<tbody id="jobsTableBody">
-<?php foreach ($jobs as $job): ?>
-<tr class="border-t hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" data-id="<?php echo $job['id']; ?>">
-<td class="px-6 py-4">
-    <strong><?php echo htmlspecialchars($job['title']); ?></strong>
-    <div class="text-xs text-slate-500">J-<?php echo 1000 + $job['id']; ?></div>
-</td>
-<td class="px-6 py-4 hidden md:table-cell"><?php echo $job['department_name']; ?></td>
-<td class="px-6 py-4 hidden md:table-cell">
-    <span class="px-2 py-1 rounded text-xs font-semibold
-        <?php echo $job['status'] === 'published' ? 'bg-green-100 text-green-800' : 
-                  ($job['status'] === 'closed' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'); ?>">
-        <?php echo ucfirst($job['status']); ?>
-    </span>
-</td>
-<td class="px-6 py-4 hidden md:table-cell"><?php echo $job['applicant_count']; ?></td>
-<td class="px-6 py-4 text-right space-x-2">
-    <a href="/job_board_%26_candidate_portal/view_job.php?id=<?php echo $job['id']; ?>" class="text-slate-400 hover:text-primary transition-colors" title="View">
-        <span class="material-symbols-outlined text-[20px]">visibility</span>
-    </a>
-    <a href="/admin/edit_job.php?id=<?php echo $job['id']; ?>" class="text-slate-400 hover:text-blue-600 transition-colors" title="Edit">
-        <span class="material-symbols-outlined text-[20px]">edit</span>
-    </a>
-    
-    <?php if($job['status'] === 'published'): ?>
-        <button class="action-btn text-slate-400 hover:text-amber-600 transition-colors" data-action="update_status" data-status="closed" title="Close Job">
-            <span class="material-symbols-outlined text-[20px]">block</span>
-        </button>
-    <?php elseif($job['status'] === 'closed'): ?>
-         <button class="action-btn text-slate-400 hover:text-green-600 transition-colors" data-action="update_status" data-status="published" title="Reopen Job">
-            <span class="material-symbols-outlined text-[20px]">replay</span>
-        </button>
-    <?php endif; ?>
-
-    <button class="action-btn text-slate-400 hover:text-red-600 transition-colors" data-action="delete" title="Delete">
-        <span class="material-symbols-outlined text-[20px]">delete</span>
-    </button>
-</td>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<?php foreach ($templates as $tpl): ?>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+    <td class="px-6 py-4">
+        <div class="font-bold text-slate-900 dark:text-white text-base"><?php echo htmlspecialchars($tpl['title']); ?></div>
+        <div class="text-xs text-slate-500 mt-0.5"><?php echo $tpl['employment_type_name']; ?></div>
+    </td>
+    <td class="px-6 py-4 hidden md:table-cell text-sm text-slate-600 dark:text-slate-300">
+        <?php echo $tpl['department_name']; ?>
+    </td>
+    <td class="px-6 py-4">
+        <?php if($tpl['active_cycles'] > 0): ?>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400 border border-green-200 dark:border-green-500/20">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                Active Recruitment
+            </span>
+        <?php else: ?>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                Idle
+            </span>
+        <?php endif; ?>
+        <div class="text-xs text-slate-400 mt-1"><?php echo $tpl['cycle_count']; ?> Total Cycles</div>
+    </td>
+    <td class="px-6 py-4 hidden md:table-cell text-sm">
+        <?php if($tpl['latest_cycle_label']): ?>
+            <div class="text-slate-900 dark:text-white font-medium"><?php echo htmlspecialchars($tpl['latest_cycle_label']); ?></div>
+            <div class="text-xs text-slate-500 capitalize"><?php echo $tpl['latest_cycle_status']; ?></div>
+        <?php else: ?>
+            <span class="text-slate-400 italic text-xs">No history</span>
+        <?php endif; ?>
+    </td>
+    <td class="px-6 py-4 text-right">
+        <div class="flex justify-end items-center gap-2">
+            <button onclick="launchCycle(<?php echo $tpl['id']; ?>, '<?php echo htmlspecialchars(addslashes($tpl['title'])); ?>')" 
+                    class="flex items-center justify-center px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-bold shadow-sm hover:bg-blue-600 transition-all">
+                Launch Cycle
+            </button>
+            <button onclick="viewHistory(<?php echo $tpl['id']; ?>, '<?php echo htmlspecialchars(addslashes($tpl['title'])); ?>')" 
+                    class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" title="View History">
+                <span class="material-symbols-outlined text-[20px]">history</span>
+            </button>
+            <a href="/admin/edit_job.php?id=<?php echo $tpl['id']; ?>" class="p-2 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" title="Edit Template">
+                <span class="material-symbols-outlined text-[20px]">edit</span>
+            </a>
+        </div>
+    </td>
 </tr>
 <?php endforeach; ?>
 </tbody>
 </table>
 </div>
 
-<!-- MOBILE CARDS -->
-<div class="mobile-jobs">
-<?php foreach ($jobs as $job): ?>
-<div class="bg-white dark:bg-surface-dark border rounded-xl p-4" data-id="<?php echo $job['id']; ?>">
-    <div class="flex justify-between items-start">
-        <div>
-            <h3 class="font-bold text-slate-900 dark:text-white"><?php echo htmlspecialchars($job['title']); ?></h3>
-            <p class="text-xs text-slate-500 mt-1">
-                J-<?php echo 1000 + $job['id']; ?> • <?php echo $job['department_name']; ?>
-            </p>
+<!-- MOBILE LIST -->
+<div class="mobile-list">
+    <?php foreach ($templates as $tpl): ?>
+    <div class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm">
+        <div class="flex justify-between items-start mb-3">
+             <div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-lg"><?php echo htmlspecialchars($tpl['title']); ?></h3>
+                <p class="text-xs text-slate-500"><?php echo $tpl['department_name']; ?></p>
+            </div>
+             <?php if($tpl['active_cycles'] > 0): ?>
+                <span class="h-2 w-2 rounded-full bg-green-500"></span>
+            <?php endif; ?>
         </div>
-        <span class="text-xs px-2 py-1 rounded font-medium
-            <?php echo $job['status'] === 'published' ? 'bg-green-100 text-green-800' : 
-                      ($job['status'] === 'closed' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'); ?>">
-            <?php echo ucfirst($job['status']); ?>
-        </span>
-    </div>
-
-    <div class="flex justify-between text-sm mt-3 text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-3">
-        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">group</span> <?php echo $job['applicant_count']; ?> Applicants</span>
-        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">calendar_today</span> <?php echo date('M d, Y', strtotime($job['created_at'])); ?></span>
-    </div>
-
-    <div class="flex justify-end gap-3 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
-        <a href="/job_board_%26_candidate_portal/view_job.php?id=<?php echo $job['id']; ?>" class="p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-400 hover:text-primary transition-colors">
-            <span class="material-symbols-outlined">visibility</span>
-        </a>
-        <a href="/admin/edit_job.php?id=<?php echo $job['id']; ?>" class="p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-400 hover:text-blue-600 transition-colors">
-            <span class="material-symbols-outlined">edit</span>
-        </a>
         
-        <?php if($job['status'] === 'published'): ?>
-            <button class="action-btn p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-400 hover:text-amber-600 transition-colors" data-action="update_status" data-status="closed" title="Close Job">
-                <span class="material-symbols-outlined">block</span>
-            </button>
-        <?php elseif($job['status'] === 'closed'): ?>
-             <button class="action-btn p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-400 hover:text-green-600 transition-colors" data-action="update_status" data-status="published" title="Reopen Job">
-                <span class="material-symbols-outlined">replay</span>
-            </button>
-        <?php endif; ?>
+        <div class="grid grid-cols-2 gap-2 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-3 mt-1">
+             <div>
+                 <span class="block text-xs text-slate-400 uppercase">Cycles</span>
+                 <?php echo $tpl['cycle_count']; ?>
+             </div>
+              <div class="text-right">
+                 <span class="block text-xs text-slate-400 uppercase">Latest</span>
+                 <?php echo $tpl['latest_cycle_label'] ? htmlspecialchars($tpl['latest_cycle_label']) : '-'; ?>
+             </div>
+        </div>
 
-        <button class="action-btn p-2 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-400 hover:text-red-600 transition-colors" data-action="delete">
-            <span class="material-symbols-outlined">delete</span>
+        <button onclick="launchCycle(<?php echo $tpl['id']; ?>, '<?php echo htmlspecialchars(addslashes($tpl['title'])); ?>')" 
+                class="w-full mt-4 flex items-center justify-center h-10 rounded-lg bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-white transition-all">
+            Launch Recruitment Cycle
         </button>
     </div>
-</div>
-<?php endforeach; ?>
+    <?php endforeach; ?>
 </div>
 
 </div>
@@ -349,175 +340,173 @@ body { font-family: Inter, sans-serif; }
 </main>
 
 <script>
-    function fetchJobs(page = 1) {
-        const search = $('#searchInput').val();
-        const status = $('select[name="status"]').val(); // Get current status
+    // Simple Search Handling
+    $('#searchInput').on('keypress', function(e) {
+        if(e.which === 13) {
+            e.preventDefault();
+            const val = $(this).val().trim();
+            const url = new URL(window.location);
+            if(val) url.searchParams.set('search', val);
+            else url.searchParams.delete('search');
+            url.searchParams.set('page', 1); // Reset page
+            window.location.href = url.toString();
+        }
+    });
 
-        $.ajax({
-            url: '/api/fetch_jobs.php',
-            method: 'GET',
-            data: {
-                page: page,
-                search: search,
-                status: status
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    $('#jobsTableBody').html(response.html);
-                    $('.mobile-jobs').html(response.mobile_html);
-                    
-                    // Update Pagination Wrapper
-                    // Since the API returns the inner Pagination logic, we need to locate the wrapper
-                    // Or easier: replace the entire pagination block if we wrapped it.
-                    // The API returns the content starting from <div class="flex flex-col...
-                    // So we should target the parent of the current pagination div or replace it by ID if we added one. 
-                    // Let's assume we replace the last `div` in main content or give it an ID.
-                    // Best approach: Add ID `paginationContainer` to the wrapper in PHP and update it here.
-                    $('#paginationContainer').html(response.pagination);
-                    
-                    // Update URL without reload
-                    const url = new URL(window.location);
-                    url.searchParams.set('page', page);
-                    if(search) url.searchParams.set('search', search); else url.searchParams.delete('search');
-                    if(status) url.searchParams.set('status', status); else url.searchParams.delete('status');
-                    window.history.pushState({}, '', url);
+    // Launch Cycle Modal
+    window.launchCycle = function(templateId, jobTitle) {
+        Swal.fire({
+            title: `Launch Recruitment: ${jobTitle}`,
+            html: `
+                <div class="flex flex-col gap-4 text-left">
+                    <label class="flex flex-col gap-1">
+                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Cycle Label <span class="text-red-500">*</span></span>
+                        <input id="swal-label" class="swal2-input m-0 w-full" placeholder="e.g. Summer 2026 Intake">
+                    </label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="flex flex-col gap-1">
+                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Open Date</span>
+                            <input id="swal-open" type="date" class="swal2-input m-0 w-full" value="<?php echo date('Y-m-d'); ?>">
+                        </label>
+                        <label class="flex flex-col gap-1">
+                            <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Close Date</span>
+                            <input id="swal-close" type="date" class="swal2-input m-0 w-full">
+                        </label>
+                    </div>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Launch Cycle',
+            confirmButtonColor: '#2563eb', // Primary Blue
+            focusConfirm: false,
+            preConfirm: () => {
+                const label = document.getElementById('swal-label').value;
+                const open = document.getElementById('swal-open').value;
+                const close = document.getElementById('swal-close').value;
 
-                } else {
-                    console.error('Failed to fetch jobs');
+                if (!label) {
+                    Swal.showValidationMessage('Cycle Label is required');
+                    return false;
                 }
-            },
-            error: function() {
-                console.error('Error fetching jobs');
+                return { template_id: templateId, cycle_label: label, open_date: open, close_date: close };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show Loading
+                Swal.fire({
+                    title: 'Launching...',
+                    text: 'Creating recruitment cycle',
+                    allowOutsideClick: false,
+                    didOpen: () => { Swal.showLoading(); }
+                });
+
+                $.ajax({
+                    url: '/api/launch_cycle.php',
+                    method: 'POST',
+                    data: result.value,
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Launched!',
+                                text: 'The recruitment cycle is now active.',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire('Error', response.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error', 'Server error occurred', 'error');
+                    }
+                });
             }
         });
-    }
+    };
 
-$(document).ready(function() {
-    let debounceTimer;
-
-    // Search Input Logic
-    $('#searchInput').on('input', function() {
-        const val = $(this).val().trim();
-        
-        // Toggle Clear Button
-        if (val.length > 0) {
-            $('#clearSearch').removeClass('hidden');
-        } else {
-            $('#clearSearch').addClass('hidden');
-        }
-
-        clearTimeout(debounceTimer);
-        
-        // "Start filtering when the length > 3"
-        if (val.length > 3 || val.length === 0) {
-            debounceTimer = setTimeout(() => {
-                fetchJobs(1);
-            }, 300);
-        }
-    });
-
-    // Clear Search Logic
-    $('#clearSearch').on('click', function() {
-        $('#searchInput').val('');
-        $(this).addClass('hidden');
-        fetchJobs(1);
-    });
-
-    // Handle Pagination Clicks (Delegated to body for dynamic content)
-    // Note: The new pagination uses `onclick="fetchJobs(N)"` inline, which is fine.
-    // But if we want to intercept links (<a> tags) from the initial load:
-    $(document).on('click', '#paginationContainer nav a', function(e) {
-        e.preventDefault();
-        const href = $(this).attr('href');
-        const urlParams = new URLSearchParams(href.split('?')[1]);
-        const page = urlParams.get('page') || 1;
-        fetchJobs(page);
-    });
-
-    // Action Buttons (Delete, Status)
-    $(document).on('click', '.action-btn', function(e) {
-        e.preventDefault();
-        const btn = $(this);
-        const action = btn.data('action');
-        const container = btn.closest('[data-id]');
-        const jobId = container.data('id');
-        
-        const performAction = () => {
-             let data = { action: action, job_id: jobId };
-            if (action === 'update_status') {
-                data.status = btn.data('status');
-            }
-            
-            $.ajax({
-                url: '/api/admin_job_actions.php',
-                method: 'POST',
-                data: data,
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: response.message || 'Action completed successfully.',
-                            timer: 1500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            // Reload current state instead of full reload
-                            const params = new URLSearchParams(window.location.search);
-                            fetchJobs(params.get('page') || 1);
-                        });
+    // Toggle Cycle Status
+    window.toggleCycleStatus = function(id, status) {
+        Swal.fire({
+            title: status === 'published' ? 'Activate Cycle?' : 'Close Cycle?',
+            text: status === 'published' ? 'This will make the job visible to candidates.' : 'This will stop new applications.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, proceed'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post('/api/admin_job_actions.php', { action: 'update_status', job_id: id, status: status }, function(res) {
+                    if(res.success) {
+                        Swal.fire('Success', res.message, 'success').then(() => window.location.reload());
                     } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: response.message || 'An error occurred.',
-                        });
+                        Swal.fire('Error', res.message, 'error');
                     }
-                },
-                error: function() {
-                     Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'A server error occurred.',
-                    });
-                }
-            });
-        };
+                });
+            }
+        });
+    };
 
-        if (action === 'delete') {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#64748b',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    performAction();
-                }
-            });
-        } else if (action === 'update_status') {
-             const newStatus = btn.data('status');
-             const confirmText = newStatus === 'closed' ? 'close' : 'reopen';
-             const confirmColor = newStatus === 'closed' ? '#ef4444' : '#10b981';
-             
-             Swal.fire({
-                title: `Are you sure you want to ${confirmText} this job?`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: confirmColor,
-                cancelButtonColor: '#64748b',
-                confirmButtonText: `Yes, ${confirmText} it!`
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    performAction();
-                }
-            });
-        }
-    });
-});
+    // View History Modal
+    window.viewHistory = function(templateId, jobTitle) {
+        Swal.fire({
+            title: `History: ${jobTitle}`,
+            html: '<div class="text-center py-4"><span class="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span></div>',
+            width: '800px',
+            showConfirmButton: false,
+            showCloseButton: true,
+            didOpen: () => {
+                $.ajax({
+                    url: '/api/get_template_cycles.php',
+                    data: { template_id: templateId },
+                    success: function(response) {
+                        if(response.success && response.cycles.length > 0) {
+                            let rows = response.cycles.map(c => `
+                                <tr class="border-b text-sm">
+                                    <td class="py-3 text-left font-medium text-slate-900 dark:text-gray-100">${c.cycle_label || 'Unlabeled'}</td>
+                                    <td class="py-3 text-left">
+                                        <span class="px-2 py-1 rounded text-xs font-semibold ${c.status === 'published' ? 'bg-green-100 text-green-800' : (c.status === 'draft' ? 'bg-yellow-100 text-yellow-800' : 'bg-slate-100 text-slate-600')}">
+                                            ${c.status.charAt(0).toUpperCase() + c.status.slice(1)}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 text-left text-slate-500 dark:text-slate-400">${new Date(c.created_at).toLocaleDateString()}</td>
+                                    <td class="py-3 text-left font-bold text-slate-700 dark:text-slate-300">${c.applicant_count}</td>
+                                    <td class="py-3 text-right space-x-2">
+                                        <a href="/job_board_%26_candidate_portal/view_job.php?id=${c.id}" target="_blank" class="text-blue-600 hover:underline text-xs">View Ad</a>
+                                        ${c.status === 'draft' ? `<button onclick="toggleCycleStatus(${c.id}, 'published')" class="text-green-600 hover:text-green-800 text-xs font-bold">Activate</button>` : ''}
+                                        ${c.status === 'published' ? `<button onclick="toggleCycleStatus(${c.id}, 'closed')" class="text-red-500 hover:text-red-700 text-xs text-left">Close</button>` : ''}
+                                    </td>
+                                </tr>
+                            `).join('');
+                            
+                            Swal.getHtmlContainer().innerHTML = `
+                                <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead class="bg-slate-50 dark:bg-slate-700 text-xs uppercase text-slate-500 dark:text-slate-300">
+                                        <tr>
+                                            <th class="py-2 px-1">Cycle</th>
+                                            <th class="py-2 px-1">Status</th>
+                                            <th class="py-2 px-1">Launched</th>
+                                            <th class="py-2 px-1">Apps</th>
+                                            <th class="py-2 px-1 text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="dark:text-gray-200">${rows}</tbody>
+                                </table>
+                                </div>
+                            `;
+                        } else {
+                            Swal.getHtmlContainer().innerHTML = '<div class="text-slate-500 py-8 italic">No recruitment cycles found for this template.</div>';
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error', 'Could not fetch history', 'error');
+                    }
+                });
+            }
+        });
+    };
 </script>
 
 </body>

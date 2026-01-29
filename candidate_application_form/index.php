@@ -62,6 +62,23 @@ $hasResume = !empty($profile['resume_path']);
 $resumePath = $profile['resume_path'] ?? '';
 $resumeName = basename($resumePath);
 ?>
+<?php
+// Fetch Job Details
+$jobId = $_GET['job_id'] ?? 0;
+$jobTitle = 'Senior Product Designer'; // Default fallback
+if ($jobId) {
+    try {
+        $stmtJob = $pdo->prepare("SELECT title FROM job_postings WHERE id = ?");
+        $stmtJob->execute([$jobId]);
+        $jobRaw = $stmtJob->fetch(PDO::FETCH_ASSOC);
+        if ($jobRaw) {
+            $jobTitle = $jobRaw['title'];
+        }
+    } catch (Exception $e) {
+        // Silent fail to default
+    }
+}
+?>
 <style>
     body { font-family: 'Inter', sans-serif; }
     /* Custom scrollbar for cleaner look */
@@ -104,7 +121,7 @@ $resumeName = basename($resumePath);
         <!-- Page Heading & Back Button -->
         <div class="flex flex-wrap justify-between items-start gap-4 p-4">
             <div class="flex min-w-72 flex-col gap-3">
-                <h1 class="text-text-main dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Apply for Senior Product Designer</h1>
+                <h1 class="text-text-main dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Apply for <?php echo htmlspecialchars($jobTitle); ?></h1>
                 <p class="text-text-secondary dark:text-gray-400 text-base font-normal leading-normal">Please complete the form below to submit your candidacy.</p>
             </div>
             <a href="../job_board_&_candidate_portal/index.php" class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark text-text-main dark:text-white text-sm font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">

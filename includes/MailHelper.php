@@ -1,6 +1,7 @@
 <?php
 // includes/MailHelper.php
 // A simple helper to manage email sending (mocked for now, but ready for PHPMailer/SMTP)
+require_once __DIR__ . '/settings.php';
 
 class MailHelper {
     
@@ -226,6 +227,104 @@ class MailHelper {
         $body .= "Please arrive 15 minutes early and bring a copy of your CV/Resume.\n";
         $body .= "On the day of the interview, please log in to your candidate portal to check in.\n";
         
+        return self::send($email, $subject, $body);
+    }
+    /**
+     * Send Panelist Invitation Email with Credentials
+     */
+    /**
+     * Send Panelist Invitation Email with Credentials and Actionable Links
+     */
+    public static function sendPanelistInvite($email, $name, $username, $password, $loginUrl, $jobAssignments = []) {
+        $subject = "Interview Panel Invitation - Action Required";
+        $siteUrl = get_setting('site_url', 'https://hr.prismtechnologies.com.ng');
+        $apiUrl = $siteUrl . '/api/public_respond_invite.php';
+
+        $body = "Dear $name,\n\n";
+        $body .= "You have been invited to join the Interview Panel for <strong>Prism HR Recruitment</strong>.\n";
+        
+        // Credentials Section
+        $body .= "<h3>Your Login Credentials</h3>";
+        $body .= "Please log in to the panelist portal to view assigned candidates.\n\n";
+        $body .= "<strong>URL:</strong> <a href='$loginUrl'>$loginUrl</a>\n";
+        $body .= "<strong>Username:</strong> $username\n";
+        $body .= "<strong>Password:</strong> $password\n";
+        $body .= "<em>(Please change your password upon first login)</em>\n\n";
+
+        // Job Assignments Section
+        if (!empty($jobAssignments)) {
+            $body .= "<h3>Assigned Panels</h3>";
+            $body .= "Please accept or decline the invitations below:\n";
+            $body .= "<table border='0' cellpadding='10' cellspacing='0' style='width:100%; border-collapse:collapse;'>";
+            
+            foreach ($jobAssignments as $job) {
+                $acceptLink = "$apiUrl?token=" . $job['token'] . "&action=accept";
+                $declineLink = "$apiUrl?token=" . $job['token'] . "&action=decline";
+                
+                $body .= "<tr>";
+                $body .= "<td style='border-bottom:1px solid #eee;'><strong>" . htmlspecialchars($job['title']) . "</strong></td>";
+                $body .= "<td style='border-bottom:1px solid #eee; text-align:right;'>";
+                $body .= "<a href='$acceptLink' style='color:green; font-weight:bold; text-decoration:none; margin-right:15px;'>ACCEPT</a>";
+                $body .= "<a href='$declineLink' style='color:red; font-weight:bold; text-decoration:none;'>DECLINE</a>";
+                $body .= "</td>";
+                $body .= "</tr>";
+            }
+            $body .= "</table>\n\n";
+        }
+
+        $body .= "<br><a href='$loginUrl' class='btn'>Login to Portal</a>\n\n";
+        $body .= "Best Regards,\nHR Team";
+
+        return self::send($email, $subject, $body);
+    }
+    /**
+     * Send Panelist Removal Notification
+     */
+    public static function sendPanelistRemoval($email, $name, $jobTitle) {
+        $subject = "Update on Interview Panel Assignment: $jobTitle";
+        
+        $body = "Dear $name,\n\n";
+        $body .= "This email is to inform you that your assignment as a panelist for the position of <strong>$jobTitle</strong> has been removed.\n\n";
+        $body .= "You will no longer have access to the candidates for this specific role in your dashboard.\n";
+        $body .= "If you believe this is a mistake, please contact the HR department.\n\n";
+        $body .= "Thank you for your contributions.\n";
+        $body .= "Best Regards,\nHR Team";
+
+        return self::send($email, $subject, $body);
+    }
+
+    /**
+     * Send Panelist Password Reset Link
+     */
+    public static function sendPanelistPasswordReset($email, $name, $resetLink) {
+        $subject = "Password Reset Request - HR Panelist Portal";
+        
+        $body = "Dear $name,\n\n";
+        $body .= "We received a request to reset your password for the Panelist Portal.\n";
+        $body .= "Click the link below to set a new password:\n\n";
+        $body .= "<a href='$resetLink'>$resetLink</a>\n\n";
+        $body .= "This link will expire in 1 hour.\n";
+        $body .= "If you did not request this, please ignore this email.\n\n";
+        $body .= "Best Regards,\nHR Team";
+
+        return self::send($email, $subject, $body);
+    }
+    /**
+     * Send Employee Onboarding/Welcome Email
+     */
+    public static function sendEmployeeOnboarding($email, $name, $username, $resetLink) {
+        $subject = "Welcome to Prism HR - Account Setup";
+        $loginUrl = get_setting('site_url', 'http://' . $_SERVER['HTTP_HOST']) . '/login';
+        
+        $body = "Dear $name,\n\n";
+        $body .= "Welcome to the team! We are excited to have you on board.\n\n";
+        $body .= "A staff account has been created for you. Please set up your password to access the employee portal.\n\n";
+        $body .= "<strong>Username:</strong> $username\n";
+        $body .= "<strong>Setup Link:</strong> <a href='$resetLink'>Click here to set your password</a>\n\n";
+        $body .= "If the link above does not work, paste this into your browser:\n$resetLink\n\n";
+        $body .= "After setting your password, you can login at: <a href='$loginUrl'>$loginUrl</a>\n\n";
+        $body .= "Best Regards,\nHR Team";
+
         return self::send($email, $subject, $body);
     }
 }

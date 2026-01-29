@@ -1,7 +1,8 @@
 <?php
 session_start();
 // Security Check
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || 
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     header('Location: /admin/login');
     exit;
 }
@@ -53,157 +54,136 @@ try {
         <!-- Header -->
         <?php include_once __DIR__ . '/../includes/admin_header.php'; ?>
 
-        <div class="flex-1 overflow-y-auto p-6 md:p-10 flex flex-col gap-8">
+        <div class="flex-1 overflow-y-auto p-6 md:p-10 flex flex-col gap-8 bg-slate-50 dark:bg-slate-900/50">
             <!-- Reuse content from reference HTML -->
-            <div class="w-full max-w-[1200px] mx-auto flex flex-col gap-6">
+            <div class="w-full max-w-4xl mx-auto flex flex-col gap-8">
                 
                 <!-- Page Header with Actions -->
                 <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div class="flex flex-col gap-2 max-w-2xl">
-                        <h1 class="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">Create New Job Posting</h1>
-                        <p class="text-slate-500 dark:text-slate-400 text-base">Fill in the details below to post a new vacancy to the career portal.</p>
+                        <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Create Job Template</h1>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm">Define the core details for a job role. Use this template to launch recruitment cycles later.</p>
                     </div>
                     <div class="flex items-center gap-3 shrink-0">
-                        <button id="saveDraftBtn" class="flex items-center justify-center h-10 px-4 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm">
-                            Save as Draft
-                        </button>
-                        <button id="publishBtn" class="flex items-center justify-center h-10 px-6 rounded-lg bg-primary hover:bg-blue-700 text-white text-sm font-bold shadow-md shadow-blue-500/20 transition-all hover:translate-y-[-1px]">
-                            Publish Job
+                        <button id="publishBtn" class="flex items-center justify-center py-2.5 px-6 rounded-lg bg-primary hover:bg-blue-700 text-white text-sm font-semibold shadow-md shadow-primary/20 transition-all hover:translate-y-[-1px]">
+                            Create Template
                         </button>
                     </div>
                 </div>
 
-                <!-- Form Content Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Left Column: Main Info (Span 2) -->
-                    <div class="lg:col-span-2 flex flex-col gap-6">
-                        <!-- Card: Basic Details -->
-                        <div class="bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-6">
-                            <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">description</span>
-                                Job Details
-                            </h2>
-                            <!-- Job Title -->
-                            <label class="flex flex-col gap-2">
-                                <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Job Title <span class="text-red-500">*</span></span>
-                                <input name="title" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 h-12 px-4 transition-all" placeholder="e.g. Senior Product Designer" type="text"/>
-                            </label>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Department Select -->
-                                <label class="flex flex-col gap-2">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Department</span>
-                                        <button type="button" id="addDeptBtn" class="text-xs font-semibold text-primary hover:text-blue-700 transition-colors flex items-center gap-1">
-                                            <span class="material-symbols-outlined text-[16px]">add_circle</span> Add New
-                                        </button>
-                                    </div>
-                                    <div class="relative">
-                                        <select name="department_id" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all">
-                                            <option value="">Select Department</option>
-                                            <?php foreach ($departments as $dept): ?>
-                                                <option value="<?php echo $dept['id']; ?>"><?php echo htmlspecialchars($dept['name']); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                                            <span class="material-symbols-outlined text-sm">expand_more</span>
-                                        </div>
-                                    </div>
-                                </label>
-                                <!-- Employment Type -->
-                                <label class="flex flex-col gap-2">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Employment Type</span>
-                                        <button type="button" id="addEmpTypeBtn" class="text-xs font-semibold text-primary hover:text-blue-700 transition-colors flex items-center gap-1">
-                                            <span class="material-symbols-outlined text-[16px]">add_circle</span> Add New
-                                        </button>
-                                    </div>
-                                    <div class="relative">
-                                        <select name="employment_type_id" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all">
-                                            <option value="">Select Employment Type</option>
-                                             <?php foreach ($empTypes as $type): ?>
-                                                <option value="<?php echo $type['id']; ?>"><?php echo htmlspecialchars($type['name']); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                                            <span class="material-symbols-outlined text-sm">expand_more</span>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                            
-                            <!-- Location & Experience -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <label class="flex flex-col gap-2">
-                                    <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Location</span>
-                                    <input name="location" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 h-12 px-4 transition-all" placeholder="e.g. Lagos, Nigeria (Remote)" type="text"/>
-                                </label>
-                                <label class="flex flex-col gap-2">
-                                    <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Experience Level</span>
-                                    <div class="relative">
-                                        <select name="experience_level" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all">
-                                            <option value="">Select Level</option>
-                                            <option value="Entry Level">Entry Level</option>
-                                            <option value="Mid Level">Mid Level</option>
-                                            <option value="Senior Level">Senior Level</option>
-                                            <option value="Director">Director</option>
-                                        </select>
-                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                                            <span class="material-symbols-outlined text-sm">expand_more</span>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
+                <!-- Form Content -->
+                <div class="flex flex-col gap-6">
+                    
+                    <!-- Card: Job Details -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 flex flex-col gap-8">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 uppercase tracking-wide">
+                            <span class="material-symbols-outlined text-primary text-xl">description</span>
+                            Job Details
+                        </h2>
+                        
+                        <!-- Job Title -->
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Job Title <span class="text-red-500">*</span></label>
+                            <input name="title" class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 h-12 px-4 transition-all text-sm" placeholder="e.g. Senior Product Designer" type="text"/>
+                        </div>
 
-                            <!-- Salary -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <label class="flex flex-col gap-2">
-                                    <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Min Salary</span>
-                                    <input name="min_salary" type="number" step="0.01" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 h-12 px-4 transition-all" placeholder="0.00"/>
-                                </label>
-                                <label class="flex flex-col gap-2">
-                                    <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Max Salary</span>
-                                    <input name="max_salary" type="number" step="0.01" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 h-12 px-4 transition-all" placeholder="0.00"/>
-                                </label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Department Select -->
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Department</label>
+                                    <button type="button" id="addDeptBtn" class="text-xs font-bold text-primary hover:text-blue-700 transition-colors flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px]">add_circle</span> Add New
+                                    </button>
+                                </div>
+                                <div class="relative">
+                                    <select name="department_id" class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all text-sm">
+                                        <option value="">Select Department</option>
+                                        <?php foreach ($departments as $dept): ?>
+                                            <option value="<?php echo $dept['id']; ?>"><?php echo htmlspecialchars($dept['name']); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Employment Type -->
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Employment Type</label>
+                                    <button type="button" id="addEmpTypeBtn" class="text-xs font-bold text-primary hover:text-blue-700 transition-colors flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px]">add_circle</span> Add New
+                                    </button>
+                                </div>
+                                <div class="relative">
+                                    <select name="employment_type_id" class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all text-sm">
+                                        <option value="">Select Employment Type</option>
+                                            <?php foreach ($empTypes as $type): ?>
+                                            <option value="<?php echo $type['id']; ?>"><?php echo htmlspecialchars($type['name']); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Location & Experience -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Location</label>
+                                <input name="location" class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 h-12 px-4 transition-all text-sm" placeholder="e.g. Lagos, Nigeria" type="text"/>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Experience Level</label>
+                                <div class="relative">
+                                    <select name="experience_level" class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 pl-4 pr-10 appearance-none transition-all text-sm">
+                                        <option value="">Select Level</option>
+                                        <option value="Entry Level">Entry Level</option>
+                                        <option value="Mid Level">Mid Level</option>
+                                        <option value="Senior Level">Senior Level</option>
+                                        <option value="Director">Director</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Card: Rich Text Description -->
-                        <div class="bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-6 flex-1">
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-primary">article</span>
-                                    Description
-                                </h2>
-                                <textarea name="description" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 rounded-lg p-4 min-h-[200px] text-slate-900 dark:text-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 resize-y" placeholder="Enter job description..."></textarea>
+                        <!-- Salary -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Min Salary</label>
+                                <input name="min_salary" type="number" step="0.01" class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 h-12 px-4 transition-all text-sm" placeholder="0.00"/>
                             </div>
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-primary">list_alt</span>
-                                    Requirements
-                                </h2>
-                                <textarea name="requirements" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 rounded-lg p-4 min-h-[150px] text-slate-900 dark:text-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 resize-y" placeholder="List job requirements..."></textarea>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Max Salary</label>
+                                <input name="max_salary" type="number" step="0.01" class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 h-12 px-4 transition-all text-sm" placeholder="0.00"/>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column: Meta Data (Span 1) -->
-                    <div class="lg:col-span-1 flex flex-col gap-6">
-                        <!-- Card: Schedule -->
-                        <div class="bg-white dark:bg-surface-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-6">
-                            <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">calendar_month</span>
-                                Schedule
-                            </h2>
-                            <label class="flex flex-col gap-2">
-                                <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Open Date</span>
-                                <input name="open_date" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-4 transition-all" type="date"/>
-                            </label>
-                            <label class="flex flex-col gap-2">
-                                <span class="text-sm font-semibold text-slate-900 dark:text-slate-200">Close Date</span>
-                                <input name="close_date" class="w-full rounded-lg border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary h-12 px-4 transition-all" type="date"/>
-                            </label>
-                        </div>
+                    <!-- Card: Description -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 flex flex-col gap-6">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 uppercase tracking-wide">
+                            <span class="material-symbols-outlined text-primary text-xl">subject</span>
+                            Description
+                        </h2>
+                        <textarea name="description" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4 min-h-[160px] text-slate-900 dark:text-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 resize-y text-sm" placeholder="Enter job description..."></textarea>
                     </div>
+
+                    <!-- Card: Requirements -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 flex flex-col gap-6">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 uppercase tracking-wide">
+                            <span class="material-symbols-outlined text-primary text-xl">checklist</span>
+                            Requirements
+                        </h2>
+                        <textarea name="requirements" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4 min-h-[160px] text-slate-900 dark:text-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary placeholder-slate-400 resize-y text-sm" placeholder="List job requirements..."></textarea>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -280,7 +260,7 @@ try {
 
             // Publish Handler
             // Consolidated Submit Handler
-            function submitJob(status, btn) {
+            function submitJob(btn) {
                 const originalText = btn.html();
                 
                 // Basic Validation
@@ -299,25 +279,22 @@ try {
                     min_salary: $('input[name="min_salary"]').val(),
                     max_salary: $('input[name="max_salary"]').val(),
                     description: $('textarea[name="description"]').val(),
-                    requirements: $('textarea[name="requirements"]').val(),
-                    open_date: $('input[name="open_date"]').val(),
-                    application_deadline: $('input[name="close_date"]').val(),
-                    status: status // 'published' or 'draft'
+                    requirements: $('textarea[name="requirements"]').val()
                 };
 
                 btn.prop('disabled', true).html('<span class="material-symbols-outlined animate-spin text-sm">refresh</span> Saving...');
 
                 $.ajax({
-                    url: '/api/create_job.php',
+                    url: '/api/create_job_template.php',
                     method: 'POST',
                     data: formData,
                     success: function(response) {
                         if(response.success) {
                             Swal.fire({
                                 icon: 'success',
-                                title: status === 'published' ? 'Published!' : 'Saved!',
-                                text: status === 'published' ? 'Job is now live.' : 'Job saved as draft.',
-                                confirmButtonText: 'View Jobs'
+                                title: 'Template Created!',
+                                text: 'You can now launch recruitment cycles from this template.',
+                                confirmButtonText: 'View Job List'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     window.location.href = '/admin/jobs';
@@ -336,11 +313,7 @@ try {
             }
 
             $('#publishBtn').click(function() {
-                submitJob('published', $(this));
-            });
-            
-            $('#saveDraftBtn').click(function() {
-                submitJob('draft', $(this));
+                submitJob($(this));
             });
         });
     </script>

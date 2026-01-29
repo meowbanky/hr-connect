@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Panelist Completed Evaluation View - HR Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4040b5",
+                        "background-light": "#f5f7fa",
+                        "background-dark": "#212a35",
+                        "slate-content": "#EBEFF3",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .score-bar { height: 8px; border-radius: 4px; }
+        .circular-progress {
+            background: conic-gradient(#4040b5 84%, #eaeaf1 0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .circular-progress-inner {
+            background-color: white;
+            border-radius: 50%;
+            width: 85%;
+            height: 85%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111118] dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 flex-shrink-0 border-r border-[#eaeaf1] dark:border-slate-700 bg-white dark:bg-background-dark flex flex-col justify-between p-6">
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-3">
+<div class="bg-primary size-10 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">layers</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-sm font-bold leading-tight">HR Management</h1>
+<p class="text-[#5d5d89] dark:text-slate-400 text-xs font-normal">Recruitment Hub</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-slate-500">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-slate-500">group</span>
+<p class="text-sm font-medium">Candidates</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">event_available</span>
+<p class="text-sm font-bold">Interviews</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-slate-500">work</span>
+<p class="text-sm font-medium">Jobs</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-slate-500">settings</span>
+<p class="text-sm font-medium">Settings</p>
+</div>
+</nav>
+</div>
+<button class="flex w-full items-center justify-center gap-2 rounded-lg py-2.5 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New Interview</span>
+</button>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Top Nav -->
+<header class="h-16 border-b border-[#eaeaf1] dark:border-slate-700 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<span class="text-[#5d5d89] text-sm">Interviews</span>
+<span class="material-symbols-outlined text-slate-300 text-sm">chevron_right</span>
+<span class="text-sm font-bold">Evaluation Review</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-200 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                            Export PDF
+                        </button>
+<button class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-200 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">print</span>
+                            Print
+                        </button>
+</div>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-xs font-bold leading-none">Sarah Miller</p>
+<p class="text-[10px] text-slate-500 font-medium">Panelist</p>
+</div>
+<div class="size-9 rounded-full bg-slate-200 bg-cover bg-center border-2 border-white dark:border-slate-700 shadow-sm" data-alt="Panelist profile picture showing a professional woman" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAzjwCwJ1kpBpMqMwukO5EE6vmZf5pE97UQQfw6190ff8Kji-s6SvIHaqmrJ-wB4cyTQLhSqZSHwbvHZM5em0F4SZ1H3AN1uZseyEpajgEUk0kq4JVYm2pPVmsBm8XNkBkbrTR65vfsifeoIjSK2M4k2O3vP16tU3FYEOIh8ygcPbm9dFJuWbQK2TkRJ_7Vt63q5xeKPPUOjckMl93WD0su_FEY6w9_cbW6qOWgwrQDeODQzFwC187ONxoEp-fEpserZn0TbGmwdxY')"></div>
+</div>
+</div>
+</header>
+<div class="p-8 max-w-6xl mx-auto w-full space-y-8">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-200 dark:border-slate-800 pb-8">
+<div class="flex gap-6 items-center">
+<div class="size-20 rounded-2xl bg-slate-200 bg-cover bg-center border-4 border-white dark:border-slate-700 shadow-xl" data-alt="Candidate John Doe professional headshot" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB5QQ3uLGWtEomsvuw2w-zYc3MZ7Re2f3HHdN79a2lRN38w_tWvVf82Fv3JpT6spRSV6zihEBgqgsXNgbuf2ZrRGanKvNe8plzctAUkXjpeYi3f4o4cRmzhTIyWI0tKtIf_FnodD93WRKjFxe0QiMVS2Aj0I-7nx_I5twXIIlg0Evsqw_ciH7ZlDWCW1L-9V7GWG4mKBz83UkskuIPnjCu5oqUe9jf_Fc1GRyOH8Sd8haT1oV39Ul6Z_eatG9CGoJQeT74ErQp1IfI')"></div>
+<div class="flex flex-col">
+<h2 class="text-4xl font-black tracking-tight">John Doe</h2>
+<div class="flex items-center gap-2 text-[#5d5d89] dark:text-slate-400 mt-1">
+<span class="font-medium">Senior Frontend Engineer</span>
+<span class="size-1 bg-slate-300 rounded-full"></span>
+<span class="text-sm">Interviewed Oct 24, 2023</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="text-[10px] uppercase tracking-widest font-bold text-slate-400">Panelist Recommendation</span>
+<div class="flex items-center gap-2 px-6 py-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800/50 rounded-xl">
+<span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400">check_circle</span>
+<span class="text-lg font-black uppercase">Strong Hire</span>
+</div>
+</div>
+</div>
+<!-- Stats / Executive Summary -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Score Wheel Card -->
+<div class="lg:col-span-4 bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center text-center">
+<h3 class="text-sm font-bold text-slate-500 mb-6 uppercase tracking-wider">Weighted Score</h3>
+<div class="size-48 circular-progress shadow-xl dark:shadow-none mb-6 relative">
+<div class="circular-progress-inner dark:bg-slate-900">
+<span class="text-5xl font-black text-primary leading-none">84</span>
+<span class="text-xs font-bold text-slate-400 uppercase tracking-tighter mt-1">out of 100</span>
+</div>
+</div>
+<p class="text-emerald-600 text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                            Top 5% of candidates
+                        </p>
+</div>
+<!-- Category Quick Stats -->
+<div class="lg:col-span-8 grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold text-slate-500">Technical Mastery</p>
+<span class="material-symbols-outlined text-primary">code</span>
+</div>
+<div>
+<p class="text-3xl font-black mt-2">4.2<span class="text-lg font-medium text-slate-400">/5</span></p>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mt-3 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 84%"></div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold text-slate-500">Soft Skills</p>
+<span class="material-symbols-outlined text-indigo-400">chat_bubble</span>
+</div>
+<div>
+<p class="text-3xl font-black mt-2">4.5<span class="text-lg font-medium text-slate-400">/5</span></p>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mt-3 overflow-hidden">
+<div class="bg-indigo-400 h-full rounded-full" style="width: 90%"></div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold text-slate-500">Problem Solving</p>
+<span class="material-symbols-outlined text-amber-500">lightbulb</span>
+</div>
+<div>
+<p class="text-3xl font-black mt-2">4.0<span class="text-lg font-medium text-slate-400">/5</span></p>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mt-3 overflow-hidden">
+<div class="bg-amber-500 h-full rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold text-slate-500">Culture Fit</p>
+<span class="material-symbols-outlined text-rose-400">favorite</span>
+</div>
+<div>
+<p class="text-3xl font-black mt-2">4.8<span class="text-lg font-medium text-slate-400">/5</span></p>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mt-3 overflow-hidden">
+<div class="bg-rose-400 h-full rounded-full" style="width: 96%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Breakdowns -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Technical Assessment -->
+<div class="space-y-4">
+<h4 class="text-lg font-black flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                            Detailed Technical Skills
+                        </h4>
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+<div class="p-5 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<p class="text-sm font-bold">React Architecture</p>
+<span class="text-xs font-black bg-primary/10 text-primary px-2 py-0.5 rounded">4.5 / 5.0</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 90%"></div>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<p class="text-sm font-bold">System Design</p>
+<span class="text-xs font-black bg-primary/10 text-primary px-2 py-0.5 rounded">4.0 / 5.0</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 80%"></div>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<p class="text-sm font-bold">Performance Optimization</p>
+<span class="text-xs font-black bg-primary/10 text-primary px-2 py-0.5 rounded">3.5 / 5.0</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 70%"></div>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<p class="text-sm font-bold">Unit/Integration Testing</p>
+<span class="text-xs font-black bg-primary/10 text-primary px-2 py-0.5 rounded">5.0 / 5.0</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 100%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Soft Skills Assessment -->
+<div class="space-y-4">
+<h4 class="text-lg font-black flex items-center gap-2">
+<span class="material-symbols-outlined text-indigo-400">psychology</span>
+                            Soft Skills &amp; Cultural Fit
+                        </h4>
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+<div class="p-5 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<p class="text-sm font-bold">Communication</p>
+<span class="text-xs font-black bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded">4.8 / 5.0</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-indigo-400 h-full" style="width: 96%"></div>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<p class="text-sm font-bold">Adaptability</p>
+<span class="text-xs font-black bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded">4.2 / 5.0</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-indigo-400 h-full" style="width: 84%"></div>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<p class="text-sm font-bold">Mentorship Potential</p>
+<span class="text-xs font-black bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded">4.0 / 5.0</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-indigo-400 h-full" style="width: 80%"></div>
+</div>
+</div>
+<div class="p-5 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<p class="text-sm font-bold">Leadership Alignment</p>
+<span class="text-xs font-black bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded">5.0 / 5.0</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-indigo-400 h-full" style="width: 100%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Qualitative Feedback -->
+<div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="px-8 py-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex justify-between items-center">
+<h4 class="text-lg font-black flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500">notes</span>
+                            Panelist Qualitative Notes
+                        </h4>
+<span class="text-xs font-bold text-slate-400 uppercase">Written by Sarah Miller</span>
+</div>
+<div class="p-8 space-y-6">
+<div class="prose dark:prose-invert max-w-none">
+<p class="text-[#111118] dark:text-slate-300 leading-relaxed text-base italic bg-slate-50 dark:bg-slate-800/40 p-6 rounded-xl border-l-4 border-primary">
+                                "John demonstrated an exceptional understanding of React concurrent features. During the live coding segment, he not only solved the state management issue but refactored the component for better re-render performance without being prompted. His communication style is collaborative and precise."
+                            </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 pt-8 border-t border-slate-100 dark:border-slate-800">
+<div>
+<h5 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">Key Strengths</h5>
+<ul class="space-y-3">
+<li class="flex items-start gap-3 text-sm">
+<span class="material-symbols-outlined text-emerald-500 mt-0.5 text-lg">check_circle</span>
+<span>Highly articulate when explaining complex architectural trade-offs.</span>
+</li>
+<li class="flex items-start gap-3 text-sm">
+<span class="material-symbols-outlined text-emerald-500 mt-0.5 text-lg">check_circle</span>
+<span>Deep expertise in modern CSS-in-JS and build tooling (Vite/Rollup).</span>
+</li>
+<li class="flex items-start gap-3 text-sm">
+<span class="material-symbols-outlined text-emerald-500 mt-0.5 text-lg">check_circle</span>
+<span>Strong empathetic leadership qualities noted during the culture-fit discussion.</span>
+</li>
+</ul>
+</div>
+<div>
+<h5 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">Areas for Growth</h5>
+<ul class="space-y-3">
+<li class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-amber-500 mt-0.5 text-lg">info</span>
+<span>Limited experience with full-stack Node.js environments, though highly willing to learn.</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-amber-500 mt-0.5 text-lg">info</span>
+<span>Could improve familiarity with some specialized AWS serverless patterns.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="flex justify-end gap-4 pb-12">
+<button class="px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors">
+                        Close Review
+                    </button>
+<button class="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-xl shadow-primary/30 hover:brightness-110 transition-all">
+                        Move to Final Round
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

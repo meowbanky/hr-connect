@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Invite Panelist Screen - HR Management Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3e34ad",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#14141e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111019] dark:text-gray-100 min-h-screen font-display">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#eae9f1] dark:border-gray-800 bg-white dark:bg-gray-900 px-6 py-3 lg:px-10">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-[#111019] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">HR Management Pro</h2>
+</div>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-primary text-sm font-bold leading-normal border-b-2 border-primary py-4" href="#">Recruitment</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Employees</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="hidden lg:flex w-full max-w-64">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#5e5a8c]">search</span>
+<input class="w-full rounded-lg border-none bg-[#eae9f1] dark:bg-gray-800 py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary" placeholder="Search resources..." type="text"/>
+</div>
+</div>
+<button class="flex items-center justify-center p-2 rounded-lg hover:bg-[#eae9f1] dark:hover:bg-gray-800">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 border-l pl-6 dark:border-gray-800">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile avatar showing professional woman" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAgdaxWV2QjGLGcaavdAuaxaOCHWRiOv-N1ajbZEyt98wgWHIRXu73hBsZbcKszjGe7LKdaKejFEN1cRbZTvQUvTn5ubBO3CzK48PvLRZNQWgpjntyl6c_1_wSnXKsgwufUydFRETYVrkzeYhWf1TNyj7e9C672B0FQXAbZ_VQr9CThdclLiOYrkviHz6D2-Gt3tIS9RY2Q6lksddcji52I1ZqZGHGWMhtZvmot5LE-yREjmuXtLdEEBv_ACDp8fFOtCNsRULc3jtg");'></div>
+<div class="hidden sm:block text-left">
+<p class="text-xs font-bold leading-none">Sarah Jenkins</p>
+<p class="text-[10px] text-[#5e5a8c]">Admin</p>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-[1440px] mx-auto px-6 lg:px-10 py-8">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 mb-6">
+<a class="text-[#5e5a8c] dark:text-gray-400 text-sm font-medium flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm">home</span>
+                Recruitment
+            </a>
+<span class="text-[#5e5a8c] dark:text-gray-600 text-sm">/</span>
+<a class="text-[#5e5a8c] dark:text-gray-400 text-sm font-medium" href="#">Interview Panels</a>
+<span class="text-[#5e5a8c] dark:text-gray-600 text-sm">/</span>
+<span class="text-primary dark:text-indigo-400 text-sm font-bold">Invite Panelist</span>
+</div>
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-[#111019] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Invite Panelist</h1>
+<p class="text-[#5e5a8c] dark:text-gray-400 text-base font-normal">Onboard internal staff or external experts for upcoming interview sessions.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#eae9f1] dark:border-gray-800 bg-white dark:bg-gray-900 text-[#111019] dark:text-white text-sm font-bold hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined text-lg">group</span>
+                    View All Panelists
+                </button>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Form Section -->
+<div class="md:col-span-8 space-y-6">
+<!-- Section 1: Panelist Identity -->
+<div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-[#eae9f1] dark:border-gray-800 p-6">
+<div class="flex items-center gap-3 mb-6">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<h2 class="text-lg font-bold">1. Panelist Details</h2>
+</div>
+<div class="space-y-6">
+<div class="relative">
+<label class="block text-sm font-bold text-[#111019] dark:text-gray-300 mb-2">Search Existing Staff</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#5e5a8c]">person_search</span>
+<input class="w-full rounded-lg border-[#eae9f1] dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Type name or corporate email..." type="text"/>
+</div>
+<p class="mt-2 text-xs text-[#5e5a8c]">Not in the system? Fill the manual entry fields below.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-xs font-bold uppercase tracking-wider text-[#5e5a8c]">Full Name</label>
+<input class="rounded-lg border-[#eae9f1] dark:border-gray-700 bg-white dark:bg-gray-800 py-2.5 px-4 text-sm focus:ring-2 focus:ring-primary" placeholder="e.g. Marcus Thorne" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-xs font-bold uppercase tracking-wider text-[#5e5a8c]">Email Address</label>
+<input class="rounded-lg border-[#eae9f1] dark:border-gray-700 bg-white dark:bg-gray-800 py-2.5 px-4 text-sm focus:ring-2 focus:ring-primary" placeholder="m.thorne@company.com" type="email"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-xs font-bold uppercase tracking-wider text-[#5e5a8c]">Department / Company</label>
+<input class="rounded-lg border-[#eae9f1] dark:border-gray-700 bg-white dark:bg-gray-800 py-2.5 px-4 text-sm focus:ring-2 focus:ring-primary" placeholder="e.g. Product Engineering" type="text"/>
+</div>
+</div>
+</div>
+<!-- Section 2: Assignment & Session -->
+<div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-[#eae9f1] dark:border-gray-800 p-6">
+<div class="flex items-center gap-3 mb-6">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">assignment</span>
+</div>
+<h2 class="text-lg font-bold">2. Interview Configuration</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+<div class="flex flex-col gap-2">
+<label class="text-xs font-bold uppercase tracking-wider text-[#5e5a8c]">Target Job Role</label>
+<select class="rounded-lg border-[#eae9f1] dark:border-gray-700 bg-white dark:bg-gray-800 py-2.5 px-4 text-sm focus:ring-2 focus:ring-primary">
+<option>Select a role...</option>
+<option>Senior Product Designer</option>
+<option>Lead Software Architect</option>
+<option>HR Generalist</option>
+<option>QA Engineer (Manual)</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-xs font-bold uppercase tracking-wider text-[#5e5a8c]">Interview Session</label>
+<select class="rounded-lg border-[#eae9f1] dark:border-gray-700 bg-white dark:bg-gray-800 py-2.5 px-4 text-sm focus:ring-2 focus:ring-primary">
+<option>Select session type...</option>
+<option>Technical Screening Round 1</option>
+<option>System Design Review</option>
+<option>Culture Fit Interview</option>
+<option>Management Round</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<label class="text-xs font-bold uppercase tracking-wider text-[#5e5a8c]">Assign Panel Role</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="relative flex cursor-pointer rounded-lg border border-[#eae9f1] dark:border-gray-700 p-4 transition-all hover:bg-gray-50 dark:hover:bg-gray-800 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+<input checked="" class="mt-1 size-4 text-primary border-gray-300 focus:ring-primary" name="panel_role" type="radio" value="chairman"/>
+<div class="ml-3">
+<span class="block text-sm font-bold text-[#111019] dark:text-white">Panel Chairman</span>
+<span class="block text-xs text-[#5e5a8c] mt-1">Lead the session, provide final verdict, and consolidate feedback.</span>
+</div>
+</label>
+<label class="relative flex cursor-pointer rounded-lg border border-[#eae9f1] dark:border-gray-700 p-4 transition-all hover:bg-gray-50 dark:hover:bg-gray-800 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+<input class="mt-1 size-4 text-primary border-gray-300 focus:ring-primary" name="panel_role" type="radio" value="standard"/>
+<div class="ml-3">
+<span class="block text-sm font-bold text-[#111019] dark:text-white">Standard Panelist</span>
+<span class="block text-xs text-[#5e5a8c] mt-1">Participate in assessment and provide individual rating/notes.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="flex justify-end gap-4">
+<button class="px-8 py-3 rounded-lg text-sm font-bold text-[#5e5a8c] hover:bg-[#eae9f1] dark:hover:bg-gray-800 transition-colors">Discard</button>
+<button class="px-10 py-3 rounded-lg bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">send</span>
+                        Send Invitation
+                    </button>
+</div>
+</div>
+<!-- Sidebar Section -->
+<div class="md:col-span-4 space-y-6">
+<!-- Recently Invited Card -->
+<div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-[#eae9f1] dark:border-gray-800 flex flex-col h-full overflow-hidden">
+<div class="p-5 border-b border-[#eae9f1] dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50">
+<h3 class="text-sm font-bold text-[#111019] dark:text-white flex items-center justify-between">
+                            Recently Invited
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-primary/10 text-primary uppercase">Activity Log</span>
+</h3>
+</div>
+<div class="p-5 space-y-5">
+<!-- Activity Item 1 -->
+<div class="flex gap-3">
+<div class="size-10 rounded-lg bg-center bg-no-repeat bg-cover" data-alt="Avatar of invited panelist Alex" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPW2v7rNQ9cx1Z56ztCRcOQRSXLrXrdZFTCJOA-Cd6dmpWN8CwPDAK_h05fI2fi2EPWiJIYcAZd_P1y_fdlVDlH6pWk8C6viV1n9rRwID1DpBlSz8rLKC-I_2QrJVUStQNtYbxc2T4qm_u5DEeP3dDMyE8fOR89Q7v0Yco1LlZhC2Ak4lMhlh5p0JStVOREUrOw_8G-FHtgCwPmZIoKkkjWCIh4qwPYAQECbyfKdpcbinZ7iEsAdmtqFJgT-bWiYaNoNCqdM84qt0");'></div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold truncate">Alex Rivard</p>
+<span class="text-[10px] text-[#5e5a8c]">2m ago</span>
+</div>
+<p class="text-[11px] text-[#5e5a8c] truncate">Senior Designer Interview</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-green-100 text-green-700">Code Sent</span>
+<span class="text-[10px] text-[#5e5a8c]">Chairman</span>
+</div>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex gap-3">
+<div class="size-10 rounded-lg bg-center bg-no-repeat bg-cover" data-alt="Avatar of invited panelist Emily" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBnM4CK-8wQcFbQJFPj5j92FvEmw2lRx0jffkOTGZMEbAwKh-b23tdCGt9LLXVjDutgLZ8g5fxo76xi1swRgjkLojO_38_3C1U6iqhMH8QsYsy-_zQyl3yHCGqRX57ZXZRZhTHBcU6CcEzbN0XdnDJWtMBQZY3V8HNDrC-e-d9ciGX0gZ_KZ6FpzAd2F8GIPYAl2Btv4zYDAQ4z16joOistk_DnofjbmiKzisg4PAfPqKAXo1RJwjsQoEy3upVJuBCR0JCfjXeQx1k");'></div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold truncate">Emily Chen</p>
+<span class="text-[10px] text-[#5e5a8c]">45m ago</span>
+</div>
+<p class="text-[11px] text-[#5e5a8c] truncate">Culture Fit Session</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-100 text-blue-700">Pending Login</span>
+<span class="text-[10px] text-[#5e5a8c]">Standard</span>
+</div>
+</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="flex gap-3 opacity-70">
+<div class="size-10 rounded-lg bg-center bg-no-repeat bg-cover" data-alt="Avatar of invited panelist David" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuClMqXKPhwpkpCLC5uTZlnjwN2UAUMQEasYD1g9mE1ND9ok_BiTxhjlaVAba09sZfJGfxQNhtcJKucwpll-fMA4PrfQDJFZ-sFPMVaJvOdS-XDU1MA8KUZArP4wKgRPkc4BXSry-n8OtWSe3jCJKD-izx_2CAQHvDB0MZU2dHhD6IUEb0S299S5I4Z1q0erkZoFzCtBEIOS9cTOXP_j77FcooxLQADDDM8xVGmuDBdQ259JWDpKa4O4hChSyOc2YIjFsBX-DM58kOU");'></div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold truncate">David Miller</p>
+<span class="text-[10px] text-[#5e5a8c]">2h ago</span>
+</div>
+<p class="text-[11px] text-[#5e5a8c] truncate">System Design Round</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-100 text-gray-700">Completed</span>
+<span class="text-[10px] text-[#5e5a8c]">Chairman</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto p-5 border-t border-[#eae9f1] dark:border-gray-800">
+<button class="w-full text-center text-xs font-bold text-primary hover:underline">View Full Invite History</button>
+</div>
+</div>
+<!-- Info Box -->
+<div class="bg-primary/10 rounded-xl p-5 border border-primary/20">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<div>
+<h4 class="text-sm font-bold text-primary">Invitation Process</h4>
+<p class="text-xs text-[#5e5a8c] mt-2 leading-relaxed">
+                                Once you send an invite, the panelist will receive a unique 6-digit login code via email. This code is session-specific and expires after 24 hours.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

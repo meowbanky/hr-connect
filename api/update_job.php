@@ -5,7 +5,8 @@ require_once __DIR__ . '/../config/db.php';
 header('Content-Type: application/json');
 
 // Security Check
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || 
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
@@ -23,8 +24,8 @@ if ($id <= 0) {
 }
 
 $title = $_POST['title'] ?? '';
-$department_id = $_POST['department_id'] ?? null;
-$employment_type_id = $_POST['employment_type_id'] ?? null;
+$department_id = !empty($_POST['department_id']) ? $_POST['department_id'] : null;
+$employment_type_id = !empty($_POST['employment_type_id']) ? $_POST['employment_type_id'] : null;
 $location = $_POST['location'] ?? '';
 $experience_level = $_POST['experience_level'] ?? '';
 $min_salary = !empty($_POST['min_salary']) ? $_POST['min_salary'] : null;

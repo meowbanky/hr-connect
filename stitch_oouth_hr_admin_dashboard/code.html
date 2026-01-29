@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add New Staff - HR Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#3b2bee",
+                "background-light": "#f6f6f8",
+                "background-dark": "#121022",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">corporate_fare</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">HR Management</h2>
+</div>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-primary text-sm font-semibold leading-normal" href="#">Recruitment</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Employees</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Payroll</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-500 flex border-none bg-slate-100 dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-500 px-4 rounded-r-lg pl-2 text-sm font-normal focus:ring-0" placeholder="Search staff..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="HR Administrator Profile Picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCWLs3SA2pF9kyAFMhxIV_edcAsSD0pTI4J3Csp6txUuxrWv0yLzIBtnEkwgrlPLWPEhuYnSjt6ypT-sdsSgg0Olg8CEi3D00EUE8mg-w-yZHsSf_DZYAErCleRQK8qxWRpnUaL8zwAciiUMSNkmRG3Dx9tFwzi542K9NZKZgtgjubg2i_07Yeg0HNpqsQxvppBLPg85jW8HxEYBd9B9umYnNeYQf7QWQXxW0WMfmX0QIBE9sIqPCv2_nAFR6D_nYzw2gA-5U8qOrk");'></div>
+</div>
+</header>
+<div class="max-w-[1280px] mx-auto px-6 py-8 flex flex-col gap-6">
+<!-- Breadcrumbs & Heading -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-slate-500 text-sm font-medium">
+<a class="hover:text-primary transition-colors" href="#">Recruitment</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Staff Directory</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100">Add New Staff</span>
+</div>
+<div class="flex flex-wrap justify-between items-end gap-4 mt-2">
+<div class="flex flex-col gap-1">
+<h1 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-tight">Add New Staff</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base">Fill in the details below to onboard a new employee to the organization.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-11 px-6 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-bold transition-all hover:bg-slate-300">
+                        Cancel
+                    </button>
+<button class="flex items-center justify-center rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/30 transition-all hover:brightness-110">
+                        Save &amp; Add Staff
+                    </button>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Form & Sidebar -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Side: Form Sections -->
+<div class="lg:col-span-8 flex flex-col gap-8">
+<!-- Basic Information Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Basic Information</h3>
+<p class="text-slate-500 text-sm">Personal details of the new staff member</p>
+</div>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Full Name <span class="text-red-500">*</span></label>
+<input autofocus="" class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" placeholder="e.g. Sarah Jenkins" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Personal Email <span class="text-red-500">*</span></label>
+<input class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" placeholder="sarah.j@example.com" type="email"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Phone Number</label>
+<input class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Date of Birth</label>
+<input class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" type="date"/>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Gender</label>
+<div class="flex gap-4">
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="text-primary focus:ring-primary" name="gender" type="radio"/>
+<span class="text-sm text-slate-600 dark:text-slate-400">Male</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="text-primary focus:ring-primary" name="gender" type="radio"/>
+<span class="text-sm text-slate-600 dark:text-slate-400">Female</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="text-primary focus:ring-primary" name="gender" type="radio"/>
+<span class="text-sm text-slate-600 dark:text-slate-400">Other</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Work Details Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">work</span>
+</div>
+<div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Work Details</h3>
+<p class="text-slate-500 text-sm">Job role, department, and compensation</p>
+</div>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Job Title <span class="text-red-500">*</span></label>
+<select class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all">
+<option>Select Title</option>
+<option>Software Engineer</option>
+<option>Product Designer</option>
+<option>Project Manager</option>
+<option>Marketing Lead</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Department <span class="text-red-500">*</span></label>
+<select class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all">
+<option>Select Department</option>
+<option>Engineering</option>
+<option>Design</option>
+<option>Product</option>
+<option>Sales</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Salary (Annual USD) <span class="text-red-500">*</span></label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">$</span>
+<input class="w-full pl-8 rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" placeholder="85,000" type="number"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Start Date <span class="text-red-500">*</span></label>
+<input class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" type="date"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Employment Type</label>
+<select class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all">
+<option>Full-time</option>
+<option>Contract</option>
+<option>Part-time</option>
+<option>Internship</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Office Location</label>
+<select class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all">
+<option>New York HQ</option>
+<option>London Branch</option>
+<option>Remote</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Emergency Contact Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+<div class="p-2 bg-primary/10 rounded-lg text-primary">
+<span class="material-symbols-outlined">medical_services</span>
+</div>
+<div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Emergency Contact</h3>
+<p class="text-slate-500 text-sm">Primary contact in case of emergency</p>
+</div>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Contact Name <span class="text-red-500">*</span></label>
+<input class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" placeholder="Full name of contact" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Relationship</label>
+<input class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" placeholder="e.g. Spouse, Parent" type="text"/>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Phone Number <span class="text-red-500">*</span></label>
+<input class="rounded-lg border-slate-200 dark:border-slate-700 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary/20 dark:text-white transition-all" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Sidebar Quick Stats -->
+<aside class="lg:col-span-4 flex flex-col gap-6">
+<!-- Quick Stats Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden sticky top-24">
+<div class="p-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+<h3 class="text-slate-900 dark:text-white font-bold">Quick Insights</h3>
+<p class="text-slate-500 text-xs mt-1">Real-time department headcount</p>
+</div>
+<div class="p-5 flex flex-col gap-6">
+<!-- Total Headcount -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<span class="text-slate-600 dark:text-slate-400 text-sm font-medium">Global Headcount</span>
+<span class="text-2xl font-black text-primary">124</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[82%]"></div>
+</div>
+<span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">82% of target reached</span>
+</div>
+<hr class="border-slate-100 dark:border-slate-800"/>
+<!-- Department Breakdown -->
+<div class="flex flex-col gap-4">
+<h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Top Departments</h4>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-blue-500"></div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Engineering</span>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">42</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-purple-500"></div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Design</span>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">18</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-emerald-500"></div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Product</span>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">12</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-amber-500"></div>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Marketing</span>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">9</span>
+</div>
+</div>
+<div class="bg-primary/5 dark:bg-primary/10 p-4 rounded-lg border border-primary/10">
+<div class="flex items-center gap-2 text-primary mb-1">
+<span class="material-symbols-outlined text-sm">info</span>
+<span class="text-xs font-bold uppercase tracking-tight">Onboarding Note</span>
+</div>
+<p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Adding a new staff member will trigger a welcome email with login credentials automatically.
+                            </p>
+</div>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-800/30 flex justify-center">
+<button class="text-primary text-xs font-bold hover:underline">View Full Staff Directory</button>
+</div>
+</div>
+<!-- Open Positions Reminder -->
+<div class="bg-primary p-6 rounded-xl text-white shadow-xl shadow-primary/20 relative overflow-hidden">
+<div class="relative z-10 flex flex-col gap-3">
+<div class="size-10 bg-white/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">campaign</span>
+</div>
+<h4 class="font-bold text-lg">Recruitment Active</h4>
+<p class="text-white/80 text-sm">There are currently 8 open positions in Engineering. Is this new hire filling a vacancy?</p>
+<button class="mt-2 bg-white text-primary text-xs font-bold py-2 px-4 rounded-lg self-start shadow-sm">Link to Vacancy</button>
+</div>
+<div class="absolute -right-4 -bottom-4 text-white/10">
+<span class="material-symbols-outlined text-9xl">work</span>
+</div>
+</div>
+</aside>
+</div>
+<!-- Sticky Mobile Footer (Visible on small screens) -->
+<div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 p-4 flex gap-3 z-50 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+<button class="flex-1 flex items-center justify-center rounded-lg h-12 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-bold">
+                Cancel
+            </button>
+<button class="flex-[2] flex items-center justify-center rounded-lg h-12 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/30">
+                Save &amp; Add Staff
+            </button>
+</div>
+</div>
+</body></html>

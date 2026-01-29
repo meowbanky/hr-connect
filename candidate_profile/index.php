@@ -61,6 +61,7 @@ $state = $profile['state_of_origin'] ?? '';
 $lga = $profile['lga'] ?? '';
 $qualification = $profile['highest_qualification'] ?? '';
 $experience = $profile['years_of_experience'] ?? '';
+$profileImage = $profile['profile_image'] ?? null;
 
 ?>
 <!DOCTYPE html>
@@ -115,6 +116,35 @@ $experience = $profile['years_of_experience'] ?? '';
 
         <form id="profileForm" enctype="multipart/form-data" class="flex flex-col gap-8">
             
+            <!-- Profile Photo -->
+            <section class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-6 md:p-8">
+                <h2 class="text-xl font-bold text-text-main dark:text-white mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">account_circle</span> Profile Photo
+                </h2>
+                <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                    <div class="size-32 rounded-full border-4 border-slate-100 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-900 relative group shrink-0">
+                         <?php if($profileImage && file_exists(__DIR__ . '/..' . $profileImage)): ?>
+                            <img src="<?php echo htmlspecialchars($profileImage); ?>" id="previewImg" class="w-full h-full object-cover">
+                        <?php else: ?>
+                             <div id="placeholderIcon" class="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-400">
+                                <span class="material-symbols-outlined text-5xl">person</span>
+                            </div>
+                            <img src="" id="previewImg" class="w-full h-full object-cover hidden">
+                        <?php endif; ?>
+                    </div>
+                    <div class="flex flex-col gap-4 flex-1 w-full">
+                         <div id="dropZone" class="border-2 border-dashed border-border-light dark:border-border-dark rounded-xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors h-32 flex flex-col items-center justify-center cursor-pointer group relative">
+                            <input type="file" name="profile_image" id="profileUpload" accept="image/png, image/jpeg, image/gif, image/svg+xml" class="absolute inset-0 opacity-0 cursor-pointer z-10 block w-full h-full">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-2 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-xl">cloud_upload</span>
+                            </div>
+                            <p class="text-text-main dark:text-white font-semibold text-sm">Click to upload or drag and drop</p>
+                            <p class="text-text-secondary text-xs mt-1">SVG, PNG, JPG (max. 800x800px)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Personal Details -->
             <section class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark p-6 md:p-8">
                 <h2 class="text-xl font-bold text-text-main dark:text-white mb-6 flex items-center gap-2">
@@ -305,6 +335,51 @@ $experience = $profile['years_of_experience'] ?? '';
             </div>
         `;
         document.getElementById('eduList').insertAdjacentHTML('beforeend', html);
+    }
+
+    // Profile Photo Preview
+    const profileUpload = document.getElementById('profileUpload');
+    const previewImg = document.getElementById('previewImg');
+    const placeholderIcon = document.getElementById('placeholderIcon');
+    const dropZone = document.getElementById('dropZone');
+
+    if(profileUpload) {
+        profileUpload.addEventListener('change', function() {
+            if(this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('hidden');
+                    if(placeholderIcon) placeholderIcon.classList.add('hidden');
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Drag & Drop Visuals
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, e => {
+                e.preventDefault();
+                dropZone.classList.add('border-primary', 'bg-blue-50', 'dark:bg-blue-900/10');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, e => {
+                e.preventDefault();
+                dropZone.classList.remove('border-primary', 'bg-blue-50', 'dark:bg-blue-900/10');
+            });
+        });
+        
+        dropZone.addEventListener('drop', e => {
+             const files = e.dataTransfer.files;
+             if(files.length > 0) {
+                 profileUpload.files = files; // Assign dropped files to input
+                 // Trigger change event manually
+                 const event = new Event('change');
+                 profileUpload.dispatchEvent(event);
+             }
+        });
     }
 
     document.getElementById('profileForm').addEventListener('submit', function(e) {

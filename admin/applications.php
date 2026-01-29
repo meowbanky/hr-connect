@@ -3,7 +3,8 @@ session_start();
 require_once __DIR__ . '/../config/db.php';
 
 // Check Admin Access
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff')) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || 
+    ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'hr_staff' && $_SESSION['user_role'] !== 'superadmin')) {
     header('Location: /admin/login');
     exit;
 }
@@ -188,13 +189,158 @@ $pageTitle = "Applications";
 </div>
 
 <!-- Scripts -->
-<script>
+    <?php include __DIR__ . '/../includes/interview_schedule_modal.php'; ?>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $_ENV['GOOGLE_MAPS_API_KEY'] ?? ''; ?>&libraries=places&callback=initMap" async defer></script>
+    <script>
     let currentFilters = {
         page: 1,
         search: '',
         status: 'all',
         job_id: 0
     };
+
+    // --- Google Maps Logic ---
+    let map;
+    let marker;
+    let autocomplete;
+
+    function initMap() {
+        // Default to Lagos, Nigeria or User's rough location
+        const defaultLocation = { lat: 6.5244, lng: 3.3792 }; 
+        
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: defaultLocation,
+            mapTypeControl: false,
+            fullscreenControl: true,
+            streetViewControl: false
+        });
+
+        // Create Marker
+        marker = new google.maps.Marker({
+            position: defaultLocation,
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP
+        });
+
+        // Autocomplete
+        const input = document.getElementById("map-search");
+        autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.bindTo("bounds", map);
+
+        autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+
+            if (!place.geometry || !place.geometry.location) {
+                window.alert("No details available for input: '" + place.name + "'");
+                return;
+            }
+
+            // Move map and marker
+            if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+            } else {
+                map.setCenter(place.geometry.location);
+                map.setZoom(17);
+            }
+            marker.setPosition(place.geometry.location);
+            
+            // Update Inputs
+            updateLocationInputs(place.geometry.location);
+        });
+
+        // Map Click Listener
+        map.addListener("click", (e) => {
+            marker.setPosition(e.latLng);
+            updateLocationInputs(e.latLng);
+        });
+
+        // Marker Drag Listener
+        marker.addListener("dragend", (e) => {
+            updateLocationInputs(e.latLng);
+        });
+    }
+
+    function updateLocationInputs(latLng) {
+        document.getElementById("venue_lat").value = latLng.lat().toFixed(6);
+        document.getElementById("venue_lng").value = latLng.lng().toFixed(6);
+        
+        // Auto-fill Google Maps Link
+        const link = `https://www.google.com/maps/?q=${latLng.lat()},${latLng.lng()}`;
+        document.getElementById("venue_link").value = link;
+    }
+
+    function closeScheduleModal() {
+        $('#scheduleModal').addClass('hidden');
+    }
+
+    function openScheduleModal(appIds) {
+        // Can accept single ID or array
+        if (Array.isArray(appIds)) {
+            $('#schedule_application_id').val(appIds.join(','));
+        } else {
+            $('#schedule_application_id').val(appIds);
+        }
+
+        $('#scheduleModal').removeClass('hidden');
+        // Resize map when modal opens to prevent gray box
+        if(map) {
+            setTimeout(() => {
+                google.maps.event.trigger(map, "resize");
+                if(marker) map.setCenter(marker.getPosition());
+            }, 300);
+        }
+    }
+
+    function submitSchedule() {
+        const form = document.getElementById('scheduleForm');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const formData = new FormData(form);
+        const submitBtn = $(form).closest('.sm\\:flex').find('button').first();
+        const originalText = submitBtn.text();
+        
+        submitBtn.prop('disabled', true).text('Scheduling...');
+        
+        $.ajax({
+            url: '/api/schedule_interview.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: 'Scheduled!',
+                        text: response.message,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    closeScheduleModal();
+                    $('#selectAll').prop('checked', false);
+                    $('#bulkActions').addClass('hidden');
+                    fetchApplications(currentFilters.page); 
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                }
+            },
+            error: function() {
+                Swal.fire('Error', 'Network error occurred.', 'error');
+            },
+            complete: function() {
+                submitBtn.prop('disabled', false).text(originalText);
+            }
+        });
+    }
+
+    // --- End Google Maps Logic ---
 
     function fetchApplications(page = 1) {
         currentFilters.page = page;
@@ -229,6 +375,12 @@ $pageTitle = "Applications";
     }
 
     function updateStatus(appId, newStatus) {
+        // Intercept logic for interviewed status
+        if (newStatus === 'interviewed') {
+            openScheduleModal(appId);
+            return;
+        }
+
         Swal.fire({
             title: 'Confirm Action',
             text: `Mark this candidate as ${newStatus}?`,
@@ -367,6 +519,12 @@ $pageTitle = "Applications";
         }).get();
 
         if (selectedIds.length === 0) return;
+
+        // Intercept logic for INTERVIEWED status
+        if (newStatus === 'interviewed') {
+            openScheduleModal(selectedIds);
+            return;
+        }
 
         Swal.fire({
             title: 'Bulk Action',

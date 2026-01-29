@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Manage Panelist Invites - Recruitment Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3e34ad",
+                        "background-light": "#f9fafa",
+                        "background-dark": "#21242c",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hidden lg:flex flex-col fixed h-full">
+<div class="p-6">
+<div class="flex items-center gap-3">
+<div class="bg-primary rounded-lg p-2 text-white">
+<span class="material-symbols-outlined">diversity_3</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-none">Recruitment Pro</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium">Admin Console</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">person_add</span>
+<span class="text-sm font-medium">Recruitment</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">calendar_today</span>
+<span class="text-sm font-medium">Interviews</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Panelists</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 p-4 lg:p-8">
+<div class="max-w-6xl mx-auto space-y-6">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 text-sm">
+<a class="text-slate-500 hover:text-primary transition-colors" href="#">Recruitment</a>
+<span class="text-slate-400">/</span>
+<a class="text-slate-500 hover:text-primary transition-colors" href="#">Interviews</a>
+<span class="text-slate-400">/</span>
+<span class="text-slate-900 dark:text-white font-medium">Manage Invitations</span>
+</div>
+<!-- PageHeading -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="space-y-1">
+<h2 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Manage Panelist Invitations</h2>
+<p class="text-slate-500 dark:text-slate-400 max-w-2xl text-base">Track and manage the lifecycle of invitation sent to interview panelists across all active hiring rounds.</p>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-bold text-sm inline-flex items-center gap-2 transition-all shadow-sm">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    Invite New Panelist
+                </button>
+</div>
+<!-- Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Invites</p>
+<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">+12%</span>
+</div>
+<p class="text-3xl font-black text-slate-900 dark:text-white">124</p>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pending Responses</p>
+<span class="bg-orange-100 text-orange-700 text-xs font-bold px-2 py-0.5 rounded-full">-5%</span>
+</div>
+<p class="text-3xl font-black text-slate-900 dark:text-white">32</p>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Decline Rate</p>
+<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">+1%</span>
+</div>
+<p class="text-3xl font-black text-slate-900 dark:text-white">8%</p>
+</div>
+</div>
+<!-- Search and Filter Bar -->
+<div class="flex flex-col md:flex-row gap-4 items-center">
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-400" placeholder="Search by panelist name, job title, or email..." type="text"/>
+</div>
+<div class="flex gap-2 w-full md:w-auto">
+<button class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined">filter_list</span>
+                        Filter
+                    </button>
+<button class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined">download</span>
+                        Export
+                    </button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Panelist</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Assigned Job</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Role</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Invite Date</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar of John Doe" class="w-10 h-10 rounded-full bg-slate-100" data-alt="Portrait avatar of a male panelist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMGSJjVInbmCxLSjv1kqOwlUp_LGY-AVYPPRoLPMMpYR0cjdVvlfycVWz8E4JBUiOLyZYkphpuGfFfx73tpD7y1oBbHqxc7WdCY5IBByU-RfwCRLBaLcepq8T6fgsG-03MUfqxD1m4mfihWfEAFaqI7uzA4Ac4KhNRoPlf8j2JyY8sQAaxoc_gPybJ8pOPYHmcEB6hqXgQ9_3Azpjt8SwU4Hg-Z9maSKu7btzgmTejSbUQ1ZFt1mHtmpG_61rEz4PR9qhxR_t7R00"/>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">John Doe</p>
+<p class="text-xs text-slate-500">john.doe@company.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div>
+<p class="font-semibold text-slate-800 dark:text-slate-200">Senior Frontend Dev</p>
+<p class="text-xs text-slate-500">#REQ-4521</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
+                                        Chairman
+                                    </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Oct 24, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                        Accepted
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Resend Invite"><span class="material-symbols-outlined text-[20px]">forward_to_inbox</span></button>
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Change Role"><span class="material-symbols-outlined text-[20px]">manage_accounts</span></button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-1" title="Revoke Invite"><span class="material-symbols-outlined text-[20px]">person_remove</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar of Sarah Miller" class="w-10 h-10 rounded-full bg-slate-100" data-alt="Portrait avatar of a female panelist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABZuLy0R2d4SEQsan8gWHNuMkGH2Ie6RuKSIalRifFxxaSKttLSm5oit7ElPPI-2oPuzcIPv5h2wDSnDJyW5uUdA1n3VGynNsdFtWA7V_ezqtUK4IvRH0Dg5cA8uk_7vt16C7ZMVkdTHHiKEgt7R3IwR_oow9Jr_hVUA1RKFfylMPnJ_Y-YMQuHp4wumxzYN_H0v-k5DjIrMS68LERX5SLqH8HHjh_0zjkt0viTAMtcgKa0NHfTaqxu2xklAikXeEjAcjLe2llS7A"/>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">Sarah Miller</p>
+<p class="text-xs text-slate-500">s.miller@global.io</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div>
+<p class="font-semibold text-slate-800 dark:text-slate-200">Product Designer</p>
+<p class="text-xs text-slate-500">#REQ-8902</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400">
+                                        Member
+                                    </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Oct 25, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                                        Invited
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Resend Invite"><span class="material-symbols-outlined text-[20px]">forward_to_inbox</span></button>
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Change Role"><span class="material-symbols-outlined text-[20px]">manage_accounts</span></button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-1" title="Revoke Invite"><span class="material-symbols-outlined text-[20px]">person_remove</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar of Robert Fox" class="w-10 h-10 rounded-full bg-slate-100" data-alt="Portrait avatar of a senior male panelist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpq91aQlDPf4vCGPKMAsfcB5dZCY1ZEqTzcqSHz4SJASMmyvIhXiKpBwhHnfH5N28VAq8JDTjsVP13JcqLUbf6CWfDIe4-9fOWniXxWa5iDDSmSAKNKpspgGz-firCxBM4LbeBKNV93XD2yKelNLdld7hamXc-dW8VjsFVVKwr-AXLP-5LUcM1eGK-SNbFO930QYjTANNqUG_aYaShtNP3J_rpEV4M40ZtXr-w9Q_2ia_fXJr8hBqT3h4Zi36LiiWQq8PjIHM3xLI"/>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">Robert Fox</p>
+<p class="text-xs text-slate-500">r.fox@techlink.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div>
+<p class="font-semibold text-slate-800 dark:text-slate-200">Engineering Manager</p>
+<p class="text-xs text-slate-500">#REQ-3312</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
+                                        Chairman
+                                    </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Oct 22, 2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                                        Declined
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Resend Invite"><span class="material-symbols-outlined text-[20px]">forward_to_inbox</span></button>
+<button class="text-slate-400 hover:text-primary transition-colors p-1" title="Change Role"><span class="material-symbols-outlined text-[20px]">manage_accounts</span></button>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-1" title="Revoke Invite"><span class="material-symbols-outlined text-[20px]">person_remove</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<p class="text-sm text-slate-500 font-medium">Showing 1 to 3 of 124 invitations</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-400 cursor-not-allowed">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-white border border-primary rounded-lg font-bold text-sm">1</button>
+<button class="px-3 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50">2</button>
+<button class="px-3 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50">3</button>
+<button class="px-3 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
